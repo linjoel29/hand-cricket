@@ -408,7 +408,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { getDatabase, ref, set, get, update, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
@@ -434,7 +434,7 @@
   let mySelectedMove = null;
 
   // AUTH
-  onAuthStateChanged(auth, user => {
+  function handleUser(user) {
     if (user) {
       currentUser = user;
       showScreen('lobby-screen');
@@ -444,11 +444,31 @@
     } else {
       showScreen('login-screen');
     }
+  }
+
+  // Handle redirect result first
+  getRedirectResult(auth).then(result => {
+    if (result?.user) handleUser(result.user);
+  }).catch(err => {
+    console.error(err);
+    // fallback to popup if redirect fails
   });
 
+  onAuthStateChanged(auth, handleUser);
+
   window.signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+    try {
+      // Try popup first, fallback to redirect
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request' || err.code === 'auth/popup-closed-by-user') {
+        const provider = new GoogleAuthProvider();
+        await signInWithRedirect(auth, provider);
+      } else {
+        console.error(err);
+      }
+    }
   };
 
   function showScreen(id) {
