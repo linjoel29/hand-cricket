@@ -157,6 +157,18 @@
     /* BACK BUTTON */
     .back-btn { position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.2); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; z-index: 50; }
     .back-btn:hover { background: rgba(255,255,255,0.3); }
+
+    /* TEAM UI */
+    .team-grid { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; }
+    .team-box { flex: 1; background: white; border-radius: 16px; padding: 14px; text-align: left; }
+    .team-box.blue { border-top: 6px solid var(--blue); }
+    .team-box.red { border-top: 6px solid var(--red); }
+    .team-box h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; color: #1e293b; margin-bottom: 8px; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; }
+    .player-row { font-size: 0.9rem; color: #475569; font-weight: 700; padding: 4px 0; }
+    .player-row.captain { color: #f59e0b; }
+    .ready-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 900; margin-left: 5px; background: #e2e8f0; color: #64748b; }
+    .ready-tag.r-true { background: #10b981; color: white; }
+    .size-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -206,7 +218,14 @@
   </div>
   <div class="card">
     <h3>New Game</h3>
-    <button class="big-btn btn-blue" onclick="createRoom()">+ Create Room</button>
+    <button class="big-btn btn-blue" onclick="createRoom(1)" style="margin-bottom:8px;">1v1 Room</button>
+    <div class="size-btns">
+      <button class="big-btn btn-gray" onclick="createRoom(2)">2v2</button>
+      <button class="big-btn btn-gray" onclick="createRoom(3)">3v3</button>
+      <button class="big-btn btn-gray" onclick="createRoom(4)">4v4</button>
+      <button class="big-btn btn-gray" onclick="createRoom(5)">5v5</button>
+      <button class="big-btn btn-gray" onclick="createRoom(11)" style="grid-column: span 2;">11v11</button>
+    </div>
   </div>
   <div class="card">
     <h3>Join Friend</h3>
@@ -217,6 +236,40 @@
     <h3>Single Player</h3>
     <button class="big-btn btn-gold" onclick="startBotGame()">🤖 Play with Bot</button>
   </div>
+</div>
+
+<!-- TEAM SELECTION -->
+<div class="screen" id="team-select-screen">
+  <button class="back-btn" onclick="goBack()">←</button>
+  <div class="lobby-header">
+    <h1>⚔️ JOIN BATTLE</h1>
+    <p>Select your allegiance!</p>
+  </div>
+  <button class="big-btn btn-blue" style="margin-bottom:12px;" onclick="joinSpecificTeam('teamA')">🛡️ Join Team A</button>
+  <button class="big-btn btn-red" onclick="joinSpecificTeam('teamB')">⚔️ Join Team B</button>
+</div>
+
+<!-- TEAM LOBBY -->
+<div class="screen" id="team-lobby-screen">
+  <button class="back-btn" onclick="goBack()">←</button>
+  <div class="code-display-card" style="margin-top: 40px; padding: 14px;">
+    <h3>Room Code</h3>
+    <div class="code-big" id="t-display-room-code" style="font-size:2rem;letter-spacing:6px;">------</div>
+  </div>
+  
+  <div class="team-grid">
+    <div class="team-box blue">
+      <h3>TEAM A <span id="ta-ready" class="ready-tag">WAITING</span></h3>
+      <div id="team-a-list"></div>
+    </div>
+    <div class="team-box red">
+      <h3>TEAM B <span id="tb-ready" class="ready-tag">WAITING</span></h3>
+      <div id="team-b-list"></div>
+    </div>
+  </div>
+
+  <button class="big-btn btn-gold" id="btn-team-ready" style="display:none;" onclick="triggerTeamReady()">👍 Start Match</button>
+  <div id="team-wait-msg" style="color:white;font-weight:700;margin-top:10px;">Waiting for players...</div>
 </div>
 
 <!-- WAITING -->
@@ -362,17 +415,31 @@
   }
 
   // ---- ROOM ----
-  window.createRoom = async () => {
+  window.createRoom = async (teamSize = 1) => { 
     const code = Math.random().toString(36).substring(2, 8).toUpperCase();
     currentRoom = code; myRole = 'player1'; tossProcessed = false; gameStarted = false;
-    await set(ref(db, `rooms/${code}`), {
+    
+    let payload = {
       player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
       player1Connected: true,
       player2: null, status: 'waiting',
       toss: { p1choice: null, p2choice: null, winner: null, batting: null },
       phase: 'batting', batting: null,
       target: null, move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null
-    });
+    };
+
+    if (teamSize > 1) {
+      payload.isTeamMode = true;
+      payload.teamSize = teamSize;
+      payload.teamA = [{ uid: currentUser.uid, name: currentUser.displayName }];
+      payload.teamB = [];
+      payload.captainA = currentUser.uid;
+      payload.captainB = null;
+      payload.readyA = false;
+      payload.readyB = false;
+    }
+
+    await set(ref(db, `rooms/${code}`), payload);
 
     const connRef = ref(db, `rooms/${code}/player1Connected`);
     onDisconnect(connRef).set(false);
@@ -387,20 +454,66 @@
     if (!code) return alert('Enter a room code!');
     const snap = await get(ref(db, `rooms/${code}`));
     if (!snap.exists()) return alert('Room not found!');
-    if (snap.val().player2) return alert('Room is full!');
-    currentRoom = code; myRole = 'player2'; tossProcessed = false; gameStarted = false;
-    await update(ref(db, `rooms/${code}`), {
-      player2: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
-      player2Connected: true,
-      status: 'toss'
-    });
+    
+    const data = snap.val();
+    currentRoom = code; tossProcessed = false; gameStarted = false;
 
-    const connRef = ref(db, `rooms/${code}/player2Connected`);
-    onDisconnect(connRef).set(false);
+    if (data.isTeamMode) {
+      const teamA = data.teamA || [];
+      const teamB = data.teamB || [];
+      const max = data.teamSize;
+      let updates = {};
+
+      if (!data.captainB) {
+         teamB.push({ uid: currentUser.uid, name: currentUser.displayName });
+         myRole = 'player2';
+         updates.player2 = { uid: currentUser.uid, name: currentUser.displayName, score: 0 };
+         updates.player2Connected = true;
+         updates.captainB = currentUser.uid;
+      } else {
+         window.tempJoinCode = code;
+         showScreen('team-select-screen');
+         return;
+      }
+
+      updates.teamB = teamB;
+      await update(ref(db, `rooms/${code}`), updates);
+      
+    } else {
+      if (data.player2) return alert('Room is full!');
+      myRole = 'player2';
+      await update(ref(db, `rooms/${code}`), {
+        player2: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
+        player2Connected: true,
+        status: 'toss'
+      });
+    }
+
+    if (myRole === 'player2') {
+       const connRef = ref(db, `rooms/${code}/player2Connected`);
+       onDisconnect(connRef).set(false);
+    }
 
     listenToRoom(code);
-    showScreen('toss-screen');
-    setupTossUI(null);
+    
+    if (!data.isTeamMode) {
+       showScreen('toss-screen');
+       setupTossUI(null);
+    }
+  };
+
+  window.joinSpecificTeam = async (chosenTeam) => {
+    const code = window.tempJoinCode;
+    const snap = await get(ref(db, `rooms/${code}`));
+    const data = snap.val();
+    const arr = data[chosenTeam] || [];
+    if (arr.length >= data.teamSize) return alert("That team is full!");
+    
+    arr.push({ uid: currentUser.uid, name: currentUser.displayName });
+    myRole = 'teammate';
+    await update(ref(db, `rooms/${code}`), { [chosenTeam]: arr });
+    
+    listenToRoom(code);
   };
 
   function listenToRoom(code) {
@@ -419,10 +532,56 @@
         return goToLobby();
       }
 
-      // Transition from waiting to toss
-      if (data.status === 'toss' && document.getElementById('waiting-screen').classList.contains('active')) {
-        showScreen('toss-screen');
-        setupTossUI(data.toss);
+      // Native Team Lobby visualizer
+      if (data.isTeamMode && data.status === 'waiting') {
+        if (!document.getElementById('team-lobby-screen').classList.contains('active')) {
+          showScreen('team-lobby-screen');
+          document.getElementById('t-display-room-code').textContent = code;
+        }
+        
+        const renderList = (elId, teamArr, captainId) => {
+          document.getElementById(elId).innerHTML = (teamArr||[]).map(p => 
+            `<div class="player-row ${p.uid === captainId ? 'captain' : ''}">${p.uid === captainId ? '👑 ' : '👤 '}${p.name}</div>`
+          ).join('');
+        };
+        renderList('team-a-list', data.teamA, data.captainA);
+        renderList('team-b-list', data.teamB, data.captainB);
+
+        const rTagA = document.getElementById('ta-ready');
+        rTagA.textContent = data.readyA ? 'READY' : 'WAITING';
+        rTagA.className = 'ready-tag' + (data.readyA ? ' r-true' : '');
+        
+        const rTagB = document.getElementById('tb-ready');
+        rTagB.textContent = data.readyB ? 'READY' : 'WAITING';
+        rTagB.className = 'ready-tag' + (data.readyB ? ' r-true' : '');
+
+        const isFull = (data.teamA?.length === data.teamSize && data.teamB?.length === data.teamSize);
+        const amICaptain = (currentUser.uid === data.captainA || currentUser.uid === data.captainB);
+        const btnReady = document.getElementById('btn-team-ready');
+        const msgWait = document.getElementById('team-wait-msg');
+        
+        if (isFull) {
+           msgWait.style.display = 'none';
+           if (amICaptain && !(currentUser.uid===data.captainA && data.readyA) && !(currentUser.uid===data.captainB && data.readyB)) {
+               btnReady.style.display = 'block';
+           } else {
+               btnReady.style.display = 'none';
+           }
+        } else {
+           btnReady.style.display = 'none';
+           msgWait.style.display = 'block';
+           msgWait.textContent = `Waiting for players... (${(data.teamA?.length||0)+(data.teamB?.length||0)} / ${data.teamSize*2})`;
+        }
+      }
+
+      // Transition to toss
+      if (data.status === 'toss') {
+        const waitingActive = document.getElementById('waiting-screen').classList.contains('active');
+        const teamLobbyActive = document.getElementById('team-lobby-screen').classList.contains('active');
+        if (waitingActive || teamLobbyActive) {
+          showScreen('toss-screen');
+          setupTossUI(data.toss);
+        }
       }
 
       // Update toss UI
@@ -462,10 +621,14 @@
 
   // ---- TOSS ----
   function setupTossUI(toss) {
-    document.getElementById('toss-choice-section').style.display = 'flex';
+    document.getElementById('toss-choice-section').style.display = (myRole === 'player1' || myRole === 'player2') ? 'flex' : 'none';
+    if (myRole !== 'player1' && myRole !== 'player2') {
+       document.getElementById('toss-waiting-msg').textContent = 'Waiting for Captains to toss...';
+    } else {
+       document.getElementById('toss-waiting-msg').textContent = '';
+    }
     document.getElementById('choose-section').style.display = 'none';
     document.getElementById('waiting-choice-section').style.display = 'none';
-    document.getElementById('toss-waiting-msg').textContent = '';
     document.getElementById('btn-heads').disabled = false;
     document.getElementById('btn-tails').disabled = false;
     document.getElementById('btn-heads').classList.remove('chosen');
@@ -516,6 +679,7 @@
   }
 
   window.chooseToss = async (choice) => {
+    if (myRole !== 'player1' && myRole !== 'player2') return;
     if (isBotGame) {
       localGameState.toss.p1choice = choice;
       localGameState.toss.p2choice = Math.random() < 0.5 ? 'heads' : 'tails';
@@ -547,6 +711,7 @@
   }
 
   window.chooseInnings = async (choice) => {
+    if (myRole !== 'player1' && myRole !== 'player2') return;
     if (isBotGame) {
       chooseInningsBot('player1', choice);
       return;
@@ -659,6 +824,15 @@
 
     if (scorePaused) return; // don't update buttons while flash showing
 
+    if (myRole !== 'player1' && myRole !== 'player2') {
+      document.getElementById('number-buttons').innerHTML = '<div style="color:#94a3b8;text-align:center;grid-column: span 3;font-weight:700;">Teammate Spectating mode...</div>';
+      document.getElementById('game-status').textContent = 'Captains are battling!';
+      document.getElementById('game-status').className = 'status-text';
+      document.getElementById('move-reveal').style.display = 'none';
+      stopTimer();
+      return;
+    }
+
     const isBatting = data.batting === myRole;
     const myMove = myRole === 'player1' ? data.move1 : data.move2;
     const oppMove = myRole === 'player1' ? data.move2 : data.move1;
@@ -711,6 +885,7 @@
   }
 
   window.makeMove = async (n) => {
+    if (myRole !== 'player1' && myRole !== 'player2') return;
     if (scorePaused || mySelectedMove) return;
     mySelectedMove = n; stopTimer();
 
@@ -857,6 +1032,22 @@
     tossProcessed = false; gameStarted = false; scorePaused = false;
     isBotGame = false; localGameState = null;
     stopTimer(); showScreen('lobby-screen');
+  };
+
+  // ---- TEAM LOGIC ----
+  window.triggerTeamReady = async () => {
+    if (!currentRoom) return;
+    const snap = await get(ref(db, `rooms/${currentRoom}`));
+    const data = snap.val();
+    let updates = {};
+    
+    if (currentUser.uid === data.captainA) updates.readyA = true;
+    if (currentUser.uid === data.captainB) updates.readyB = true;
+
+    if ((updates.readyA || data.readyA) && (updates.readyB || data.readyB)) {
+      updates.status = 'toss'; // Hand Cricket native game start trigger
+    }
+    await update(ref(db, `rooms/${currentRoom}`), updates);
   };
 
   // ---- BOT LOGIC ----
