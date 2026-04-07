@@ -153,6 +153,10 @@
     .result-score-box .name { color: #64748b; font-size: 0.85rem; font-weight: 700; }
     .result-score-box .score { font-family: 'Rajdhani', sans-serif; font-size: 3rem; font-weight: 700; color: #1e293b; }
     .result-vs { color: #94a3b8; font-size: 1.2rem; font-weight: 700; }
+
+    /* BACK BUTTON */
+    .back-btn { position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.2); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; z-index: 50; }
+    .back-btn:hover { background: rgba(255,255,255,0.3); }
   </style>
 </head>
 <body>
@@ -194,6 +198,7 @@
 
 <!-- LOBBY -->
 <div class="screen" id="lobby-screen">
+  <button class="back-btn" onclick="goBack()">←</button>
   <div class="lobby-header">
     <div class="welcome-tag">👋 Welcome, <span id="welcome-name">Player</span>!</div>
     <h1>🏏 HAND CRICKET</h1>
@@ -208,10 +213,15 @@
     <input class="code-input" id="join-code" placeholder="ENTER CODE" maxlength="6"/>
     <button class="big-btn btn-red" onclick="joinRoom()">Join Room →</button>
   </div>
+  <div class="card">
+    <h3>Single Player</h3>
+    <button class="big-btn btn-gold" onclick="startBotGame()">🤖 Play with Bot</button>
+  </div>
 </div>
 
 <!-- WAITING -->
 <div class="screen" id="waiting-screen">
+  <button class="back-btn" onclick="goBack()">←</button>
   <div class="pulse-ring"><span style="font-size:2rem">⏳</span></div>
   <div class="waiting-title">Waiting for opponent...</div>
   <div class="waiting-sub">Share this code with your friend</div>
@@ -224,6 +234,7 @@
 
 <!-- TOSS -->
 <div class="screen" id="toss-screen">
+  <button class="back-btn" onclick="goBack()">←</button>
   <div class="toss-coin" id="toss-coin">🪙</div>
   <div class="toss-title" id="toss-title">TOSS TIME!</div>
   <div class="toss-sub" id="toss-sub">Choose Heads or Tails</div>
@@ -265,6 +276,7 @@
 
 <!-- GAME -->
 <div class="screen" id="game-screen">
+  <button class="back-btn" onclick="goBack()">←</button>
   <div class="game-top">
     <div class="player-side left">
       <div class="player-avatar" id="p1-avatar">L</div>
@@ -296,6 +308,7 @@
 
 <!-- RESULT -->
 <div class="screen" id="result-screen">
+  <button class="back-btn" onclick="goBack()">←</button>
   <div class="trophy" id="result-trophy">🏆</div>
   <div class="result-title" id="result-title">You Won!</div>
   <div class="result-sub" id="result-sub">Amazing innings!</div>
@@ -311,7 +324,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, set, get, update, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, set, get, update, onValue, off, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDZyRWuXiqUY9-vbP3rf-oggz-wBmqv3dM",
@@ -330,6 +343,8 @@
   let timeLeft = 5, mySelectedMove = null;
   let tossProcessed = false, gameStarted = false;
   let scorePaused = false; // pause game while score flash shows
+  let isBotGame = false;
+  let localGameState = null;
 
   // ---- LOGIN ----
   window.enterGame = () => {
@@ -352,11 +367,16 @@
     currentRoom = code; myRole = 'player1'; tossProcessed = false; gameStarted = false;
     await set(ref(db, `rooms/${code}`), {
       player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
+      player1Connected: true,
       player2: null, status: 'waiting',
       toss: { p1choice: null, p2choice: null, winner: null, batting: null },
       phase: 'batting', batting: null,
       target: null, move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null
     });
+
+    const connRef = ref(db, `rooms/${code}/player1Connected`);
+    onDisconnect(connRef).set(false);
+
     document.getElementById('display-room-code').textContent = code;
     showScreen('waiting-screen');
     listenToRoom(code);
@@ -371,8 +391,13 @@
     currentRoom = code; myRole = 'player2'; tossProcessed = false; gameStarted = false;
     await update(ref(db, `rooms/${code}`), {
       player2: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
+      player2Connected: true,
       status: 'toss'
     });
+
+    const connRef = ref(db, `rooms/${code}/player2Connected`);
+    onDisconnect(connRef).set(false);
+
     listenToRoom(code);
     showScreen('toss-screen');
     setupTossUI(null);
@@ -384,6 +409,16 @@
       if (!snap.exists()) return;
       const data = snap.val();
 
+      // Disconnect handling
+      if (myRole === 'player1' && data.player2 && data.player2Connected === false && data.status !== 'finished') {
+        alert("Opponent disconnected!");
+        return goToLobby();
+      }
+      if (myRole === 'player2' && data.player1Connected === false && data.status !== 'finished') {
+        alert("Opponent disconnected!");
+        return goToLobby();
+      }
+
       // Transition from waiting to toss
       if (data.status === 'toss' && document.getElementById('waiting-screen').classList.contains('active')) {
         showScreen('toss-screen');
@@ -393,6 +428,15 @@
       // Update toss UI
       if (data.status === 'toss' && document.getElementById('toss-screen').classList.contains('active')) {
         updateTossUI(data);
+
+        // Toss Resolution Logic (moved here to eliminate race condition)
+        if (myRole === 'player1') {
+          const t = data.toss || {};
+          if (t.p1choice && t.p2choice && !t.winner && !tossProcessed) {
+            tossProcessed = true;
+            resolveToss(data);
+          }
+        }
       }
 
       // Start game after toss settled
@@ -472,22 +516,18 @@
   }
 
   window.chooseToss = async (choice) => {
+    if (isBotGame) {
+      localGameState.toss.p1choice = choice;
+      localGameState.toss.p2choice = Math.random() < 0.5 ? 'heads' : 'tails';
+      updateTossUI(localGameState);
+      tossProcessed = true;
+      resolveTossBot(localGameState);
+      return;
+    }
+
     if (!currentRoom) return;
     const myChoiceKey = myRole === 'player1' ? 'toss/p1choice' : 'toss/p2choice';
     await update(ref(db, `rooms/${currentRoom}`), { [myChoiceKey]: choice });
-
-    // If both chose, resolve toss (player1 handles logic)
-    if (myRole === 'player1') {
-      // Wait a tiny bit for p2 choice to sync then check
-      setTimeout(async () => {
-        const snap = await get(ref(db, `rooms/${currentRoom}`));
-        const data = snap.val();
-        const t = data.toss;
-        if (t.p1choice && t.p2choice && !t.winner) {
-          await resolveToss(data);
-        }
-      }, 1500);
-    }
   };
 
   async function resolveToss(data) {
@@ -507,6 +547,11 @@
   }
 
   window.chooseInnings = async (choice) => {
+    if (isBotGame) {
+      chooseInningsBot('player1', choice);
+      return;
+    }
+
     // choice = 'batting' or 'bowling'
     const snap = await get(ref(db, `rooms/${currentRoom}`));
     const data = snap.val();
@@ -594,8 +639,12 @@
     document.getElementById('p2-name').textContent = p2?.name?.split(' ')[0] || 'P2';
     document.getElementById('p1-avatar').textContent = p1?.name?.charAt(0).toUpperCase() || 'P';
     document.getElementById('p2-avatar').textContent = p2?.name?.charAt(0).toUpperCase() || '?';
-    document.getElementById('p1-score').textContent = p1?.score ?? 0;
-    document.getElementById('p2-score').textContent = p2?.score ?? 0;
+    
+    const isP1Batting = (data.batting === 'player1' && data.status === 'playing');
+    const isP2Batting = (data.batting === 'player2' && data.status === 'playing');
+    document.getElementById('p1-score').textContent = isP1Batting ? (data.currentScore || 0) : (p1?.score ?? 0);
+    document.getElementById('p2-score').textContent = isP2Batting ? (data.currentScore || 0) : (p2?.score ?? 0);
+    
     document.getElementById('r-p1-name').textContent = p1?.name?.split(' ')[0] || 'P1';
     document.getElementById('r-p2-name').textContent = p2?.name?.split(' ')[0] || 'P2';
 
@@ -626,7 +675,7 @@
 
     const btns = document.getElementById('number-buttons');
     btns.innerHTML = '';
-    [1,2,3,4,5,6].forEach(n => {
+    [0,1,2,3,4,5,6].forEach(n => {
       const btn = document.createElement('button');
       btn.className = 'num-btn' + (myMove === n ? ' selected' : '');
       btn.textContent = n; btn.disabled = !!myMove || scorePaused;
@@ -662,8 +711,19 @@
   }
 
   window.makeMove = async (n) => {
-    if (!currentRoom || mySelectedMove || scorePaused) return;
+    if (scorePaused || mySelectedMove) return;
     mySelectedMove = n; stopTimer();
+
+    if (isBotGame) {
+      localGameState.move1 = n;
+      localGameState.move2 = Math.floor(Math.random() * 7); // Bot random 0-6
+      updateGameUI(localGameState);
+      
+      setTimeout(() => { checkMovesBot(); }, 400);
+      return;
+    }
+
+    if (!currentRoom) return;
     await update(ref(db, `rooms/${currentRoom}`), { [myRole === 'player1' ? 'move1' : 'move2']: n });
   };
 
@@ -673,7 +733,7 @@
     clearInterval(timerInterval); timeLeft = 5; updateTimerUI();
     timerInterval = setInterval(() => {
       timeLeft -= 0.1; updateTimerUI();
-      if (timeLeft <= 0) { clearInterval(timerInterval); if (!mySelectedMove) makeMove(Math.floor(Math.random() * 6) + 1); }
+      if (timeLeft <= 0) { clearInterval(timerInterval); if (mySelectedMove === null) makeMove(Math.floor(Math.random() * 7)); }
     }, 100);
   }
   function stopTimer() {
@@ -691,10 +751,11 @@
 
   // ---- CHECK MOVES ----
   async function checkMoves(data) {
-    if (!data.move1 || !data.move2 || myRole !== 'player1') return;
+    if (data.move1 === null || data.move2 === null || myRole !== 'player1') return;
 
     const batting = data.batting;
     const batterMove = batting === 'player1' ? data.move1 : data.move2;
+    const bowlerMove = batting === 'player1' ? data.move2 : data.move1;
     const history = data.ballHistory ? [...data.ballHistory] : [];
     const batterName = batting === 'player1' ? data.player1?.name?.split(' ')[0] : data.player2?.name?.split(' ')[0];
 
@@ -723,13 +784,17 @@
       });
     } else {
       // RUNS scored
-      history.push(batterMove);
-      const newScore = (data.currentScore || 0) + batterMove;
+      const runsScored = batterMove === 0 ? bowlerMove : batterMove;
+      history.push(runsScored);
+      const newScore = (data.currentScore || 0) + runsScored;
+
+      // Optimistic UI updates before Firebase / Flash
+      document.getElementById(batting === 'player1' ? 'p1-score' : 'p2-score').textContent = newScore;
 
       // Show score flash, then update firebase
       scorePaused = true;
       stopTimer();
-      showScoreFlash(batterName + ' scored', batterMove, async () => {
+      showScoreFlash(batterName + ' scored', runsScored, async () => {
         scorePaused = false;
         mySelectedMove = null;
 
@@ -769,11 +834,127 @@
     showScreen('result-screen');
   }
 
+  window.goBack = () => {
+    // If in lobby, go to login
+    if (document.getElementById('lobby-screen').classList.contains('active')) {
+      currentUser = null;
+      document.getElementById('player-name-input').value = '';
+      showScreen('login-screen');
+      return;
+    }
+    // Else, return to lobby safely
+    goToLobby();
+  };
+
   window.goToLobby = () => {
+    if (currentRoom && myRole && !isBotGame) {
+      // cancel disconnect hooks safely upon leaving manually
+      const connRef = ref(db, `rooms/${currentRoom}/${myRole}Connected`);
+      onDisconnect(connRef).cancel();
+      update(ref(db, `rooms/${currentRoom}`), { [`${myRole}Connected`]: false });
+    }
     currentRoom = null; myRole = null; mySelectedMove = null;
     tossProcessed = false; gameStarted = false; scorePaused = false;
+    isBotGame = false; localGameState = null;
     stopTimer(); showScreen('lobby-screen');
   };
+
+  // ---- BOT LOGIC ----
+  window.startBotGame = () => {
+    isBotGame = true;
+    currentRoom = 'BOT_ROOM';
+    myRole = 'player1';
+    tossProcessed = false; gameStarted = false; scorePaused = false;
+
+    localGameState = {
+      player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
+      player2: { uid: 'bot', name: 'Bot 🤖', score: 0 },
+      status: 'toss',
+      toss: { p1choice: null, p2choice: null, winner: null, batting: null },
+      phase: 'batting', batting: null, target: null, 
+      move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null
+    };
+
+    showScreen('toss-screen');
+    setupTossUI(localGameState.toss);
+    updateTossUI(localGameState);
+  };
+
+  function resolveTossBot(data) {
+    const t = data.toss;
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+    let winner = null;
+    
+    if (t.p1choice === result) winner = 'player1';
+    else if (t.p2choice === result) winner = 'player2';
+    else winner = Math.random() < 0.5 ? 'player1' : 'player2';
+
+    t.result = result; t.winner = winner;
+    updateTossUI(data);
+
+    if (winner === 'player2') {
+      document.getElementById('waiting-choice-small').textContent = 'Bot 🤖 is thinking...';
+      setTimeout(() => { chooseInningsBot('player2', Math.random() < 0.5 ? 'batting' : 'bowling'); }, 1500); 
+    }
+  }
+
+  function chooseInningsBot(winnerRole, choice) {
+    let battingRole = (choice === 'batting') ? winnerRole : (winnerRole === 'player1' ? 'player2' : 'player1');
+    localGameState.toss.batting = battingRole;
+    localGameState.status = 'playing';
+    localGameState.batting = battingRole;
+    localGameState.phase = 'batting';
+    
+    gameStarted = true;
+    startCountdown(() => { showScreen('game-screen'); updateGameUI(localGameState); });
+  }
+
+  function checkMovesBot() {
+    const data = localGameState;
+    const batting = data.batting;
+    const batterMove = batting === 'player1' ? data.move1 : data.move2;
+    const bowlerMove = batting === 'player1' ? data.move2 : data.move1;
+    const history = data.ballHistory || [];
+    const batterName = batting === 'player1' ? data.player1.name : data.player2.name;
+
+    if (data.move1 === data.move2) {
+      history.push('W');
+      showOutFlash(batterName.split(' ')[0], () => {
+        if (data.phase === 'batting') {
+          const target = data.currentScore;
+          if (batting === 'player1') data.player1.score = target; else data.player2.score = target;
+          data.move1 = null; data.move2 = null; data.phase = 'chasing';
+          data.batting = batting === 'player1' ? 'player2' : 'player1';
+          data.target = target; data.currentScore = 0; data.ballHistory = [];
+          updateGameUI(data);
+        } else {
+          const cs = data.currentScore;
+          if (batting === 'player1') data.player1.score = cs; else data.player2.score = cs;
+          data.winner = cs > data.target ? data.batting : (cs < data.target ? (batting === 'player1' ? 'player2' : 'player1') : 'tie');
+          data.move1 = null; data.move2 = null; data.status = 'finished';
+          updateGameUI(data);
+        }
+      });
+    } else {
+      const runsScored = batterMove === 0 ? bowlerMove : batterMove;
+      history.push(runsScored); data.currentScore += runsScored;
+      
+      // Optimistic UI update before flash
+      document.getElementById(batting === 'player1' ? 'p1-score' : 'p2-score').textContent = data.currentScore;
+
+      scorePaused = true; stopTimer();
+      showScoreFlash(batterName.split(' ')[0] + ' scored', runsScored, () => {
+        scorePaused = false; mySelectedMove = null;
+        if (data.phase === 'chasing' && data.currentScore > data.target) {
+          if (batting === 'player1') data.player1.score = data.currentScore; else data.player2.score = data.currentScore;
+          data.move1 = null; data.move2 = null; data.status = 'finished'; data.winner = data.batting;
+        } else {
+          data.move1 = null; data.move2 = null;
+        }
+        updateGameUI(data);
+      });
+    }
+  }
 </script>
 </body>
 </html>
