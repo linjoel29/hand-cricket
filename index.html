@@ -32,20 +32,28 @@
     .code-input { font-size: 1.3rem; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 6px; text-transform: uppercase; }
     .name-input:focus { border-color: var(--blue); }
     .code-input:focus { border-color: var(--red); }
-    .big-btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 1.1rem; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s; }
+    .big-btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 1.05rem; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s; }
     .big-btn:hover:not(:disabled) { transform: translateY(-2px); }
     .big-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
     .btn-blue { background: var(--blue); color: white; box-shadow: 0 4px 16px rgba(37,99,235,0.4); }
     .btn-red { background: var(--red); color: white; box-shadow: 0 4px 16px rgba(220,38,38,0.4); }
     .btn-gold { background: #f59e0b; color: white; box-shadow: 0 4px 16px rgba(245,158,11,0.4); }
-    .btn-gray { background: #334155; color: #94a3b8; box-shadow: none; }
+    .btn-gray { background: #334155; color: #cbd5e1; }
+    .btn-green { background: #10b981; color: white; box-shadow: 0 4px 16px rgba(16,185,129,0.4); }
+    .google-btn { background: white; color: #1e293b; border: none; border-radius: 50px; padding: 16px 36px; font-size: 1rem; font-family: 'Nunito', sans-serif; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.25); transition: transform 0.15s, box-shadow 0.15s; }
+    .google-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
 
     /* LOBBY */
     #lobby-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); }
     .lobby-header { text-align: center; margin-bottom: 20px; }
     .lobby-header h1 { font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; color: white; letter-spacing: 2px; }
     .lobby-header p { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
-    .welcome-tag { background: rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 20px; color: white; font-weight: 700; font-size: 0.95rem; margin-bottom: 18px; }
+    .welcome-tag { background: rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 20px; color: white; font-weight: 700; font-size: 0.95rem; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .avatar-circle { width: 32px; height: 32px; border-radius: 50%; background: white; color: var(--blue); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; overflow: hidden; }
+    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .size-btn { padding: 14px 8px; border: none; border-radius: 12px; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.15s; background: #1e293b; color: #60a5fa; border: 2px solid #334155; }
+    .size-btn:hover { transform: scale(1.04); background: var(--blue); color: white; border-color: var(--blue); }
 
     /* WAITING */
     #waiting-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); text-align: center; }
@@ -53,26 +61,39 @@
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); } 70% { box-shadow: 0 0 0 20px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
     .waiting-title { color: white; font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
     .waiting-sub { color: rgba(255,255,255,0.75); font-size: 0.9rem; }
-    .code-display-card { background: white; border-radius: 20px; padding: 28px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.2); margin: 20px 0; text-align: center; }
-    .code-display-card h3 { color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-    .code-big { font-family: 'Rajdhani', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--blue); letter-spacing: 10px; }
+    .code-display-card { background: white; border-radius: 20px; padding: 24px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.2); margin: 20px 0; text-align: center; }
+    .code-display-card h3 { color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+    .code-big { font-family: 'Rajdhani', sans-serif; font-size: 3rem; font-weight: 700; color: var(--blue); letter-spacing: 8px; }
 
-    /* TOSS SCREEN */
+    /* TEAM LOBBY */
+    #team-lobby-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); padding-top: 60px; justify-content: flex-start; }
+    .team-grid { display: flex; gap: 10px; width: 100%; margin: 14px 0; }
+    .team-box { flex: 1; background: white; border-radius: 16px; padding: 14px; }
+    .team-box.blue { border-top: 5px solid var(--blue); }
+    .team-box.red { border-top: 5px solid var(--red); }
+    .team-box h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; color: #1e293b; margin-bottom: 8px; }
+    .player-row { font-size: 0.85rem; color: #475569; font-weight: 700; padding: 3px 0; }
+    .player-row.captain { color: #f59e0b; }
+    .ready-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; margin-left: 4px; background: #e2e8f0; color: #64748b; }
+    .ready-tag.ready { background: #10b981; color: white; }
+    .team-wait-msg { color: rgba(255,255,255,0.8); font-weight: 700; font-size: 0.9rem; text-align: center; margin: 8px 0; }
+
+    /* TOSS */
     #toss-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); text-align: center; }
-    .toss-coin { font-size: 5rem; margin: 20px 0; animation: coinSpin 0.6s cubic-bezier(.36,1.6,.6,1); }
+    .toss-coin { font-size: 5rem; margin: 16px 0; animation: coinSpin 0.6s cubic-bezier(.36,1.6,.6,1); }
     @keyframes coinSpin { from { transform: rotateY(0deg) scale(0); opacity: 0; } to { transform: rotateY(360deg) scale(1); opacity: 1; } }
-    .toss-title { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: white; margin-bottom: 8px; }
-    .toss-sub { color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: 30px; }
-    .toss-btns { display: flex; gap: 14px; width: 100%; margin-bottom: 16px; }
-    .toss-btn { flex: 1; padding: 20px 10px; border: none; border-radius: 18px; font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s; border: 3px solid transparent; }
+    .toss-title { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: white; margin-bottom: 6px; }
+    .toss-sub { color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: 24px; }
+    .toss-btns { display: flex; gap: 14px; width: 100%; margin-bottom: 14px; }
+    .toss-btn { flex: 1; padding: 20px 10px; border: none; border-radius: 18px; font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: transform 0.15s, opacity 0.2s; border: 3px solid transparent; }
     .toss-btn:hover:not(:disabled) { transform: scale(1.06); }
     .toss-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
     .toss-btn.heads { background: white; color: #1e293b; box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
-    .toss-btn.tails { background: #1e293b; color: white; box-shadow: 0 6px 20px rgba(0,0,0,0.3); border-color: #334155; }
+    .toss-btn.tails { background: #1e293b; color: white; border-color: #334155; }
     .toss-btn.chosen { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.4); }
-    .toss-waiting { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 10px; }
-    .toss-result-banner { background: rgba(255,255,255,0.15); border-radius: 16px; padding: 16px 20px; margin-bottom: 16px; width: 100%; }
-    .toss-result-banner .big { font-family: 'Rajdhani', sans-serif; font-size: 1.8rem; font-weight: 700; color: white; }
+    .toss-waiting { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 8px; }
+    .toss-result-banner { background: rgba(255,255,255,0.15); border-radius: 16px; padding: 16px 20px; margin-bottom: 14px; width: 100%; }
+    .toss-result-banner .big { font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; color: white; }
     .toss-result-banner .small { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-top: 4px; }
     .choose-row { display: flex; gap: 14px; width: 100%; }
     .choose-btn { flex: 1; padding: 18px 10px; border: none; border-radius: 16px; font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: transform 0.15s; }
@@ -80,11 +101,12 @@
     .choose-bat { background: #f59e0b; color: white; }
     .choose-bowl { background: #0f172a; color: white; border: 2px solid #334155; }
 
-    /* COUNTDOWN OVERLAY */
-    .countdown-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.96); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    /* COUNTDOWN */
+    .countdown-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.97); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .countdown-overlay.show { opacity: 1; pointer-events: all; }
-    .countdown-num { font-family: 'Rajdhani', sans-serif; font-size: 10rem; font-weight: 700; color: white; line-height: 1; animation: countPop 0.5s cubic-bezier(.36,1.6,.6,1); }
-    @keyframes countPop { from { transform: scale(2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .countdown-num { font-family: 'Rajdhani', sans-serif; font-size: 10rem; font-weight: 700; color: white; line-height: 1; }
+    @keyframes countPop { from { transform: scale(2.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .count-anim { animation: countPop 0.5s cubic-bezier(.36,1.6,.6,1); }
     .countdown-label { color: #94a3b8; font-size: 1.2rem; font-weight: 700; margin-top: 10px; letter-spacing: 3px; text-transform: uppercase; }
 
     /* GAME */
@@ -93,7 +115,8 @@
     .player-side { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 16px; }
     .player-side.left { background: var(--blue); }
     .player-side.right { background: var(--red); }
-    .player-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: white; margin-bottom: 6px; }
+    .player-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: white; margin-bottom: 6px; overflow: hidden; }
+    .player-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
     .player-name { color: white; font-size: 0.85rem; font-weight: 700; }
     .player-score-big { color: white; font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; font-weight: 700; line-height: 1; }
     .vs-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700; z-index: 2; border: 3px solid #1e293b; }
@@ -124,19 +147,19 @@
     .move-box.match { border-color: var(--red); background: rgba(220,38,38,0.15); }
     .move-box.match .val { color: #f87171; }
 
-    /* SCORE FLASH OVERLAY */
+    /* SCORE FLASH */
     .score-flash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .score-flash.show { opacity: 1; }
-    .score-flash .sf-bg { position: absolute; inset: 0; }
-    .score-flash .sf-content { position: relative; z-index: 1; text-align: center; }
-    .score-flash .sf-player { color: rgba(255,255,255,0.85); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-    .score-flash .sf-scored { color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 4px; }
-    .score-flash .sf-num { font-family: 'Rajdhani', sans-serif; font-size: 9rem; font-weight: 700; color: white; line-height: 1; text-shadow: 0 0 60px rgba(255,255,255,0.4); }
-    .score-flash .sf-label { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; color: rgba(255,255,255,0.9); letter-spacing: 4px; margin-top: 6px; }
+    .sf-bg { position: absolute; inset: 0; }
+    .sf-content { position: relative; z-index: 1; text-align: center; }
+    .sf-player { color: rgba(255,255,255,0.85); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+    .sf-scored { color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 4px; }
+    .sf-num { font-family: 'Rajdhani', sans-serif; font-size: 9rem; font-weight: 700; color: white; line-height: 1; text-shadow: 0 0 60px rgba(255,255,255,0.4); }
+    .sf-label { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; color: rgba(255,255,255,0.9); letter-spacing: 4px; margin-top: 6px; }
     @keyframes flashIn { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
     @keyframes flashOut { from { transform: scale(1); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
-    .sf-animate-in { animation: flashIn 0.4s cubic-bezier(.36,1.6,.6,1) forwards; }
-    .sf-animate-out { animation: flashOut 0.35s ease-in forwards; }
+    .sf-in { animation: flashIn 0.4s cubic-bezier(.36,1.6,.6,1) forwards; }
+    .sf-out { animation: flashOut 0.35s ease-in forwards; }
 
     /* OUT OVERLAY */
     .out-overlay { position: fixed; inset: 0; background: rgba(220,38,38,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 160; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
@@ -148,38 +171,25 @@
     #result-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); text-align: center; }
     .trophy { font-size: 5rem; margin-bottom: 10px; animation: pop 0.5s cubic-bezier(.36,1.6,.6,1); }
     .result-title { font-family: 'Rajdhani', sans-serif; font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 6px; }
-    .result-sub { color: rgba(255,255,255,0.8); font-size: 1rem; margin-bottom: 24px; }
+    .result-sub { color: rgba(255,255,255,0.8); font-size: 1rem; margin-bottom: 20px; }
     .result-scores { display: flex; justify-content: space-around; align-items: center; }
     .result-score-box .name { color: #64748b; font-size: 0.85rem; font-weight: 700; }
     .result-score-box .score { font-family: 'Rajdhani', sans-serif; font-size: 3rem; font-weight: 700; color: #1e293b; }
     .result-vs { color: #94a3b8; font-size: 1.2rem; font-weight: 700; }
+    .play-again-waiting { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 10px; }
 
-    /* BACK BUTTON */
-    .back-btn { position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.2); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; z-index: 50; }
+    /* BACK BTN */
+    .back-btn { position: absolute; top: 16px; left: 16px; background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; color: white; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
     .back-btn:hover { background: rgba(255,255,255,0.3); }
-
-    /* TEAM UI */
-    .team-grid { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; }
-    .team-box { flex: 1; background: white; border-radius: 16px; padding: 14px; text-align: left; }
-    .team-box.blue { border-top: 6px solid var(--blue); }
-    .team-box.red { border-top: 6px solid var(--red); }
-    .team-box h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; color: #1e293b; margin-bottom: 8px; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; }
-    .player-row { font-size: 0.9rem; color: #475569; font-weight: 700; padding: 4px 0; }
-    .player-row.captain { color: #f59e0b; }
-    .ready-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 900; margin-left: 5px; background: #e2e8f0; color: #64748b; }
-    .ready-tag.r-true { background: #10b981; color: white; }
-    .size-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
   </style>
 </head>
 <body>
 
-<!-- OUT OVERLAY -->
+<!-- OVERLAYS -->
 <div class="out-overlay" id="out-overlay">
   <div class="out-text">OUT! 🏏</div>
   <div class="out-sub" id="out-sub-text"></div>
 </div>
-
-<!-- SCORE FLASH OVERLAY -->
 <div class="score-flash" id="score-flash">
   <div class="sf-bg" id="sf-bg"></div>
   <div class="sf-content">
@@ -189,11 +199,9 @@
     <div class="sf-label" id="sf-label"></div>
   </div>
 </div>
-
-<!-- COUNTDOWN OVERLAY -->
 <div class="countdown-overlay" id="countdown-overlay">
   <div class="countdown-num" id="countdown-num">3</div>
-  <div class="countdown-label">GET READY!</div>
+  <div class="countdown-label" id="countdown-label">GET READY!</div>
 </div>
 
 <!-- LOGIN -->
@@ -201,30 +209,39 @@
   <div class="login-logo">🏏</div>
   <div class="login-title">HAND CRICKET</div>
   <div class="login-sub">Challenge your friends online!</div>
-  <div class="card">
-    <h3>Enter your name to play</h3>
-    <input class="name-input" id="player-name-input" placeholder="Your name..." maxlength="20"/>
-    <button class="big-btn btn-blue" onclick="enterGame()">Let's Play! 🏏</button>
+  <button class="google-btn" onclick="signInWithGoogle()">
+    <svg width="22" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+    Sign in with Google
+  </button>
+  <div style="color:rgba(255,255,255,0.5); margin: 12px 0;">— or —</div>
+  <div class="card" style="margin-bottom:0;">
+    <h3>Play as Guest</h3>
+    <input class="name-input" id="player-name-input" placeholder="Enter your name..." maxlength="20"/>
+    <button class="big-btn btn-blue" onclick="enterAsGuest()">Play as Guest 🏏</button>
   </div>
 </div>
 
 <!-- LOBBY -->
 <div class="screen" id="lobby-screen">
-  <button class="back-btn" onclick="goBack()">←</button>
   <div class="lobby-header">
-    <div class="welcome-tag">👋 Welcome, <span id="welcome-name">Player</span>!</div>
+    <div class="welcome-tag">
+      <div class="avatar-circle" id="avatar-el">L</div>
+      <span>Hi, <span id="welcome-name">Player</span>!</span>
+    </div>
     <h1>🏏 HAND CRICKET</h1>
-    <p>Create or join a room to play</p>
+    <p>Create or join a room</p>
   </div>
   <div class="card">
-    <h3>New Game</h3>
-    <button class="big-btn btn-blue" onclick="createRoom(1)" style="margin-bottom:8px;">1v1 Room</button>
-    <div class="size-btns">
-      <button class="big-btn btn-gray" onclick="createRoom(2)">2v2</button>
-      <button class="big-btn btn-gray" onclick="createRoom(3)">3v3</button>
-      <button class="big-btn btn-gray" onclick="createRoom(4)">4v4</button>
-      <button class="big-btn btn-gray" onclick="createRoom(5)">5v5</button>
-      <button class="big-btn btn-gray" onclick="createRoom(11)" style="grid-column: span 2;">11v11</button>
+    <h3>1v1 Game</h3>
+    <button class="big-btn btn-blue" onclick="createRoom(1)">+ Create 1v1 Room</button>
+  </div>
+  <div class="card">
+    <h3>Team Battle</h3>
+    <div class="size-grid">
+      <button class="size-btn" onclick="createRoom(2)">2v2</button>
+      <button class="size-btn" onclick="createRoom(3)">3v3</button>
+      <button class="size-btn" onclick="createRoom(5)">5v5</button>
+      <button class="size-btn" onclick="createRoom(11)">11v11</button>
     </div>
   </div>
   <div class="card">
@@ -234,47 +251,13 @@
   </div>
   <div class="card">
     <h3>Single Player</h3>
-    <button class="big-btn btn-gold" onclick="startBotGame()">🤖 Play with Bot</button>
+    <button class="big-btn btn-gold" onclick="startBotGame()">🤖 Play vs Bot</button>
   </div>
 </div>
 
-<!-- TEAM SELECTION -->
-<div class="screen" id="team-select-screen">
-  <button class="back-btn" onclick="goBack()">←</button>
-  <div class="lobby-header">
-    <h1>⚔️ JOIN BATTLE</h1>
-    <p>Select your allegiance!</p>
-  </div>
-  <button class="big-btn btn-blue" style="margin-bottom:12px;" onclick="joinSpecificTeam('teamA')">🛡️ Join Team A</button>
-  <button class="big-btn btn-red" onclick="joinSpecificTeam('teamB')">⚔️ Join Team B</button>
-</div>
-
-<!-- TEAM LOBBY -->
-<div class="screen" id="team-lobby-screen">
-  <button class="back-btn" onclick="goBack()">←</button>
-  <div class="code-display-card" style="margin-top: 40px; padding: 14px;">
-    <h3>Room Code</h3>
-    <div class="code-big" id="t-display-room-code" style="font-size:2rem;letter-spacing:6px;">------</div>
-  </div>
-  
-  <div class="team-grid">
-    <div class="team-box blue">
-      <h3>TEAM A <span id="ta-ready" class="ready-tag">WAITING</span></h3>
-      <div id="team-a-list"></div>
-    </div>
-    <div class="team-box red">
-      <h3>TEAM B <span id="tb-ready" class="ready-tag">WAITING</span></h3>
-      <div id="team-b-list"></div>
-    </div>
-  </div>
-
-  <button class="big-btn btn-gold" id="btn-team-ready" style="display:none;" onclick="triggerTeamReady()">👍 Start Match</button>
-  <div id="team-wait-msg" style="color:white;font-weight:700;margin-top:10px;">Waiting for players...</div>
-</div>
-
-<!-- WAITING -->
+<!-- WAITING (1v1) -->
 <div class="screen" id="waiting-screen">
-  <button class="back-btn" onclick="goBack()">←</button>
+  <button class="back-btn" onclick="goToLobby()">←</button>
   <div class="pulse-ring"><span style="font-size:2rem">⏳</span></div>
   <div class="waiting-title">Waiting for opponent...</div>
   <div class="waiting-sub">Share this code with your friend</div>
@@ -285,27 +268,53 @@
   <div class="waiting-sub" style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:10px;">Game starts automatically when friend joins</div>
 </div>
 
+<!-- TEAM LOBBY -->
+<div class="screen" id="team-lobby-screen">
+  <button class="back-btn" onclick="goToLobby()">←</button>
+  <div class="code-display-card" style="margin-top:50px;">
+    <h3>Room Code — Share with teammates!</h3>
+    <div class="code-big" id="t-room-code">------</div>
+  </div>
+  <div class="team-grid">
+    <div class="team-box blue">
+      <h3>TEAM A <span class="ready-tag" id="tag-a">WAITING</span></h3>
+      <div id="team-a-list"></div>
+    </div>
+    <div class="team-box red">
+      <h3>TEAM B <span class="ready-tag" id="tag-b">WAITING</span></h3>
+      <div id="team-b-list"></div>
+    </div>
+  </div>
+  <div class="team-wait-msg" id="team-wait-msg">Waiting for players to join...</div>
+  <button class="big-btn btn-green" id="btn-ready" style="display:none;" onclick="markReady()">✅ Ready to Start!</button>
+</div>
+
+<!-- TEAM JOIN (choose team) -->
+<div class="screen" id="team-join-screen">
+  <button class="back-btn" onclick="goToLobby()">←</button>
+  <div style="text-align:center; margin-bottom:24px;">
+    <div style="font-size:3rem;">⚔️</div>
+    <div style="font-family:'Rajdhani',sans-serif; font-size:2rem; font-weight:700; color:white;">CHOOSE YOUR SIDE</div>
+    <div style="color:rgba(255,255,255,0.7); font-size:0.9rem;">Pick a team to join</div>
+  </div>
+  <button class="big-btn btn-blue" style="margin-bottom:14px;" onclick="joinTeam('teamA')">🛡️ Join Team A</button>
+  <button class="big-btn btn-red" onclick="joinTeam('teamB')">⚔️ Join Team B</button>
+  <div id="team-join-info" style="color:rgba(255,255,255,0.6); font-size:0.85rem; text-align:center; margin-top:12px;"></div>
+</div>
+
 <!-- TOSS -->
 <div class="screen" id="toss-screen">
-  <button class="back-btn" onclick="goBack()">←</button>
-  <div class="toss-coin" id="toss-coin">🪙</div>
-  <div class="toss-title" id="toss-title">TOSS TIME!</div>
-  <div class="toss-sub" id="toss-sub">Choose Heads or Tails</div>
-
-  <!-- Toss choice buttons -->
-  <div class="toss-btns" id="toss-choice-section">
-    <button class="toss-btn heads" id="btn-heads" onclick="chooseToss('heads')">
-      👑<br/>HEADS
-    </button>
-    <button class="toss-btn tails" id="btn-tails" onclick="chooseToss('tails')">
-      🌑<br/>TAILS
-    </button>
+  <button class="back-btn" onclick="goToLobby()">←</button>
+  <div class="toss-coin">🪙</div>
+  <div class="toss-title">TOSS TIME!</div>
+  <div class="toss-sub">Choose Heads or Tails — first come first serve!</div>
+  <div class="toss-btns" id="toss-btns">
+    <button class="toss-btn heads" id="btn-heads" onclick="chooseToss('heads')">👑<br/>HEADS</button>
+    <button class="toss-btn tails" id="btn-tails" onclick="chooseToss('tails')">🌑<br/>TAILS</button>
   </div>
   <div class="toss-waiting" id="toss-waiting-msg"></div>
-
-  <!-- After toss winner - choose bat/bowl -->
   <div id="choose-section" style="display:none; width:100%;">
-    <div class="toss-result-banner" id="toss-result-banner">
+    <div class="toss-result-banner">
       <div class="big" id="toss-result-big"></div>
       <div class="small" id="toss-result-small"></div>
     </div>
@@ -314,22 +323,19 @@
       <button class="choose-btn choose-bowl" onclick="chooseInnings('bowling')">⚾ BOWL</button>
     </div>
   </div>
-
-  <!-- Waiting for winner to choose -->
   <div id="waiting-choice-section" style="display:none; width:100%;">
     <div class="toss-result-banner">
       <div class="big" id="waiting-choice-big"></div>
-      <div class="small" id="waiting-choice-small">Choosing to bat or bowl...</div>
+      <div class="small">Choosing to bat or bowl...</div>
     </div>
-    <div style="text-align:center;">
-      <div class="pulse-ring" style="margin: 16px auto;"><span style="font-size:1.5rem">⏳</span></div>
-    </div>
+    <div class="pulse-ring" style="margin:16px auto;"><span style="font-size:1.5rem">⏳</span></div>
   </div>
+  <div id="spectator-toss-msg" style="display:none; color:rgba(255,255,255,0.7); font-weight:700; text-align:center; margin-top:16px;"></div>
 </div>
 
 <!-- GAME -->
 <div class="screen" id="game-screen">
-  <button class="back-btn" onclick="goBack()">←</button>
+  <button class="back-btn" onclick="goToLobby()" style="background:rgba(0,0,0,0.3);">←</button>
   <div class="game-top">
     <div class="player-side left">
       <div class="player-avatar" id="p1-avatar">L</div>
@@ -361,7 +367,7 @@
 
 <!-- RESULT -->
 <div class="screen" id="result-screen">
-  <button class="back-btn" onclick="goBack()">←</button>
+  <button class="back-btn" onclick="goToLobby()">←</button>
   <div class="trophy" id="result-trophy">🏆</div>
   <div class="result-title" id="result-title">You Won!</div>
   <div class="result-sub" id="result-sub">Amazing innings!</div>
@@ -372,12 +378,15 @@
       <div class="result-score-box"><div class="name" id="r-p2-name">P2</div><div class="score" id="r-p2-score">0</div></div>
     </div>
   </div>
-  <button class="big-btn btn-blue" style="width:100%;max-width:300px;" onclick="goToLobby()">🔄 Play Again</button>
+  <button class="big-btn btn-green" style="width:100%;max-width:300px;margin-bottom:10px;" id="btn-play-again" onclick="requestPlayAgain()">🔄 Play Again (Same Room)</button>
+  <div class="play-again-waiting" id="play-again-waiting" style="display:none;"></div>
+  <button class="big-btn btn-blue" style="width:100%;max-width:300px;margin-top:6px;" onclick="goToLobby()">🏠 Back to Lobby</button>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, set, get, update, onValue, off, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getDatabase, ref, set, get, update, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDZyRWuXiqUY9-vbP3rf-oggz-wBmqv3dM",
@@ -389,49 +398,89 @@
   };
 
   const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
   const db = getDatabase(app);
 
   let currentUser = null, currentRoom = null, myRole = null;
   let gameListener = null, timerInterval = null;
   let timeLeft = 5, mySelectedMove = null;
-  let tossProcessed = false, gameStarted = false;
-  let scorePaused = false; // pause game while score flash shows
-  let isBotGame = false;
-  let localGameState = null;
+  let tossProcessed = false, gameStarted = false, scorePaused = false;
+  let isBotGame = false, localGameState = null;
+  let myTeam = null; // 'teamA' or 'teamB' for team mode
+  let playAgainRequested = false;
 
-  // ---- LOGIN ----
-  window.enterGame = () => {
+  // ====== GOOGLE AUTH ======
+  getRedirectResult(auth).then(result => {
+    if (result?.user) handleUser(result.user);
+  }).catch(console.error);
+
+  onAuthStateChanged(auth, user => {
+    if (user) handleUser(user);
+  });
+
+  function handleUser(user) {
+    currentUser = { displayName: user.displayName, uid: user.uid, photoURL: user.photoURL };
+    setupLobbyUI();
+    showScreen('lobby-screen');
+  }
+
+  window.signInWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      if (['auth/popup-blocked','auth/cancelled-popup-request','auth/popup-closed-by-user'].includes(err.code)) {
+        await signInWithRedirect(auth, new GoogleAuthProvider());
+      }
+    }
+  };
+
+  window.enterAsGuest = () => {
     const name = document.getElementById('player-name-input').value.trim();
     if (!name) return alert('Please enter your name!');
-    currentUser = { displayName: name, uid: 'u_' + Math.random().toString(36).substring(2, 10) };
-    document.getElementById('welcome-name').textContent = name.split(' ')[0];
+    currentUser = { displayName: name, uid: 'guest_' + Math.random().toString(36).substring(2,10), photoURL: null };
+    setupLobbyUI();
     showScreen('lobby-screen');
   };
-  document.getElementById('player-name-input').addEventListener('keydown', e => { if (e.key === 'Enter') window.enterGame(); });
+
+  document.getElementById('player-name-input').addEventListener('keydown', e => { if (e.key === 'Enter') window.enterAsGuest(); });
+
+  function setupLobbyUI() {
+    const name = currentUser.displayName?.split(' ')[0] || 'Player';
+    document.getElementById('welcome-name').textContent = name;
+    const avatarEl = document.getElementById('avatar-el');
+    if (currentUser.photoURL) {
+      avatarEl.innerHTML = `<img src="${currentUser.photoURL}" alt="${name}"/>`;
+    } else {
+      avatarEl.textContent = name.charAt(0).toUpperCase();
+    }
+  }
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   }
 
-  // ---- ROOM ----
-  window.createRoom = async (teamSize = 1) => { 
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-    currentRoom = code; myRole = 'player1'; tossProcessed = false; gameStarted = false;
-    
-    let payload = {
-      player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
-      player1Connected: true,
+  // ====== CREATE ROOM ======
+  window.createRoom = async (teamSize) => {
+    if (!currentUser) return alert('Please login first!');
+    const code = Math.random().toString(36).substring(2,8).toUpperCase();
+    currentRoom = code; myRole = 'player1'; myTeam = 'teamA';
+    tossProcessed = false; gameStarted = false; scorePaused = false; playAgainRequested = false;
+
+    const payload = {
+      player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0, photo: currentUser.photoURL || null },
       player2: null, status: 'waiting',
-      toss: { p1choice: null, p2choice: null, winner: null, batting: null },
+      toss: { p1choice: null, p2choice: null, winner: null, batting: null, result: null },
       phase: 'batting', batting: null,
-      target: null, move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null
+      target: null, move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null,
+      playAgain: { player1: false, player2: false },
+      teamSize: teamSize,
+      isTeamMode: teamSize > 1
     };
 
     if (teamSize > 1) {
-      payload.isTeamMode = true;
-      payload.teamSize = teamSize;
-      payload.teamA = [{ uid: currentUser.uid, name: currentUser.displayName }];
+      payload.teamA = [{ uid: currentUser.uid, name: currentUser.displayName, photo: currentUser.photoURL || null }];
       payload.teamB = [];
       payload.captainA = currentUser.uid;
       payload.captainB = null;
@@ -441,170 +490,131 @@
 
     await set(ref(db, `rooms/${code}`), payload);
 
-    const connRef = ref(db, `rooms/${code}/player1Connected`);
-    onDisconnect(connRef).set(false);
-
-    document.getElementById('display-room-code').textContent = code;
-    showScreen('waiting-screen');
+    if (teamSize > 1) {
+      document.getElementById('t-room-code').textContent = code;
+      showScreen('team-lobby-screen');
+    } else {
+      document.getElementById('display-room-code').textContent = code;
+      showScreen('waiting-screen');
+    }
     listenToRoom(code);
   };
 
+  // ====== JOIN ROOM ======
   window.joinRoom = async () => {
+    if (!currentUser) return alert('Please login first!');
     const code = document.getElementById('join-code').value.trim().toUpperCase();
     if (!code) return alert('Enter a room code!');
     const snap = await get(ref(db, `rooms/${code}`));
     if (!snap.exists()) return alert('Room not found!');
-    
     const data = snap.val();
-    currentRoom = code; tossProcessed = false; gameStarted = false;
+    currentRoom = code; tossProcessed = false; gameStarted = false; scorePaused = false; playAgainRequested = false;
 
     if (data.isTeamMode) {
-      const teamA = data.teamA || [];
-      const teamB = data.teamB || [];
-      const max = data.teamSize;
-      let updates = {};
-
-      if (!data.captainB) {
-         teamB.push({ uid: currentUser.uid, name: currentUser.displayName });
-         myRole = 'player2';
-         updates.player2 = { uid: currentUser.uid, name: currentUser.displayName, score: 0 };
-         updates.player2Connected = true;
-         updates.captainB = currentUser.uid;
-      } else {
-         window.tempJoinCode = code;
-         showScreen('team-select-screen');
-         return;
-      }
-
-      updates.teamB = teamB;
-      await update(ref(db, `rooms/${code}`), updates);
-      
-    } else {
-      if (data.player2) return alert('Room is full!');
-      myRole = 'player2';
-      await update(ref(db, `rooms/${code}`), {
-        player2: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
-        player2Connected: true,
-        status: 'toss'
-      });
+      // Show team choose screen
+      const ta = data.teamA || [], tb = data.teamB || [];
+      document.getElementById('team-join-info').textContent =
+        `Team A: ${ta.length}/${data.teamSize} | Team B: ${tb.length}/${data.teamSize}`;
+      window._pendingJoinCode = code;
+      listenToRoom(code);
+      showScreen('team-join-screen');
+      return;
     }
 
-    if (myRole === 'player2') {
-       const connRef = ref(db, `rooms/${code}/player2Connected`);
-       onDisconnect(connRef).set(false);
-    }
-
+    if (data.player2) return alert('Room is full!');
+    myRole = 'player2';
+    await update(ref(db, `rooms/${code}`), {
+      player2: { uid: currentUser.uid, name: currentUser.displayName, score: 0, photo: currentUser.photoURL || null },
+      status: 'toss'
+    });
     listenToRoom(code);
-    
-    if (!data.isTeamMode) {
-       showScreen('toss-screen');
-       setupTossUI(null);
-    }
+    showTossScreen(null);
   };
 
-  window.joinSpecificTeam = async (chosenTeam) => {
-    const code = window.tempJoinCode;
+  // ====== JOIN TEAM ======
+  window.joinTeam = async (team) => {
+    const code = window._pendingJoinCode;
+    if (!code) return;
     const snap = await get(ref(db, `rooms/${code}`));
     const data = snap.val();
-    const arr = data[chosenTeam] || [];
-    if (arr.length >= data.teamSize) return alert("That team is full!");
-    
-    arr.push({ uid: currentUser.uid, name: currentUser.displayName });
-    myRole = 'teammate';
-    await update(ref(db, `rooms/${code}`), { [chosenTeam]: arr });
-    
-    listenToRoom(code);
+    const arr = [...(data[team] || [])];
+    if (arr.length >= data.teamSize) return alert('That team is full!');
+
+    arr.push({ uid: currentUser.uid, name: currentUser.displayName, photo: currentUser.photoURL || null });
+    myTeam = team;
+
+    const updates = { [team]: arr };
+
+    // First joiner of teamB becomes captain
+    if (team === 'teamB' && !data.captainB) {
+      updates.captainB = currentUser.uid;
+      updates.player2 = { uid: currentUser.uid, name: currentUser.displayName, score: 0, photo: currentUser.photoURL || null };
+      myRole = 'player2';
+    } else {
+      myRole = 'teammate';
+    }
+
+    // Check if room now full → trigger toss
+    const newTA = team === 'teamA' ? arr : (data.teamA || []);
+    const newTB = team === 'teamB' ? arr : (data.teamB || []);
+    if (newTA.length === data.teamSize && newTB.length === data.teamSize) {
+      updates.status = 'toss';
+    }
+
+    await update(ref(db, `rooms/${code}`), updates);
+    document.getElementById('t-room-code').textContent = code;
+    showScreen('team-lobby-screen');
   };
 
+  // ====== READY (team mode) ======
+  window.markReady = async () => {
+    const snap = await get(ref(db, `rooms/${currentRoom}`));
+    const data = snap.val();
+    const updates = {};
+    if (currentUser.uid === data.captainA) updates.readyA = true;
+    if (currentUser.uid === data.captainB) updates.readyB = true;
+    // If both ready → go to toss
+    if ((updates.readyA || data.readyA) && (updates.readyB || data.readyB)) {
+      updates.status = 'toss';
+    }
+    await update(ref(db, `rooms/${currentRoom}`), updates);
+  };
+
+  // ====== LISTEN ======
   function listenToRoom(code) {
     if (gameListener) off(ref(db, `rooms/${currentRoom}`));
     gameListener = onValue(ref(db, `rooms/${code}`), snap => {
       if (!snap.exists()) return;
       const data = snap.val();
 
-      // Disconnect handling
-      if (myRole === 'player1' && data.player2 && data.player2Connected === false && data.status !== 'finished') {
-        alert("Opponent disconnected!");
-        return goToLobby();
-      }
-      if (myRole === 'player2' && data.player1Connected === false && data.status !== 'finished') {
-        alert("Opponent disconnected!");
-        return goToLobby();
+      // Team lobby update
+      if (data.isTeamMode && ['waiting','toss'].includes(data.status)) {
+        updateTeamLobbyUI(data);
       }
 
-      // Native Team Lobby visualizer
-      if (data.isTeamMode && data.status === 'waiting') {
-        if (!document.getElementById('team-lobby-screen').classList.contains('active')) {
-          showScreen('team-lobby-screen');
-          document.getElementById('t-display-room-code').textContent = code;
-        }
-        
-        const renderList = (elId, teamArr, captainId) => {
-          document.getElementById(elId).innerHTML = (teamArr||[]).map(p => 
-            `<div class="player-row ${p.uid === captainId ? 'captain' : ''}">${p.uid === captainId ? '👑 ' : '👤 '}${p.name}</div>`
-          ).join('');
-        };
-        renderList('team-a-list', data.teamA, data.captainA);
-        renderList('team-b-list', data.teamB, data.captainB);
-
-        const rTagA = document.getElementById('ta-ready');
-        rTagA.textContent = data.readyA ? 'READY' : 'WAITING';
-        rTagA.className = 'ready-tag' + (data.readyA ? ' r-true' : '');
-        
-        const rTagB = document.getElementById('tb-ready');
-        rTagB.textContent = data.readyB ? 'READY' : 'WAITING';
-        rTagB.className = 'ready-tag' + (data.readyB ? ' r-true' : '');
-
-        const isFull = (data.teamA?.length === data.teamSize && data.teamB?.length === data.teamSize);
-        const amICaptain = (currentUser.uid === data.captainA || currentUser.uid === data.captainB);
-        const btnReady = document.getElementById('btn-team-ready');
-        const msgWait = document.getElementById('team-wait-msg');
-        
-        if (isFull) {
-           msgWait.style.display = 'none';
-           if (amICaptain && !(currentUser.uid===data.captainA && data.readyA) && !(currentUser.uid===data.captainB && data.readyB)) {
-               btnReady.style.display = 'block';
-           } else {
-               btnReady.style.display = 'none';
-           }
-        } else {
-           btnReady.style.display = 'none';
-           msgWait.style.display = 'block';
-           msgWait.textContent = `Waiting for players... (${(data.teamA?.length||0)+(data.teamB?.length||0)} / ${data.teamSize*2})`;
-        }
-      }
-
-      // Transition to toss
+      // Move to toss screen
       if (data.status === 'toss') {
-        const waitingActive = document.getElementById('waiting-screen').classList.contains('active');
-        const teamLobbyActive = document.getElementById('team-lobby-screen').classList.contains('active');
-        if (waitingActive || teamLobbyActive) {
-          showScreen('toss-screen');
-          setupTossUI(data.toss);
+        const cur = document.querySelector('.screen.active')?.id;
+        if (['waiting-screen','team-lobby-screen','team-join-screen'].includes(cur)) {
+          showTossScreen(data.toss);
         }
-      }
-
-      // Update toss UI
-      if (data.status === 'toss' && document.getElementById('toss-screen').classList.contains('active')) {
-        updateTossUI(data);
-
-        // Toss Resolution Logic (moved here to eliminate race condition)
-        if (myRole === 'player1') {
-          const t = data.toss || {};
-          if (t.p1choice && t.p2choice && !t.winner && !tossProcessed) {
-            tossProcessed = true;
-            resolveToss(data);
+        if (document.getElementById('toss-screen').classList.contains('active')) {
+          updateTossUI(data);
+          // Player1 resolves toss
+          if (myRole === 'player1' && !tossProcessed) {
+            const t = data.toss || {};
+            if (t.p1choice && t.p2choice && !t.winner) {
+              tossProcessed = true;
+              resolveToss(data);
+            }
           }
         }
       }
 
-      // Start game after toss settled
+      // Start game
       if (data.status === 'playing' && !gameStarted) {
         gameStarted = true;
-        startCountdown(() => {
-          showScreen('game-screen');
-          updateGameUI(data);
-        });
+        startCountdown(() => { showScreen('game-screen'); updateGameUI(data); });
       }
 
       if (data.status === 'playing' && gameStarted && document.getElementById('game-screen').classList.contains('active')) {
@@ -612,27 +622,65 @@
         if (myRole === 'player1') checkMoves(data);
       }
 
+      // Play again logic
+      if (data.status === 'rematch') {
+        // Reset for new game
+        tossProcessed = false; gameStarted = false; scorePaused = false;
+        mySelectedMove = null; playAgainRequested = false;
+        showTossScreen(data.toss);
+      }
+
       if (data.status === 'finished') {
         stopTimer();
         showResult(data);
+        updatePlayAgainUI(data);
       }
     });
   }
 
-  // ---- TOSS ----
-  function setupTossUI(toss) {
-    document.getElementById('toss-choice-section').style.display = (myRole === 'player1' || myRole === 'player2') ? 'flex' : 'none';
-    if (myRole !== 'player1' && myRole !== 'player2') {
-       document.getElementById('toss-waiting-msg').textContent = 'Waiting for Captains to toss...';
-    } else {
-       document.getElementById('toss-waiting-msg').textContent = '';
-    }
+  // ====== TEAM LOBBY UI ======
+  function updateTeamLobbyUI(data) {
+    const renderList = (elId, arr, captainId) => {
+      document.getElementById(elId).innerHTML = (arr||[]).map(p =>
+        `<div class="player-row ${p.uid===captainId?'captain':''}">${p.uid===captainId?'👑 ':'👤 '}${p.name}</div>`
+      ).join('') || '<div style="color:#94a3b8;font-size:0.8rem;">Empty</div>';
+    };
+    renderList('team-a-list', data.teamA, data.captainA);
+    renderList('team-b-list', data.teamB, data.captainB);
+
+    const tagA = document.getElementById('tag-a');
+    tagA.textContent = data.readyA ? 'READY' : 'WAITING';
+    tagA.className = 'ready-tag' + (data.readyA ? ' ready' : '');
+    const tagB = document.getElementById('tag-b');
+    tagB.textContent = data.readyB ? 'READY' : 'WAITING';
+    tagB.className = 'ready-tag' + (data.readyB ? ' ready' : '');
+
+    const full = (data.teamA?.length||0) === data.teamSize && (data.teamB?.length||0) === data.teamSize;
+    const amCaptain = currentUser.uid === data.captainA || currentUser.uid === data.captainB;
+    const alreadyReady = (currentUser.uid===data.captainA && data.readyA) || (currentUser.uid===data.captainB && data.readyB);
+    document.getElementById('team-wait-msg').textContent = full ? '' :
+      `Waiting... ${(data.teamA?.length||0)+(data.teamB?.length||0)} / ${data.teamSize*2} joined`;
+    document.getElementById('btn-ready').style.display = (full && amCaptain && !alreadyReady) ? 'block' : 'none';
+  }
+
+  // ====== TOSS ======
+  function showTossScreen(toss) {
+    document.getElementById('toss-btns').style.display = 'flex';
     document.getElementById('choose-section').style.display = 'none';
     document.getElementById('waiting-choice-section').style.display = 'none';
+    document.getElementById('spectator-toss-msg').style.display = 'none';
+    document.getElementById('toss-waiting-msg').textContent = '';
     document.getElementById('btn-heads').disabled = false;
     document.getElementById('btn-tails').disabled = false;
     document.getElementById('btn-heads').classList.remove('chosen');
     document.getElementById('btn-tails').classList.remove('chosen');
+
+    if (myRole === 'teammate') {
+      document.getElementById('toss-btns').style.display = 'none';
+      document.getElementById('spectator-toss-msg').style.display = 'block';
+      document.getElementById('spectator-toss-msg').textContent = '⏳ Captains are doing the toss...';
+    }
+    showScreen('toss-screen');
   }
 
   function updateTossUI(data) {
@@ -641,39 +689,33 @@
     const oppChoice = myRole === 'player1' ? toss.p2choice : toss.p1choice;
     const p1name = data.player1?.name?.split(' ')[0] || 'P1';
     const p2name = data.player2?.name?.split(' ')[0] || 'P2';
-    const myName = myRole === 'player1' ? p1name : p2name;
     const oppName = myRole === 'player1' ? p2name : p1name;
 
-    // If I chose, disable my button, disable opponent's option too
     if (myChoice) {
       document.getElementById('btn-heads').disabled = true;
       document.getElementById('btn-tails').disabled = true;
       document.getElementById('btn-' + myChoice).classList.add('chosen');
       if (!toss.winner) {
-        document.getElementById('toss-waiting-msg').textContent = oppChoice
-          ? 'Flipping coin...' : `Waiting for ${oppName} to choose...`;
+        document.getElementById('toss-waiting-msg').textContent = oppChoice ? 'Flipping coin... 🪙' : `Waiting for ${oppName} to choose...`;
       }
     }
-
-    // If opponent chose, disable that button for me too
     if (oppChoice && !myChoice) {
       document.getElementById('btn-' + oppChoice).disabled = true;
     }
 
-    // Toss winner decided
     if (toss.winner && !toss.batting) {
       const iWon = toss.winner === myRole;
-      document.getElementById('toss-choice-section').style.display = 'none';
+      document.getElementById('toss-btns').style.display = 'none';
       document.getElementById('toss-waiting-msg').textContent = '';
-
       if (iWon) {
         document.getElementById('choose-section').style.display = 'block';
         document.getElementById('toss-result-big').textContent = `🎉 You Won the Toss!`;
         document.getElementById('toss-result-small').textContent = `It was ${toss.result?.toUpperCase()}! Choose to Bat or Bowl`;
+      } else if (myRole === 'teammate') {
+        document.getElementById('spectator-toss-msg').textContent = '⏳ Toss winner is choosing...';
       } else {
         document.getElementById('waiting-choice-section').style.display = 'block';
-        document.getElementById('waiting-choice-big').textContent = `${iWon ? 'You' : oppName} Won the Toss!`;
-        document.getElementById('waiting-choice-small').textContent = `${oppName} is choosing to bat or bowl...`;
+        document.getElementById('waiting-choice-big').textContent = `${oppName} Won the Toss!`;
       }
     }
   }
@@ -685,116 +727,74 @@
       localGameState.toss.p2choice = Math.random() < 0.5 ? 'heads' : 'tails';
       updateTossUI(localGameState);
       tossProcessed = true;
-      resolveTossBot(localGameState);
+      resolveTossLocal(localGameState);
       return;
     }
-
-    if (!currentRoom) return;
-    const myChoiceKey = myRole === 'player1' ? 'toss/p1choice' : 'toss/p2choice';
-    await update(ref(db, `rooms/${currentRoom}`), { [myChoiceKey]: choice });
+    const key = myRole === 'player1' ? 'toss/p1choice' : 'toss/p2choice';
+    await update(ref(db, `rooms/${currentRoom}`), { [key]: choice });
   };
 
   async function resolveToss(data) {
     const t = data.toss;
     const result = Math.random() < 0.5 ? 'heads' : 'tails';
-    let winner = null;
-    if (t.p1choice === result) winner = 'player1';
-    else if (t.p2choice === result) winner = 'player2';
-    else {
-      // both wrong — flip again, give to random
-      winner = Math.random() < 0.5 ? 'player1' : 'player2';
-    }
-    await update(ref(db, `rooms/${currentRoom}`), {
-      'toss/result': result,
-      'toss/winner': winner
-    });
+    let winner = t.p1choice === result ? 'player1' : t.p2choice === result ? 'player2' : (Math.random() < 0.5 ? 'player1' : 'player2');
+    await update(ref(db, `rooms/${currentRoom}`), { 'toss/result': result, 'toss/winner': winner });
   }
 
   window.chooseInnings = async (choice) => {
     if (myRole !== 'player1' && myRole !== 'player2') return;
-    if (isBotGame) {
-      chooseInningsBot('player1', choice);
-      return;
-    }
-
-    // choice = 'batting' or 'bowling'
+    if (isBotGame) { chooseInningsLocal(choice); return; }
     const snap = await get(ref(db, `rooms/${currentRoom}`));
-    const data = snap.val();
-    const tossWinner = data.toss.winner; // e.g. 'player1'
-    let battingRole;
-    if (choice === 'batting') battingRole = tossWinner;
-    else battingRole = tossWinner === 'player1' ? 'player2' : 'player1';
-
+    const tossWinner = snap.val().toss.winner;
+    const battingRole = choice === 'batting' ? tossWinner : (tossWinner === 'player1' ? 'player2' : 'player1');
     await update(ref(db, `rooms/${currentRoom}`), {
-      'toss/batting': battingRole,
-      status: 'playing',
-      batting: battingRole,
-      phase: 'batting'
+      'toss/batting': battingRole, status: 'playing', batting: battingRole, phase: 'batting'
     });
   };
 
-  // ---- COUNTDOWN ----
+  // ====== COUNTDOWN ======
   function startCountdown(callback) {
     const overlay = document.getElementById('countdown-overlay');
     const numEl = document.getElementById('countdown-num');
     overlay.classList.add('show');
     let count = 3;
     numEl.textContent = count;
-    numEl.className = 'countdown-num sf-animate-in';
-
+    numEl.className = 'countdown-num count-anim';
     const interval = setInterval(() => {
       count--;
       if (count <= 0) {
         clearInterval(interval);
         numEl.textContent = '🏏';
-        setTimeout(() => {
-          overlay.classList.remove('show');
-          callback();
-        }, 700);
+        setTimeout(() => { overlay.classList.remove('show'); callback(); }, 700);
       } else {
-        numEl.style.animation = 'none';
-        void numEl.offsetWidth;
-        numEl.style.animation = '';
-        numEl.className = 'countdown-num sf-animate-in';
+        numEl.style.animation = 'none'; void numEl.offsetWidth;
+        numEl.className = 'countdown-num count-anim';
         numEl.textContent = count;
       }
     }, 800);
   }
 
-  // ---- SCORE FLASH ----
+  // ====== SCORE FLASH ======
   function showScoreFlash(playerName, runs, callback) {
     const overlay = document.getElementById('score-flash');
-    const bg = document.getElementById('sf-bg');
     const numEl = document.getElementById('sf-num');
-    const labelEl = document.getElementById('sf-label');
-    const playerEl = document.getElementById('sf-player');
-
-    playerEl.textContent = playerName;
+    document.getElementById('sf-player').textContent = playerName;
     numEl.textContent = runs;
-
-    let label = 'RUN';
-    let bgColor = 'rgba(37,99,235,0.93)';
-    if (runs === 6) { label = 'SIX! 🔥'; bgColor = 'rgba(245,158,11,0.95)'; }
-    else if (runs === 4) { label = 'FOUR! 💥'; bgColor = 'rgba(16,185,129,0.93)'; }
-    else if (runs > 1) { label = 'RUNS'; }
-
-    labelEl.textContent = label;
-    bg.style.background = bgColor;
-
+    let label = runs === 1 ? 'RUN' : 'RUNS';
+    let bg = 'rgba(37,99,235,0.93)';
+    if (runs === 6) { label = 'SIX! 🔥'; bg = 'rgba(245,158,11,0.95)'; }
+    else if (runs === 4) { label = 'FOUR! 💥'; bg = 'rgba(16,185,129,0.93)'; }
+    document.getElementById('sf-label').textContent = label;
+    document.getElementById('sf-bg').style.background = bg;
     overlay.classList.add('show');
-    numEl.className = 'sf-num sf-animate-in';
-
+    numEl.className = 'sf-num sf-in';
     setTimeout(() => {
-      numEl.classList.add('sf-animate-out');
-      setTimeout(() => {
-        overlay.classList.remove('show');
-        numEl.className = 'sf-num';
-        if (callback) callback();
-      }, 350);
+      numEl.className = 'sf-num sf-out';
+      setTimeout(() => { overlay.classList.remove('show'); numEl.className = 'sf-num'; if (callback) callback(); }, 350);
     }, 2200);
   }
 
-  // ---- GAME UI ----
+  // ====== GAME UI ======
   function updateGameUI(data) {
     if (data.status === 'finished') { stopTimer(); showResult(data); return; }
     if (data.status !== 'playing') return;
@@ -802,14 +802,17 @@
     const p1 = data.player1, p2 = data.player2;
     document.getElementById('p1-name').textContent = p1?.name?.split(' ')[0] || 'P1';
     document.getElementById('p2-name').textContent = p2?.name?.split(' ')[0] || 'P2';
-    document.getElementById('p1-avatar').textContent = p1?.name?.charAt(0).toUpperCase() || 'P';
-    document.getElementById('p2-avatar').textContent = p2?.name?.charAt(0).toUpperCase() || '?';
-    
-    const isP1Batting = (data.batting === 'player1' && data.status === 'playing');
-    const isP2Batting = (data.batting === 'player2' && data.status === 'playing');
-    document.getElementById('p1-score').textContent = isP1Batting ? (data.currentScore || 0) : (p1?.score ?? 0);
-    document.getElementById('p2-score').textContent = isP2Batting ? (data.currentScore || 0) : (p2?.score ?? 0);
-    
+
+    const setAvatar = (elId, player) => {
+      const el = document.getElementById(elId);
+      if (player?.photo) el.innerHTML = `<img src="${player.photo}" alt="${player.name}"/>`;
+      else el.textContent = player?.name?.charAt(0).toUpperCase() || '?';
+    };
+    setAvatar('p1-avatar', p1); setAvatar('p2-avatar', p2);
+
+    const isP1Batting = data.batting === 'player1';
+    document.getElementById('p1-score').textContent = isP1Batting ? (data.currentScore||0) : (p1?.score??0);
+    document.getElementById('p2-score').textContent = !isP1Batting ? (data.currentScore||0) : (p2?.score??0);
     document.getElementById('r-p1-name').textContent = p1?.name?.split(' ')[0] || 'P1';
     document.getElementById('r-p2-name').textContent = p2?.name?.split(' ')[0] || 'P2';
 
@@ -819,17 +822,16 @@
     if (data.phase === 'chasing' && data.target !== null) {
       banner.classList.add('show');
       document.getElementById('target-num').textContent = data.target + 1;
-      document.getElementById('need-num').textContent = Math.max(0, data.target + 1 - (data.currentScore || 0));
-    } else { banner.classList.remove('show'); }
+      document.getElementById('need-num').textContent = Math.max(0, data.target + 1 - (data.currentScore||0));
+    } else banner.classList.remove('show');
 
-    if (scorePaused) return; // don't update buttons while flash showing
+    if (scorePaused) return;
 
-    if (myRole !== 'player1' && myRole !== 'player2') {
-      document.getElementById('number-buttons').innerHTML = '<div style="color:#94a3b8;text-align:center;grid-column: span 3;font-weight:700;">Teammate Spectating mode...</div>';
-      document.getElementById('game-status').textContent = 'Captains are battling!';
-      document.getElementById('game-status').className = 'status-text';
+    // Spectators / teammates
+    if (myRole === 'teammate') {
+      document.getElementById('game-status').textContent = '👀 Spectating — Captains are battling!';
+      document.getElementById('number-buttons').innerHTML = '';
       document.getElementById('move-reveal').style.display = 'none';
-      stopTimer();
       return;
     }
 
@@ -838,10 +840,10 @@
     const oppMove = myRole === 'player1' ? data.move2 : data.move1;
     const statusEl = document.getElementById('game-status');
 
-    if (myMove && !oppMove) {
+    if (myMove !== null && myMove !== undefined && (oppMove === null || oppMove === undefined)) {
       statusEl.textContent = `You chose ${myMove} — waiting for opponent...`;
       statusEl.className = 'status-text'; stopTimer();
-    } else if (!myMove) {
+    } else if (myMove === null || myMove === undefined) {
       statusEl.textContent = isBatting ? '🏏 You are BATTING — Pick a number!' : '🎳 You are BOWLING — Pick a number!';
       statusEl.className = 'status-text ' + (isBatting ? 'batting' : 'bowling');
       mySelectedMove = null; startTimer();
@@ -852,24 +854,24 @@
     [0,1,2,3,4,5,6].forEach(n => {
       const btn = document.createElement('button');
       btn.className = 'num-btn' + (myMove === n ? ' selected' : '');
-      btn.textContent = n; btn.disabled = !!myMove || scorePaused;
+      btn.textContent = n; btn.disabled = (myMove !== null && myMove !== undefined) || scorePaused;
       btn.onclick = () => makeMove(n);
       btns.appendChild(btn);
     });
 
     const revealDiv = document.getElementById('move-reveal');
-    if (myMove && oppMove) {
+    if ((myMove !== null && myMove !== undefined) && (oppMove !== null && oppMove !== undefined)) {
       revealDiv.style.display = 'flex';
       document.getElementById('my-move-val').textContent = myMove;
       document.getElementById('opp-move-val').textContent = oppMove;
       const match = myMove === oppMove;
       document.getElementById('my-move-box').className = 'move-box' + (match ? ' match' : '');
       document.getElementById('opp-move-box').className = 'move-box' + (match ? ' match' : '');
-    } else { revealDiv.style.display = 'none'; }
+    } else revealDiv.style.display = 'none';
   }
 
   function updateBallsRow(history) {
-    const last6 = (history || []).slice(-6);
+    const last6 = (history||[]).slice(-6);
     const row = document.getElementById('balls-row');
     row.innerHTML = '';
     for (let i = 0; i < 6; i++) {
@@ -878,37 +880,33 @@
       if (i < last6.length) {
         const val = last6[i];
         div.textContent = val === 'W' ? 'W' : val;
-        div.classList.add(val === 'W' ? 'out-ball' : val === 6 ? 'six' : 'run');
-      } else { div.textContent = '-'; }
+        div.classList.add(val==='W' ? 'out-ball' : val===6 ? 'six' : 'run');
+      } else div.textContent = '-';
       row.appendChild(div);
     }
   }
 
   window.makeMove = async (n) => {
-    if (myRole !== 'player1' && myRole !== 'player2') return;
-    if (scorePaused || mySelectedMove) return;
+    if (myRole === 'teammate') return;
+    if (scorePaused || mySelectedMove !== null) return;
     mySelectedMove = n; stopTimer();
-
     if (isBotGame) {
       localGameState.move1 = n;
-      localGameState.move2 = Math.floor(Math.random() * 7); // Bot random 0-6
+      localGameState.move2 = Math.floor(Math.random() * 7);
       updateGameUI(localGameState);
-      
-      setTimeout(() => { checkMovesBot(); }, 400);
+      setTimeout(() => checkMovesLocal(), 300);
       return;
     }
-
-    if (!currentRoom) return;
-    await update(ref(db, `rooms/${currentRoom}`), { [myRole === 'player1' ? 'move1' : 'move2']: n });
+    await update(ref(db, `rooms/${currentRoom}`), { [myRole==='player1'?'move1':'move2']: n });
   };
 
-  // ---- TIMER ----
+  // ====== TIMER ======
   function startTimer() {
     if (scorePaused) return;
     clearInterval(timerInterval); timeLeft = 5; updateTimerUI();
     timerInterval = setInterval(() => {
       timeLeft -= 0.1; updateTimerUI();
-      if (timeLeft <= 0) { clearInterval(timerInterval); if (mySelectedMove === null) makeMove(Math.floor(Math.random() * 7)); }
+      if (timeLeft <= 0) { clearInterval(timerInterval); if (mySelectedMove === null) makeMove(Math.floor(Math.random()*7)); }
     }, 100);
   }
   function stopTimer() {
@@ -917,70 +915,61 @@
     document.getElementById('timer-label').textContent = '0';
   }
   function updateTimerUI() {
-    const pct = Math.max(0, (timeLeft / 5) * 100);
+    const pct = Math.max(0, (timeLeft/5)*100);
     const bar = document.getElementById('timer-bar');
     bar.style.width = pct + '%';
     bar.style.background = timeLeft > 2 ? '#2563eb' : '#dc2626';
     document.getElementById('timer-label').textContent = Math.ceil(timeLeft);
   }
 
-  // ---- CHECK MOVES ----
+  // ====== CHECK MOVES ======
   async function checkMoves(data) {
-    if (data.move1 === null || data.move2 === null || myRole !== 'player1') return;
+    if (data.move1 === null || data.move1 === undefined || data.move2 === null || data.move2 === undefined) return;
+    if (myRole !== 'player1') return;
 
     const batting = data.batting;
     const batterMove = batting === 'player1' ? data.move1 : data.move2;
-    const bowlerMove = batting === 'player1' ? data.move2 : data.move1;
     const history = data.ballHistory ? [...data.ballHistory] : [];
-    const batterName = batting === 'player1' ? data.player1?.name?.split(' ')[0] : data.player2?.name?.split(' ')[0];
+    const batterName = (batting==='player1' ? data.player1?.name : data.player2?.name)?.split(' ')[0] || 'Player';
 
     if (data.move1 === data.move2) {
-      // OUT
       history.push('W');
       showOutFlash(batterName, async () => {
         if (data.phase === 'batting') {
           const target = data.currentScore;
           const su = {};
-          su['player1/score'] = batting === 'player1' ? target : (data.player1?.score ?? 0);
-          su['player2/score'] = batting === 'player2' ? target : (data.player2?.score ?? 0);
-          await update(ref(db, `rooms/${currentRoom}`), {
-            move1: null, move2: null, phase: 'chasing',
-            batting: batting === 'player1' ? 'player2' : 'player1',
-            target, currentScore: 0, ballHistory: [], ...su
+          su['player1/score'] = batting==='player1' ? target : (data.player1?.score??0);
+          su['player2/score'] = batting==='player2' ? target : (data.player2?.score??0);
+          await update(ref(db,`rooms/${currentRoom}`), {
+            move1:null, move2:null, phase:'chasing',
+            batting: batting==='player1' ? 'player2' : 'player1',
+            target, currentScore:0, ballHistory:[], ...su
           });
         } else {
           const cs = data.currentScore;
-          const winner = cs > data.target ? data.batting : (cs < data.target ? (data.batting === 'player1' ? 'player2' : 'player1') : 'tie');
+          const winner = cs > data.target ? data.batting : (cs < data.target ? (data.batting==='player1'?'player2':'player1') : 'tie');
           const su = {};
-          su['player1/score'] = data.batting === 'player1' ? cs : (data.player1?.score ?? 0);
-          su['player2/score'] = data.batting === 'player2' ? cs : (data.player2?.score ?? 0);
-          await update(ref(db, `rooms/${currentRoom}`), { move1: null, move2: null, status: 'finished', ballHistory: history, winner, ...su });
+          su['player1/score'] = data.batting==='player1' ? cs : (data.player1?.score??0);
+          su['player2/score'] = data.batting==='player2' ? cs : (data.player2?.score??0);
+          await update(ref(db,`rooms/${currentRoom}`), { move1:null, move2:null, status:'finished', ballHistory:history, winner, ...su });
         }
       });
     } else {
-      // RUNS scored
-      const runsScored = batterMove === 0 ? bowlerMove : batterMove;
+      const oppMove = batting === 'player1' ? data.move2 : data.move1;
+      const runsScored = batterMove === 0 ? oppMove : batterMove;
       history.push(runsScored);
-      const newScore = (data.currentScore || 0) + runsScored;
-
-      // Optimistic UI updates before Firebase / Flash
-      document.getElementById(batting === 'player1' ? 'p1-score' : 'p2-score').textContent = newScore;
-
-      // Show score flash, then update firebase
-      scorePaused = true;
-      stopTimer();
-      showScoreFlash(batterName + ' scored', runsScored, async () => {
-        scorePaused = false;
-        mySelectedMove = null;
-
+      const newScore = (data.currentScore||0) + runsScored;
+      scorePaused = true; stopTimer();
+      showScoreFlash(batterName, runsScored, async () => {
+        scorePaused = false; mySelectedMove = null;
         if (data.phase === 'chasing' && newScore > data.target) {
           const su = {};
-          su['player1/score'] = data.batting === 'player1' ? newScore : (data.player1?.score ?? 0);
-          su['player2/score'] = data.batting === 'player2' ? newScore : (data.player2?.score ?? 0);
-          await update(ref(db, `rooms/${currentRoom}`), { move1: null, move2: null, currentScore: newScore, ballHistory: history, status: 'finished', winner: data.batting, ...su });
+          su['player1/score'] = data.batting==='player1' ? newScore : (data.player1?.score??0);
+          su['player2/score'] = data.batting==='player2' ? newScore : (data.player2?.score??0);
+          await update(ref(db,`rooms/${currentRoom}`), { move1:null, move2:null, currentScore:newScore, ballHistory:history, status:'finished', winner:data.batting, ...su });
           return;
         }
-        await update(ref(db, `rooms/${currentRoom}`), { move1: null, move2: null, currentScore: newScore, ballHistory: history });
+        await update(ref(db,`rooms/${currentRoom}`), { move1:null, move2:null, currentScore:newScore, ballHistory:history });
       });
     }
   }
@@ -992,157 +981,158 @@
     scorePaused = true; stopTimer();
     setTimeout(() => {
       overlay.classList.remove('show');
-      scorePaused = false;
-      mySelectedMove = null;
+      scorePaused = false; mySelectedMove = null;
       if (callback) callback();
     }, 1800);
   }
 
-  // ---- RESULT ----
+  // ====== RESULT ======
   function showResult(data) {
+    if (document.getElementById('result-screen').classList.contains('active')) return;
     const won = data.winner === myRole, tie = data.winner === 'tie';
     document.getElementById('result-trophy').textContent = tie ? '🤝' : won ? '🏆' : '😢';
     document.getElementById('result-title').textContent = tie ? "It's a Tie!" : won ? 'You Won!' : 'You Lost!';
     document.getElementById('result-sub').textContent = tie ? 'Great match!' : won ? 'Brilliant innings! 🎉' : 'Better luck next time!';
     document.getElementById('r-p1-score').textContent = data.player1?.score ?? 0;
     document.getElementById('r-p2-score').textContent = data.player2?.score ?? 0;
+    document.getElementById('play-again-waiting').style.display = 'none';
+    document.getElementById('btn-play-again').style.display = isBotGame ? 'none' : 'block';
     showScreen('result-screen');
   }
 
-  window.goBack = () => {
-    // If in lobby, go to login
-    if (document.getElementById('lobby-screen').classList.contains('active')) {
-      currentUser = null;
-      document.getElementById('player-name-input').value = '';
-      showScreen('login-screen');
-      return;
-    }
-    // Else, return to lobby safely
-    goToLobby();
-  };
-
-  window.goToLobby = () => {
-    if (currentRoom && myRole && !isBotGame) {
-      // cancel disconnect hooks safely upon leaving manually
-      const connRef = ref(db, `rooms/${currentRoom}/${myRole}Connected`);
-      onDisconnect(connRef).cancel();
-      update(ref(db, `rooms/${currentRoom}`), { [`${myRole}Connected`]: false });
-    }
-    currentRoom = null; myRole = null; mySelectedMove = null;
-    tossProcessed = false; gameStarted = false; scorePaused = false;
-    isBotGame = false; localGameState = null;
-    stopTimer(); showScreen('lobby-screen');
-  };
-
-  // ---- TEAM LOGIC ----
-  window.triggerTeamReady = async () => {
-    if (!currentRoom) return;
-    const snap = await get(ref(db, `rooms/${currentRoom}`));
-    const data = snap.val();
-    let updates = {};
-    
-    if (currentUser.uid === data.captainA) updates.readyA = true;
-    if (currentUser.uid === data.captainB) updates.readyB = true;
-
-    if ((updates.readyA || data.readyA) && (updates.readyB || data.readyB)) {
-      updates.status = 'toss'; // Hand Cricket native game start trigger
-    }
-    await update(ref(db, `rooms/${currentRoom}`), updates);
-  };
-
-  // ---- BOT LOGIC ----
-  window.startBotGame = () => {
-    isBotGame = true;
-    currentRoom = 'BOT_ROOM';
-    myRole = 'player1';
-    tossProcessed = false; gameStarted = false; scorePaused = false;
-
-    localGameState = {
-      player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0 },
-      player2: { uid: 'bot', name: 'Bot 🤖', score: 0 },
-      status: 'toss',
-      toss: { p1choice: null, p2choice: null, winner: null, batting: null },
-      phase: 'batting', batting: null, target: null, 
-      move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null
-    };
-
-    showScreen('toss-screen');
-    setupTossUI(localGameState.toss);
-    updateTossUI(localGameState);
-  };
-
-  function resolveTossBot(data) {
-    const t = data.toss;
-    const result = Math.random() < 0.5 ? 'heads' : 'tails';
-    let winner = null;
-    
-    if (t.p1choice === result) winner = 'player1';
-    else if (t.p2choice === result) winner = 'player2';
-    else winner = Math.random() < 0.5 ? 'player1' : 'player2';
-
-    t.result = result; t.winner = winner;
-    updateTossUI(data);
-
-    if (winner === 'player2') {
-      document.getElementById('waiting-choice-small').textContent = 'Bot 🤖 is thinking...';
-      setTimeout(() => { chooseInningsBot('player2', Math.random() < 0.5 ? 'batting' : 'bowling'); }, 1500); 
+  function updatePlayAgainUI(data) {
+    if (!data.playAgain) return;
+    const myKey = myRole === 'player1' ? 'player1' : 'player2';
+    const oppKey = myRole === 'player1' ? 'player2' : 'player1';
+    if (data.playAgain[myKey] && !data.playAgain[oppKey]) {
+      document.getElementById('btn-play-again').style.display = 'none';
+      document.getElementById('play-again-waiting').style.display = 'block';
+      document.getElementById('play-again-waiting').textContent = '⏳ Waiting for opponent to accept...';
     }
   }
 
-  function chooseInningsBot(winnerRole, choice) {
-    let battingRole = (choice === 'batting') ? winnerRole : (winnerRole === 'player1' ? 'player2' : 'player1');
+  // ====== PLAY AGAIN (same room) ======
+  window.requestPlayAgain = async () => {
+    if (!currentRoom || isBotGame) return;
+    const myKey = myRole === 'player1' ? 'player1' : 'player2';
+    const oppKey = myRole === 'player1' ? 'player2' : 'player1';
+
+    await update(ref(db,`rooms/${currentRoom}`), { [`playAgain/${myKey}`]: true });
+
+    const snap = await get(ref(db,`rooms/${currentRoom}`));
+    const data = snap.val();
+
+    if (data.playAgain?.player1 && data.playAgain?.player2) {
+      // Both want to play again — reset room
+      if (myRole === 'player1') {
+        await update(ref(db,`rooms/${currentRoom}`), {
+          status: 'toss',
+          toss: { p1choice: null, p2choice: null, winner: null, batting: null, result: null },
+          phase: 'batting', batting: null,
+          target: null, move1: null, move2: null, currentScore: 0,
+          ballHistory: [], winner: null,
+          'player1/score': 0, 'player2/score': 0,
+          playAgain: { player1: false, player2: false }
+        });
+      }
+    } else {
+      document.getElementById('btn-play-again').style.display = 'none';
+      document.getElementById('play-again-waiting').style.display = 'block';
+      document.getElementById('play-again-waiting').textContent = '⏳ Waiting for opponent to accept...';
+    }
+  };
+
+  // ====== LOBBY ======
+  window.goToLobby = () => {
+    currentRoom = null; myRole = null; mySelectedMove = null; myTeam = null;
+    tossProcessed = false; gameStarted = false; scorePaused = false;
+    isBotGame = false; localGameState = null; playAgainRequested = false;
+    if (gameListener) { off(ref(db, `rooms/${currentRoom || ''}`)); gameListener = null; }
+    stopTimer();
+    showScreen('lobby-screen');
+  };
+
+  // ====== BOT GAME ======
+  window.startBotGame = () => {
+    if (!currentUser) return alert('Please login first!');
+    isBotGame = true; currentRoom = 'BOT'; myRole = 'player1';
+    tossProcessed = false; gameStarted = false; scorePaused = false;
+    localGameState = {
+      player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0, photo: currentUser.photoURL||null },
+      player2: { uid: 'bot', name: '🤖 Bot', score: 0, photo: null },
+      status: 'toss',
+      toss: { p1choice: null, p2choice: null, winner: null, batting: null, result: null },
+      phase: 'batting', batting: null, target: null,
+      move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null
+    };
+    showTossScreen(localGameState.toss);
+  };
+
+  function resolveTossLocal(data) {
+    const t = data.toss;
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+    t.result = result;
+    t.winner = t.p1choice === result ? 'player1' : t.p2choice === result ? 'player2' : (Math.random()<0.5?'player1':'player2');
+    updateTossUI(data);
+    if (t.winner === 'player2') {
+      document.getElementById('waiting-choice-section').style.display = 'block';
+      document.getElementById('waiting-choice-big').textContent = '🤖 Bot Won the Toss!';
+      setTimeout(() => chooseInningsLocal(Math.random()<0.5?'batting':'bowling'), 1500);
+    }
+  }
+
+  function chooseInningsLocal(choice) {
+    const tossWinner = localGameState.toss.winner;
+    const battingRole = choice==='batting' ? tossWinner : (tossWinner==='player1'?'player2':'player1');
     localGameState.toss.batting = battingRole;
     localGameState.status = 'playing';
     localGameState.batting = battingRole;
     localGameState.phase = 'batting';
-    
     gameStarted = true;
     startCountdown(() => { showScreen('game-screen'); updateGameUI(localGameState); });
   }
 
-  function checkMovesBot() {
+  function checkMovesLocal() {
     const data = localGameState;
     const batting = data.batting;
-    const batterMove = batting === 'player1' ? data.move1 : data.move2;
-    const bowlerMove = batting === 'player1' ? data.move2 : data.move1;
-    const history = data.ballHistory || [];
-    const batterName = batting === 'player1' ? data.player1.name : data.player2.name;
+    const batterMove = batting==='player1' ? data.move1 : data.move2;
+    const history = [...(data.ballHistory||[])];
+    const batterName = (batting==='player1' ? data.player1.name : data.player2.name).split(' ')[0];
 
     if (data.move1 === data.move2) {
       history.push('W');
-      showOutFlash(batterName.split(' ')[0], () => {
+      showOutFlash(batterName, () => {
         if (data.phase === 'batting') {
           const target = data.currentScore;
-          if (batting === 'player1') data.player1.score = target; else data.player2.score = target;
-          data.move1 = null; data.move2 = null; data.phase = 'chasing';
-          data.batting = batting === 'player1' ? 'player2' : 'player1';
-          data.target = target; data.currentScore = 0; data.ballHistory = [];
+          if (batting==='player1') data.player1.score=target; else data.player2.score=target;
+          data.move1=null; data.move2=null; data.phase='chasing';
+          data.batting = batting==='player1'?'player2':'player1';
+          data.target=target; data.currentScore=0; data.ballHistory=[];
           updateGameUI(data);
         } else {
           const cs = data.currentScore;
-          if (batting === 'player1') data.player1.score = cs; else data.player2.score = cs;
-          data.winner = cs > data.target ? data.batting : (cs < data.target ? (batting === 'player1' ? 'player2' : 'player1') : 'tie');
-          data.move1 = null; data.move2 = null; data.status = 'finished';
-          updateGameUI(data);
+          if (batting==='player1') data.player1.score=cs; else data.player2.score=cs;
+          data.winner = cs>data.target ? data.batting : (cs<data.target?(data.batting==='player1'?'player2':'player1'):'tie');
+          data.move1=null; data.move2=null; data.status='finished';
+          showResult(data);
         }
       });
     } else {
-      const runsScored = batterMove === 0 ? bowlerMove : batterMove;
-      history.push(runsScored); data.currentScore += runsScored;
-      
-      // Optimistic UI update before flash
-      document.getElementById(batting === 'player1' ? 'p1-score' : 'p2-score').textContent = data.currentScore;
-
+      const oppMove = batting === 'player1' ? data.move2 : data.move1;
+      const runsScored = batterMove === 0 ? oppMove : batterMove;
+      history.push(runsScored);
+      data.currentScore += runsScored;
       scorePaused = true; stopTimer();
-      showScoreFlash(batterName.split(' ')[0] + ' scored', runsScored, () => {
+      showScoreFlash(batterName, runsScored, () => {
         scorePaused = false; mySelectedMove = null;
-        if (data.phase === 'chasing' && data.currentScore > data.target) {
-          if (batting === 'player1') data.player1.score = data.currentScore; else data.player2.score = data.currentScore;
-          data.move1 = null; data.move2 = null; data.status = 'finished'; data.winner = data.batting;
+        if (data.phase==='chasing' && data.currentScore > data.target) {
+          if (batting==='player1') data.player1.score=data.currentScore; else data.player2.score=data.currentScore;
+          data.move1=null; data.move2=null; data.status='finished'; data.winner=data.batting;
+          showResult(data);
         } else {
-          data.move1 = null; data.move2 = null;
+          data.move1=null; data.move2=null; data.ballHistory=history;
+          updateGameUI(data);
         }
-        updateGameUI(data);
       });
     }
   }
