@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hand Cricket</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Nunito:wght@400;700;900&display=swap"
+    rel="stylesheet" />
   <style>
     :root {
       --blue: #2563eb;
@@ -12,1133 +15,2400 @@
       --red: #dc2626;
       --red-light: #ef4444;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Nunito', sans-serif; background: #0f172a; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .screen { display: none; width: 100%; max-width: 420px; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; padding: 30px 24px; }
-    .screen.active { display: flex; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+      max-width: 420px;
+      min-height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 20px;
+    }
+
+    .screen.active {
+      display: flex;
+    }
 
     /* LOGIN */
-    #login-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); }
-    .login-logo { width: 110px; height: 110px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; box-shadow: 0 8px 32px rgba(0,0,0,0.3); margin-bottom: 18px; animation: pop 0.6s cubic-bezier(.36,1.6,.6,1); }
-    @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .login-title { font-family: 'Rajdhani', sans-serif; font-size: 2.8rem; font-weight: 700; color: white; letter-spacing: 2px; margin-bottom: 6px; }
-    .login-sub { color: rgba(255,255,255,0.85); font-size: 1rem; margin-bottom: 30px; }
+    #login-screen {
+      background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%);
+    }
+
+    .login-logo {
+      width: 100px;
+      height: 100px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-bottom: 16px;
+      animation: pop .6s cubic-bezier(.36, 1.6, .6, 1);
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .login-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .login-sub {
+      color: rgba(255, 255, 255, .85);
+      font-size: .95rem;
+      margin-bottom: 28px;
+    }
+
+    .google-btn {
+      background: white;
+      color: #1e293b;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .google-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .3);
+    }
 
     /* CARDS & BUTTONS */
-    .card { background: white; border-radius: 20px; padding: 24px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.25); margin-bottom: 14px; }
-    .card h3 { color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; }
-    .name-input, .code-input { width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 700; outline: none; color: #1e293b; margin-bottom: 12px; transition: border-color 0.2s; }
-    .name-input { font-size: 1.1rem; }
-    .code-input { font-size: 1.3rem; font-family: 'Rajdhani', sans-serif; text-align: center; letter-spacing: 6px; text-transform: uppercase; }
-    .name-input:focus { border-color: var(--blue); }
-    .code-input:focus { border-color: var(--red); }
-    .big-btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 1.05rem; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s; }
-    .big-btn:hover:not(:disabled) { transform: translateY(-2px); }
-    .big-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
-    .btn-blue { background: var(--blue); color: white; box-shadow: 0 4px 16px rgba(37,99,235,0.4); }
-    .btn-red { background: var(--red); color: white; box-shadow: 0 4px 16px rgba(220,38,38,0.4); }
-    .btn-gold { background: #f59e0b; color: white; box-shadow: 0 4px 16px rgba(245,158,11,0.4); }
-    .btn-gray { background: #334155; color: #cbd5e1; }
-    .btn-green { background: #10b981; color: white; box-shadow: 0 4px 16px rgba(16,185,129,0.4); }
-    .google-btn { background: white; color: #1e293b; border: none; border-radius: 50px; padding: 16px 36px; font-size: 1rem; font-family: 'Nunito', sans-serif; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.25); transition: transform 0.15s, box-shadow 0.15s; }
-    .google-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .25);
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      color: #64748b;
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .inp {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      outline: none;
+      color: #1e293b;
+      margin-bottom: 10px;
+      transition: border-color .2s;
+      font-size: 1rem;
+    }
+
+    .code-inp {
+      font-size: 1.2rem;
+      font-family: 'Rajdhani', sans-serif;
+      text-align: center;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+
+    .inp:focus {
+      border-color: var(--blue);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s, opacity .2s;
+      margin-bottom: 6px;
+    }
+
+    .btn:last-child {
+      margin-bottom: 0;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-blue {
+      background: var(--blue);
+      color: white;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, .4);
+    }
+
+    .btn-red {
+      background: var(--red);
+      color: white;
+      box-shadow: 0 4px 16px rgba(220, 38, 38, .4);
+    }
+
+    .btn-gold {
+      background: #f59e0b;
+      color: white;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, .4);
+    }
+
+    .btn-green {
+      background: #10b981;
+      color: white;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, .4);
+    }
+
+    .btn-dark {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 2px solid #334155;
+    }
+
+    .btn-sm {
+      padding: 10px 14px;
+      font-size: .85rem;
+      border-radius: 10px;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(255, 255, 255, .2);
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, .3);
+    }
 
     /* LOBBY */
-    #lobby-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); }
-    .lobby-header { text-align: center; margin-bottom: 20px; }
-    .lobby-header h1 { font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; color: white; letter-spacing: 2px; }
-    .lobby-header p { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
-    .welcome-tag { background: rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 20px; color: white; font-weight: 700; font-size: 0.95rem; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
-    .avatar-circle { width: 32px; height: 32px; border-radius: 50%; background: white; color: var(--blue); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; overflow: hidden; }
-    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-    .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-    .size-btn { padding: 14px 8px; border: none; border-radius: 12px; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.15s; background: #1e293b; color: #60a5fa; border: 2px solid #334155; }
-    .size-btn:hover { transform: scale(1.04); background: var(--blue); color: white; border-color: var(--blue); }
+    #lobby-screen {
+      background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%);
+    }
+
+    .welcome-tag {
+      background: rgba(255, 255, 255, .2);
+      border-radius: 50px;
+      padding: 7px 18px;
+      color: white;
+      font-weight: 700;
+      font-size: .9rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .av {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: white;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: .85rem;
+      overflow: hidden;
+    }
+
+    .av img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .lh h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2rem;
+      color: white;
+      letter-spacing: 2px;
+    }
+
+    .lh p {
+      color: rgba(255, 255, 255, .7);
+      font-size: .85rem;
+    }
+
+    .lh {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .size-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .sz-btn {
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: #1e293b;
+      color: #60a5fa;
+      border: 2px solid #334155;
+      transition: transform .15s;
+    }
+
+    .sz-btn:hover {
+      transform: scale(1.04);
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
 
     /* WAITING */
-    #waiting-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); text-align: center; }
-    .pulse-ring { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); } 70% { box-shadow: 0 0 0 20px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
-    .waiting-title { color: white; font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
-    .waiting-sub { color: rgba(255,255,255,0.75); font-size: 0.9rem; }
-    .code-display-card { background: white; border-radius: 20px; padding: 24px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.2); margin: 20px 0; text-align: center; }
-    .code-display-card h3 { color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
-    .code-big { font-family: 'Rajdhani', sans-serif; font-size: 3rem; font-weight: 700; color: var(--blue); letter-spacing: 8px; }
+    #waiting-screen {
+      background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%);
+      text-align: center;
+    }
+
+    .pulse-ring {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, .4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 18px rgba(255, 255, 255, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+      }
+    }
+
+    .wt {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .ws {
+      color: rgba(255, 255, 255, .7);
+      font-size: .85rem;
+    }
+
+    .code-card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      width: 100%;
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    .code-card h3 {
+      color: #64748b;
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .code-big {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: 8px;
+    }
 
     /* TEAM LOBBY */
-    #team-lobby-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); padding-top: 60px; justify-content: flex-start; }
-    .team-grid { display: flex; gap: 10px; width: 100%; margin: 14px 0; }
-    .team-box { flex: 1; background: white; border-radius: 16px; padding: 14px; }
-    .team-box.blue { border-top: 5px solid var(--blue); }
-    .team-box.red { border-top: 5px solid var(--red); }
-    .team-box h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; color: #1e293b; margin-bottom: 8px; }
-    .player-row { font-size: 0.85rem; color: #475569; font-weight: 700; padding: 3px 0; }
-    .player-row.captain { color: #f59e0b; }
-    .ready-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; margin-left: 4px; background: #e2e8f0; color: #64748b; }
-    .ready-tag.ready { background: #10b981; color: white; }
-    .team-wait-msg { color: rgba(255,255,255,0.8); font-weight: 700; font-size: 0.9rem; text-align: center; margin: 8px 0; }
+    #team-lobby-screen {
+      background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%);
+      padding-top: 56px;
+      justify-content: flex-start;
+    }
+
+    .team-grid {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .team-box {
+      flex: 1;
+      background: white;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .team-box.blue {
+      border-top: 4px solid var(--blue);
+    }
+
+    .team-box.red {
+      border-top: 4px solid var(--red);
+    }
+
+    .team-box h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .pr {
+      font-size: .8rem;
+      color: #475569;
+      font-weight: 700;
+      padding: 2px 0;
+    }
+
+    .pr.cap {
+      color: #f59e0b;
+    }
+
+    .rtag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: .6rem;
+      font-weight: 900;
+      margin-left: 3px;
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
+    .rtag.ok {
+      background: #10b981;
+      color: white;
+    }
+
+    /* TEAM JOIN */
+    #team-join-screen {
+      background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%);
+    }
 
     /* TOSS */
-    #toss-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); text-align: center; }
-    .toss-coin { font-size: 5rem; margin: 16px 0; animation: coinSpin 0.6s cubic-bezier(.36,1.6,.6,1); }
-    @keyframes coinSpin { from { transform: rotateY(0deg) scale(0); opacity: 0; } to { transform: rotateY(360deg) scale(1); opacity: 1; } }
-    .toss-title { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: white; margin-bottom: 6px; }
-    .toss-sub { color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: 24px; }
-    .toss-btns { display: flex; gap: 14px; width: 100%; margin-bottom: 14px; }
-    .toss-btn { flex: 1; padding: 20px 10px; border: none; border-radius: 18px; font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: transform 0.15s, opacity 0.2s; border: 3px solid transparent; }
-    .toss-btn:hover:not(:disabled) { transform: scale(1.06); }
-    .toss-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
-    .toss-btn.heads { background: white; color: #1e293b; box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
-    .toss-btn.tails { background: #1e293b; color: white; border-color: #334155; }
-    .toss-btn.chosen { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.4); }
-    .toss-waiting { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 8px; }
-    .toss-result-banner { background: rgba(255,255,255,0.15); border-radius: 16px; padding: 16px 20px; margin-bottom: 14px; width: 100%; }
-    .toss-result-banner .big { font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; color: white; }
-    .toss-result-banner .small { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-top: 4px; }
-    .choose-row { display: flex; gap: 14px; width: 100%; }
-    .choose-btn { flex: 1; padding: 18px 10px; border: none; border-radius: 16px; font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: transform 0.15s; }
-    .choose-btn:hover { transform: scale(1.04); }
-    .choose-bat { background: #f59e0b; color: white; }
-    .choose-bowl { background: #0f172a; color: white; border: 2px solid #334155; }
+    #toss-screen {
+      background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%);
+      text-align: center;
+    }
+
+    .toss-coin {
+      font-size: 4.5rem;
+      margin: 14px 0;
+      animation: coinSpin .6s cubic-bezier(.36, 1.6, .6, 1);
+    }
+
+    @keyframes coinSpin {
+      from {
+        transform: rotateY(0deg) scale(0);
+        opacity: 0;
+      }
+
+      to {
+        transform: rotateY(360deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .toss-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .toss-sub {
+      color: rgba(255, 255, 255, .8);
+      font-size: .9rem;
+      margin-bottom: 20px;
+    }
+
+    .toss-btns {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .toss-btn {
+      flex: 1;
+      padding: 18px 8px;
+      border: none;
+      border-radius: 16px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s, opacity .2s;
+      border: 3px solid transparent;
+    }
+
+    .toss-btn:hover:not(:disabled) {
+      transform: scale(1.05);
+    }
+
+    .toss-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .toss-btn.heads {
+      background: white;
+      color: #1e293b;
+    }
+
+    .toss-btn.tails {
+      background: #1e293b;
+      color: white;
+      border-color: #334155;
+    }
+
+    .toss-btn.chosen {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, .4);
+    }
+
+    .toss-wait {
+      color: rgba(255, 255, 255, .7);
+      font-size: .85rem;
+      margin-top: 8px;
+    }
+
+    .toss-banner {
+      background: rgba(255, 255, 255, .15);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .toss-banner .big {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .toss-banner .sm {
+      color: rgba(255, 255, 255, .8);
+      font-size: .85rem;
+      margin-top: 3px;
+    }
+
+    .choose-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .ch-btn {
+      flex: 1;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s;
+    }
+
+    .ch-btn:hover {
+      transform: scale(1.04);
+    }
+
+    .ch-bat {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .ch-bowl {
+      background: #0f172a;
+      color: white;
+      border: 2px solid #334155;
+    }
+
+    /* PICK PLAYER SCREEN */
+    #pick-screen {
+      background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%);
+      padding-top: 56px;
+      justify-content: flex-start;
+    }
+
+    .pick-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    .pick-sub {
+      color: rgba(255, 255, 255, .8);
+      font-size: .85rem;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .player-pick-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 55vh;
+      overflow-y: auto;
+    }
+
+    .pick-btn {
+      width: 100%;
+      padding: 14px 16px;
+      background: white;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #1e293b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform .15s, background .15s;
+    }
+
+    .pick-btn:hover {
+      transform: scale(1.02);
+      background: #eff6ff;
+    }
+
+    .pick-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      background: #f1f5f9;
+      color: #94a3b8;
+      transform: none;
+    }
+
+    .pick-btn .pick-av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      font-weight: 900;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .pick-btn .pick-av img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .pick-btn .pick-info {
+      text-align: left;
+    }
+
+    .pick-btn .pick-name {
+      font-size: .95rem;
+    }
+
+    .pick-btn .pick-tag {
+      font-size: .7rem;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .wait-pick {
+      text-align: center;
+      color: rgba(255, 255, 255, .8);
+      font-weight: 700;
+      font-size: .95rem;
+      margin-top: 16px;
+    }
 
     /* COUNTDOWN */
-    .countdown-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.97); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-    .countdown-overlay.show { opacity: 1; pointer-events: all; }
-    .countdown-num { font-family: 'Rajdhani', sans-serif; font-size: 10rem; font-weight: 700; color: white; line-height: 1; }
-    @keyframes countPop { from { transform: scale(2.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .count-anim { animation: countPop 0.5s cubic-bezier(.36,1.6,.6,1); }
-    .countdown-label { color: #94a3b8; font-size: 1.2rem; font-weight: 700; margin-top: 10px; letter-spacing: 3px; text-transform: uppercase; }
+    .cd-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .97);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    .cd-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .cd-num {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 9rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+
+    @keyframes cPop {
+      from {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .c-anim {
+      animation: cPop .5s cubic-bezier(.36, 1.6, .6, 1);
+    }
+
+    .cd-lbl {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 8px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
 
     /* GAME */
-    #game-screen { background: #0f172a; padding: 0; justify-content: flex-start; }
-    .game-top { width: 100%; display: flex; position: relative; height: 180px; overflow: hidden; }
-    .player-side { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 16px; }
-    .player-side.left { background: var(--blue); }
-    .player-side.right { background: var(--red); }
-    .player-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: white; margin-bottom: 6px; overflow: hidden; }
-    .player-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-    .player-name { color: white; font-size: 0.85rem; font-weight: 700; }
-    .player-score-big { color: white; font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; font-weight: 700; line-height: 1; }
-    .vs-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 44px; height: 44px; border-radius: 50%; background: #0f172a; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700; z-index: 2; border: 3px solid #1e293b; }
-    .status-bar { width: 100%; background: #1e293b; padding: 10px 20px; text-align: center; }
-    .status-text { color: #94a3b8; font-size: 0.9rem; font-weight: 700; }
-    .status-text.batting { color: #60a5fa; }
-    .status-text.bowling { color: #f87171; }
-    .target-banner { width: 100%; background: #fbbf24; padding: 8px 20px; text-align: center; font-weight: 800; color: #1e293b; font-size: 0.95rem; display: none; }
-    .target-banner.show { display: block; }
-    .balls-row { width: 100%; padding: 12px 20px; display: flex; gap: 8px; justify-content: center; }
-    .ball-circle { width: 38px; height: 38px; border-radius: 50%; background: #1e293b; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; color: #64748b; transition: all 0.3s; }
-    .ball-circle.run { background: var(--blue); border-color: var(--blue-light); color: white; }
-    .ball-circle.out-ball { background: var(--red); border-color: var(--red-light); color: white; }
-    .ball-circle.six { background: #f59e0b; border-color: #fbbf24; color: white; }
-    .timer-wrap { width: 100%; padding: 4px 20px 8px; display: flex; align-items: center; gap: 10px; }
-    .timer-bar-bg { flex: 1; height: 6px; background: #1e293b; border-radius: 3px; overflow: hidden; }
-    .timer-bar { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.1s linear, background 0.3s; }
-    .timer-label { color: #94a3b8; font-size: 0.85rem; font-weight: 700; min-width: 24px; text-align: right; }
-    .numbers-grid { width: 100%; padding: 10px 20px 16px; display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
-    .num-btn { aspect-ratio: 1; border: none; border-radius: 16px; background: #1e293b; color: white; font-family: 'Rajdhani', sans-serif; font-size: 1.8rem; font-weight: 700; cursor: pointer; transition: transform 0.12s, background 0.15s; border: 2px solid #334155; }
-    .num-btn:hover:not(:disabled) { transform: scale(1.07); background: var(--blue); border-color: var(--blue-light); }
-    .num-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-    .num-btn.selected { background: var(--blue); border-color: var(--blue-light); transform: scale(1.05); }
-    .move-reveal { width: 100%; padding: 0 20px 10px; display: flex; gap: 10px; align-items: center; justify-content: center; }
-    .move-box { flex: 1; background: #1e293b; border-radius: 12px; padding: 10px; text-align: center; border: 2px solid #334155; }
-    .move-box .label { color: #64748b; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-    .move-box .val { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: white; }
-    .move-box.match { border-color: var(--red); background: rgba(220,38,38,0.15); }
-    .move-box.match .val { color: #f87171; }
+    #game-screen {
+      background: #0f172a;
+      padding: 0;
+      justify-content: flex-start;
+    }
+
+    .game-top {
+      width: 100%;
+      display: flex;
+      position: relative;
+      height: 170px;
+      overflow: hidden;
+    }
+
+    .p-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 14px;
+    }
+
+    .p-side.left {
+      background: var(--blue);
+    }
+
+    .p-side.right {
+      background: var(--red);
+    }
+
+    .p-av {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .25);
+      border: 3px solid rgba(255, 255, 255, .6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 5px;
+      overflow: hidden;
+    }
+
+    .p-av img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .p-nm {
+      color: white;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    .p-role {
+      color: rgba(255, 255, 255, .7);
+      font-size: .7rem;
+    }
+
+    .p-sc {
+      color: white;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .vs-b {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: .85rem;
+      font-weight: 700;
+      z-index: 2;
+      border: 3px solid #1e293b;
+    }
+
+    .over-info {
+      width: 100%;
+      background: #1e293b;
+      padding: 6px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .over-txt {
+      color: #94a3b8;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    .over-txt span {
+      color: #60a5fa;
+    }
+
+    .status-bar {
+      width: 100%;
+      background: #0f172a;
+      padding: 8px 16px;
+      text-align: center;
+      border-top: 1px solid #1e293b;
+    }
+
+    .st-txt {
+      color: #94a3b8;
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    .st-txt.bat {
+      color: #60a5fa;
+    }
+
+    .st-txt.bowl {
+      color: #f87171;
+    }
+
+    .tgt-banner {
+      width: 100%;
+      background: #fbbf24;
+      padding: 6px 16px;
+      text-align: center;
+      font-weight: 800;
+      color: #1e293b;
+      font-size: .85rem;
+      display: none;
+    }
+
+    .tgt-banner.show {
+      display: block;
+    }
+
+    .balls-row {
+      width: 100%;
+      padding: 8px 16px;
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .bc {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      color: #64748b;
+      transition: all .3s;
+    }
+
+    .bc.run {
+      background: var(--blue);
+      border-color: var(--blue-light);
+      color: white;
+    }
+
+    .bc.out-b {
+      background: var(--red);
+      border-color: var(--red-light);
+      color: white;
+    }
+
+    .bc.six {
+      background: #f59e0b;
+      border-color: #fbbf24;
+      color: white;
+    }
+
+    .timer-wrap {
+      width: 100%;
+      padding: 3px 16px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .t-bg {
+      flex: 1;
+      height: 5px;
+      background: #1e293b;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .t-bar {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 3px;
+      transition: width .1s linear, background .3s;
+    }
+
+    .t-lbl {
+      color: #94a3b8;
+      font-size: .8rem;
+      font-weight: 700;
+      min-width: 20px;
+      text-align: right;
+    }
+
+    .num-grid {
+      width: 100%;
+      padding: 8px 16px 14px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .nb {
+      aspect-ratio: 1;
+      border: none;
+      border-radius: 14px;
+      background: #1e293b;
+      color: white;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .12s, background .15s;
+      border: 2px solid #334155;
+    }
+
+    .nb:hover:not(:disabled) {
+      transform: scale(1.07);
+      background: var(--blue);
+      border-color: var(--blue-light);
+    }
+
+    .nb:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    .nb.sel {
+      background: var(--blue);
+      border-color: var(--blue-light);
+      transform: scale(1.05);
+    }
+
+    .mv-reveal {
+      width: 100%;
+      padding: 0 16px 8px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mv-box {
+      flex: 1;
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+      border: 2px solid #334155;
+    }
+
+    .mv-box .lbl {
+      color: #64748b;
+      font-size: .65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .mv-box .val {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .mv-box.match {
+      border-color: var(--red);
+      background: rgba(220, 38, 38, .15);
+    }
+
+    .mv-box.match .val {
+      color: #f87171;
+    }
+
+    .spec-msg {
+      color: #64748b;
+      font-size: .85rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 12px;
+      grid-column: span 3;
+    }
+
+    /* WKTINFO */
+    .wkt-info {
+      width: 100%;
+      padding: 4px 16px;
+      background: #0f172a;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .wkt-chip {
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: .75rem;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .wkt-chip span {
+      color: #f87171;
+    }
 
     /* SCORE FLASH */
-    .score-flash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-    .score-flash.show { opacity: 1; }
-    .sf-bg { position: absolute; inset: 0; }
-    .sf-content { position: relative; z-index: 1; text-align: center; }
-    .sf-player { color: rgba(255,255,255,0.85); font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-    .sf-scored { color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 4px; }
-    .sf-num { font-family: 'Rajdhani', sans-serif; font-size: 9rem; font-weight: 700; color: white; line-height: 1; text-shadow: 0 0 60px rgba(255,255,255,0.4); }
-    .sf-label { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; color: rgba(255,255,255,0.9); letter-spacing: 4px; margin-top: 6px; }
-    @keyframes flashIn { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes flashOut { from { transform: scale(1); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
-    .sf-in { animation: flashIn 0.4s cubic-bezier(.36,1.6,.6,1) forwards; }
-    .sf-out { animation: flashOut 0.35s ease-in forwards; }
+    .sf {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 150;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    .sf.show {
+      opacity: 1;
+    }
+
+    .sf-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .sf-con {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .sf-pl {
+      color: rgba(255, 255, 255, .85);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .sf-sc {
+      color: rgba(255, 255, 255, .7);
+      font-size: .9rem;
+      margin-bottom: 2px;
+    }
+
+    .sf-n {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 8rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+      text-shadow: 0 0 60px rgba(255, 255, 255, .4);
+    }
+
+    .sf-lbl {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .9);
+      letter-spacing: 4px;
+      margin-top: 4px;
+    }
+
+    @keyframes fIn {
+      0% {
+        transform: scale(.3);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.15);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fOut {
+      from {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      to {
+        transform: scale(1.4);
+        opacity: 0;
+      }
+    }
+
+    .f-in {
+      animation: fIn .4s cubic-bezier(.36, 1.6, .6, 1) forwards;
+    }
+
+    .f-out {
+      animation: fOut .35s ease-in forwards;
+    }
 
     /* OUT OVERLAY */
-    .out-overlay { position: fixed; inset: 0; background: rgba(220,38,38,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 160; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
-    .out-overlay.show { opacity: 1; }
-    .out-text { font-family: 'Rajdhani', sans-serif; font-size: 6rem; font-weight: 700; color: white; letter-spacing: 4px; }
-    .out-sub { color: rgba(255,255,255,0.8); font-size: 1.1rem; font-weight: 700; margin-top: 8px; }
+    .out-ov {
+      position: fixed;
+      inset: 0;
+      background: rgba(220, 38, 38, .95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 160;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+
+    .out-ov.show {
+      opacity: 1;
+    }
+
+    .out-txt {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 5.5rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 4px;
+    }
+
+    .out-sub {
+      color: rgba(255, 255, 255, .85);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
 
     /* RESULT */
-    #result-screen { background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%); text-align: center; }
-    .trophy { font-size: 5rem; margin-bottom: 10px; animation: pop 0.5s cubic-bezier(.36,1.6,.6,1); }
-    .result-title { font-family: 'Rajdhani', sans-serif; font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 6px; }
-    .result-sub { color: rgba(255,255,255,0.8); font-size: 1rem; margin-bottom: 20px; }
-    .result-scores { display: flex; justify-content: space-around; align-items: center; }
-    .result-score-box .name { color: #64748b; font-size: 0.85rem; font-weight: 700; }
-    .result-score-box .score { font-family: 'Rajdhani', sans-serif; font-size: 3rem; font-weight: 700; color: #1e293b; }
-    .result-vs { color: #94a3b8; font-size: 1.2rem; font-weight: 700; }
-    .play-again-waiting { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 10px; }
+    #result-screen {
+      background: linear-gradient(160deg, var(--blue) 50%, var(--red) 50%);
+      text-align: center;
+    }
 
-    /* BACK BTN */
-    .back-btn { position: absolute; top: 16px; left: 16px; background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; color: white; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
-    .back-btn:hover { background: rgba(255,255,255,0.3); }
+    .trophy {
+      font-size: 4.5rem;
+      margin-bottom: 8px;
+      animation: pop .5s cubic-bezier(.36, 1.6, .6, 1);
+    }
+
+    .res-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .res-sub {
+      color: rgba(255, 255, 255, .8);
+      font-size: .9rem;
+      margin-bottom: 18px;
+    }
+
+    .res-scores {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .rsb .name {
+      color: #64748b;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    .rsb .score {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .res-vs {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .pa-wait {
+      color: rgba(255, 255, 255, .7);
+      font-size: .85rem;
+      margin-top: 8px;
+      display: none;
+    }
   </style>
 </head>
+
 <body>
 
-<!-- OVERLAYS -->
-<div class="out-overlay" id="out-overlay">
-  <div class="out-text">OUT! 🏏</div>
-  <div class="out-sub" id="out-sub-text"></div>
-</div>
-<div class="score-flash" id="score-flash">
-  <div class="sf-bg" id="sf-bg"></div>
-  <div class="sf-content">
-    <div class="sf-player" id="sf-player"></div>
-    <div class="sf-scored">scored</div>
-    <div class="sf-num" id="sf-num"></div>
-    <div class="sf-label" id="sf-label"></div>
+  <!-- OVERLAYS -->
+  <div class="out-ov" id="out-ov">
+    <div class="out-txt">OUT! 🏏</div>
+    <div class="out-sub" id="out-sub"></div>
   </div>
-</div>
-<div class="countdown-overlay" id="countdown-overlay">
-  <div class="countdown-num" id="countdown-num">3</div>
-  <div class="countdown-label" id="countdown-label">GET READY!</div>
-</div>
-
-<!-- LOGIN -->
-<div class="screen active" id="login-screen">
-  <div class="login-logo">🏏</div>
-  <div class="login-title">HAND CRICKET</div>
-  <div class="login-sub">Challenge your friends online!</div>
-  <button class="google-btn" onclick="signInWithGoogle()">
-    <svg width="22" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-    Sign in with Google
-  </button>
-  <div style="color:rgba(255,255,255,0.5); margin: 12px 0;">— or —</div>
-  <div class="card" style="margin-bottom:0;">
-    <h3>Play as Guest</h3>
-    <input class="name-input" id="player-name-input" placeholder="Enter your name..." maxlength="20"/>
-    <button class="big-btn btn-blue" onclick="enterAsGuest()">Play as Guest 🏏</button>
-  </div>
-</div>
-
-<!-- LOBBY -->
-<div class="screen" id="lobby-screen">
-  <div class="lobby-header">
-    <div class="welcome-tag">
-      <div class="avatar-circle" id="avatar-el">L</div>
-      <span>Hi, <span id="welcome-name">Player</span>!</span>
-    </div>
-    <h1>🏏 HAND CRICKET</h1>
-    <p>Create or join a room</p>
-  </div>
-  <div class="card">
-    <h3>1v1 Game</h3>
-    <button class="big-btn btn-blue" onclick="createRoom(1)">+ Create 1v1 Room</button>
-  </div>
-  <div class="card">
-    <h3>Team Battle</h3>
-    <div class="size-grid">
-      <button class="size-btn" onclick="createRoom(2)">2v2</button>
-      <button class="size-btn" onclick="createRoom(3)">3v3</button>
-      <button class="size-btn" onclick="createRoom(5)">5v5</button>
-      <button class="size-btn" onclick="createRoom(11)">11v11</button>
+  <div class="sf" id="sf">
+    <div class="sf-bg" id="sf-bg"></div>
+    <div class="sf-con">
+      <div class="sf-pl" id="sf-pl"></div>
+      <div class="sf-sc">scored</div>
+      <div class="sf-n" id="sf-n"></div>
+      <div class="sf-lbl" id="sf-lbl"></div>
     </div>
   </div>
-  <div class="card">
-    <h3>Join Friend</h3>
-    <input class="code-input" id="join-code" placeholder="ENTER CODE" maxlength="6"/>
-    <button class="big-btn btn-red" onclick="joinRoom()">Join Room →</button>
+  <div class="cd-overlay" id="cd-ov">
+    <div class="cd-num" id="cd-num">3</div>
+    <div class="cd-lbl" id="cd-lbl">GET READY!</div>
   </div>
-  <div class="card">
-    <h3>Single Player</h3>
-    <button class="big-btn btn-gold" onclick="startBotGame()">🤖 Play vs Bot</button>
-  </div>
-</div>
 
-<!-- WAITING (1v1) -->
-<div class="screen" id="waiting-screen">
-  <button class="back-btn" onclick="goToLobby()">←</button>
-  <div class="pulse-ring"><span style="font-size:2rem">⏳</span></div>
-  <div class="waiting-title">Waiting for opponent...</div>
-  <div class="waiting-sub">Share this code with your friend</div>
-  <div class="code-display-card">
-    <h3>Room Code</h3>
-    <div class="code-big" id="display-room-code">------</div>
-  </div>
-  <div class="waiting-sub" style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:10px;">Game starts automatically when friend joins</div>
-</div>
-
-<!-- TEAM LOBBY -->
-<div class="screen" id="team-lobby-screen">
-  <button class="back-btn" onclick="goToLobby()">←</button>
-  <div class="code-display-card" style="margin-top:50px;">
-    <h3>Room Code — Share with teammates!</h3>
-    <div class="code-big" id="t-room-code">------</div>
-  </div>
-  <div class="team-grid">
-    <div class="team-box blue">
-      <h3>TEAM A <span class="ready-tag" id="tag-a">WAITING</span></h3>
-      <div id="team-a-list"></div>
-    </div>
-    <div class="team-box red">
-      <h3>TEAM B <span class="ready-tag" id="tag-b">WAITING</span></h3>
-      <div id="team-b-list"></div>
+  <!-- LOGIN -->
+  <div class="screen active" id="login-screen">
+    <div class="login-logo">🏏</div>
+    <div class="login-title">HAND CRICKET</div>
+    <div class="login-sub">Challenge your friends online!</div>
+    <button class="google-btn" onclick="signInGoogle()">
+      <svg width="20" viewBox="0 0 48 48">
+        <path fill="#EA4335"
+          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+        <path fill="#4285F4"
+          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+        <path fill="#FBBC05"
+          d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+        <path fill="#34A853"
+          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+      </svg>
+      Sign in with Google
+    </button>
+    <div style="color:rgba(255,255,255,.5);margin:10px 0;">— or —</div>
+    <div class="card" style="margin-bottom:0;">
+      <h3>Play as Guest</h3>
+      <input class="inp" id="guest-name" placeholder="Your name..." maxlength="20" />
+      <button class="btn btn-blue" onclick="enterGuest()">Play as Guest 🏏</button>
     </div>
   </div>
-  <div class="team-wait-msg" id="team-wait-msg">Waiting for players to join...</div>
-  <button class="big-btn btn-green" id="btn-ready" style="display:none;" onclick="markReady()">✅ Ready to Start!</button>
-</div>
 
-<!-- TEAM JOIN (choose team) -->
-<div class="screen" id="team-join-screen">
-  <button class="back-btn" onclick="goToLobby()">←</button>
-  <div style="text-align:center; margin-bottom:24px;">
-    <div style="font-size:3rem;">⚔️</div>
-    <div style="font-family:'Rajdhani',sans-serif; font-size:2rem; font-weight:700; color:white;">CHOOSE YOUR SIDE</div>
-    <div style="color:rgba(255,255,255,0.7); font-size:0.9rem;">Pick a team to join</div>
-  </div>
-  <button class="big-btn btn-blue" style="margin-bottom:14px;" onclick="joinTeam('teamA')">🛡️ Join Team A</button>
-  <button class="big-btn btn-red" onclick="joinTeam('teamB')">⚔️ Join Team B</button>
-  <div id="team-join-info" style="color:rgba(255,255,255,0.6); font-size:0.85rem; text-align:center; margin-top:12px;"></div>
-</div>
-
-<!-- TOSS -->
-<div class="screen" id="toss-screen">
-  <button class="back-btn" onclick="goToLobby()">←</button>
-  <div class="toss-coin">🪙</div>
-  <div class="toss-title">TOSS TIME!</div>
-  <div class="toss-sub">Choose Heads or Tails — first come first serve!</div>
-  <div class="toss-btns" id="toss-btns">
-    <button class="toss-btn heads" id="btn-heads" onclick="chooseToss('heads')">👑<br/>HEADS</button>
-    <button class="toss-btn tails" id="btn-tails" onclick="chooseToss('tails')">🌑<br/>TAILS</button>
-  </div>
-  <div class="toss-waiting" id="toss-waiting-msg"></div>
-  <div id="choose-section" style="display:none; width:100%;">
-    <div class="toss-result-banner">
-      <div class="big" id="toss-result-big"></div>
-      <div class="small" id="toss-result-small"></div>
+  <!-- LOBBY -->
+  <div class="screen" id="lobby-screen">
+    <div class="lh">
+      <div class="welcome-tag">
+        <div class="av" id="av-el">L</div><span>Hi, <span id="wname">Player</span>!</span>
+      </div>
+      <h1>🏏 HAND CRICKET</h1>
+      <p>Create or join a room</p>
     </div>
-    <div class="choose-row">
-      <button class="choose-btn choose-bat" onclick="chooseInnings('batting')">🏏 BAT</button>
-      <button class="choose-btn choose-bowl" onclick="chooseInnings('bowling')">⚾ BOWL</button>
+    <div class="card">
+      <h3>1v1 Game</h3>
+      <button class="btn btn-blue" onclick="createRoom(1)">+ Create 1v1 Room</button>
+    </div>
+    <div class="card">
+      <h3>Team Battle</h3>
+      <div class="size-grid">
+        <button class="sz-btn" onclick="createRoom(2)">2v2</button>
+        <button class="sz-btn" onclick="createRoom(3)">3v3</button>
+        <button class="sz-btn" onclick="createRoom(5)">5v5</button>
+        <button class="sz-btn" onclick="createRoom(11)">11v11</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Join Friend</h3>
+      <input class="inp code-inp" id="join-code" placeholder="ENTER CODE" maxlength="6" />
+      <button class="btn btn-red" onclick="joinRoom()">Join Room →</button>
+    </div>
+    <div class="card">
+      <h3>Single Player</h3>
+      <button class="btn btn-gold" onclick="startBot()">🤖 Play vs Bot</button>
     </div>
   </div>
-  <div id="waiting-choice-section" style="display:none; width:100%;">
-    <div class="toss-result-banner">
-      <div class="big" id="waiting-choice-big"></div>
-      <div class="small">Choosing to bat or bowl...</div>
+
+  <!-- WAITING 1v1 -->
+  <div class="screen" id="waiting-screen">
+    <button class="back-btn" onclick="goLobby()">←</button>
+    <div class="pulse-ring"><span style="font-size:1.8rem">⏳</span></div>
+    <div class="wt">Waiting for opponent...</div>
+    <div class="ws">Share this code with your friend</div>
+    <div class="code-card">
+      <h3>Room Code</h3>
+      <div class="code-big" id="disp-code">------</div>
     </div>
-    <div class="pulse-ring" style="margin:16px auto;"><span style="font-size:1.5rem">⏳</span></div>
+    <div class="ws" style="color:rgba(255,255,255,.5);font-size:.8rem;margin-top:8px;">Game starts automatically when
+      friend joins</div>
   </div>
-  <div id="spectator-toss-msg" style="display:none; color:rgba(255,255,255,0.7); font-weight:700; text-align:center; margin-top:16px;"></div>
-</div>
 
-<!-- GAME -->
-<div class="screen" id="game-screen">
-  <button class="back-btn" onclick="goToLobby()" style="background:rgba(0,0,0,0.3);">←</button>
-  <div class="game-top">
-    <div class="player-side left">
-      <div class="player-avatar" id="p1-avatar">L</div>
-      <div class="player-name" id="p1-name">Player 1</div>
-      <div class="player-score-big" id="p1-score">0</div>
+  <!-- TEAM LOBBY -->
+  <div class="screen" id="team-lobby-screen">
+    <button class="back-btn" onclick="goLobby()">←</button>
+    <div class="code-card" style="margin-top:46px;padding:14px;">
+      <h3>Room Code — Share with everyone!</h3>
+      <div class="code-big" id="t-code">------</div>
     </div>
-    <div class="vs-badge">VS</div>
-    <div class="player-side right">
-      <div class="player-avatar" id="p2-avatar">?</div>
-      <div class="player-name" id="p2-name">Player 2</div>
-      <div class="player-score-big" id="p2-score">0</div>
+    <div class="team-grid">
+      <div class="team-box blue">
+        <h3>TEAM A <span class="rtag" id="tag-a">WAIT</span></h3>
+        <div id="list-a"></div>
+      </div>
+      <div class="team-box red">
+        <h3>TEAM B <span class="rtag" id="tag-b">WAIT</span></h3>
+        <div id="list-b"></div>
+      </div>
+    </div>
+    <div id="tw-msg"
+      style="color:rgba(255,255,255,.8);font-size:.85rem;font-weight:700;text-align:center;margin:6px 0;"></div>
+    <button class="btn btn-green" id="btn-ready" style="display:none;" onclick="markReady()">✅ I'm Ready!</button>
+  </div>
+
+  <!-- TEAM JOIN -->
+  <div class="screen" id="team-join-screen">
+    <button class="back-btn" onclick="goLobby()">←</button>
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:2.8rem;">⚔️</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-size:1.9rem;font-weight:700;color:white;">CHOOSE YOUR SIDE
+      </div>
+      <div style="color:rgba(255,255,255,.7);font-size:.85rem;" id="tj-info"></div>
+    </div>
+    <button class="btn btn-blue" style="margin-bottom:12px;" onclick="joinTeam('teamA')">🛡️ Join Team A</button>
+    <button class="btn btn-red" onclick="joinTeam('teamB')">⚔️ Join Team B</button>
+  </div>
+
+  <!-- TOSS -->
+  <div class="screen" id="toss-screen">
+    <button class="back-btn" onclick="goLobby()">←</button>
+    <div class="toss-coin">🪙</div>
+    <div class="toss-title">TOSS TIME!</div>
+    <div class="toss-sub">First come first serve — pick Heads or Tails!</div>
+    <div class="toss-btns" id="toss-btns">
+      <button class="toss-btn heads" id="btn-H" onclick="pickToss('heads')">👑<br />HEADS</button>
+      <button class="toss-btn tails" id="btn-T" onclick="pickToss('tails')">🌑<br />TAILS</button>
+    </div>
+    <div class="toss-wait" id="tw"></div>
+    <div id="ch-sec" style="display:none;width:100%;">
+      <div class="toss-banner">
+        <div class="big" id="t-res-big"></div>
+        <div class="sm" id="t-res-sm"></div>
+      </div>
+      <div class="choose-row"><button class="ch-btn ch-bat" onclick="pickInnings('batting')">🏏 BAT
+          FIRST</button><button class="ch-btn ch-bowl" onclick="pickInnings('bowling')">⚾ BOWL FIRST</button></div>
+    </div>
+    <div id="wt-ch-sec" style="display:none;width:100%;">
+      <div class="toss-banner">
+        <div class="big" id="wt-ch-big"></div>
+        <div class="sm">Choosing to bat or bowl...</div>
+      </div>
+      <div class="pulse-ring" style="margin:14px auto;"><span style="font-size:1.4rem">⏳</span></div>
+    </div>
+    <div id="spec-toss"
+      style="display:none;color:rgba(255,255,255,.75);font-weight:700;text-align:center;margin-top:14px;font-size:.9rem;">
     </div>
   </div>
-  <div class="target-banner" id="target-banner">🎯 Target: <span id="target-num">0</span> | Need <span id="need-num">0</span> more</div>
-  <div class="status-bar"><div class="status-text" id="game-status">Loading...</div></div>
-  <div class="balls-row" id="balls-row"></div>
-  <div class="timer-wrap">
-    <span style="color:#64748b;font-size:0.75rem;font-weight:700;">⏱</span>
-    <div class="timer-bar-bg"><div class="timer-bar" id="timer-bar" style="width:100%"></div></div>
-    <div class="timer-label" id="timer-label">5</div>
-  </div>
-  <div class="move-reveal" id="move-reveal" style="display:none;">
-    <div class="move-box" id="my-move-box"><div class="label">You</div><div class="val" id="my-move-val">-</div></div>
-    <div style="color:#64748b;font-weight:800;">VS</div>
-    <div class="move-box" id="opp-move-box"><div class="label">Opponent</div><div class="val" id="opp-move-val">?</div></div>
-  </div>
-  <div class="numbers-grid" id="number-buttons"></div>
-</div>
 
-<!-- RESULT -->
-<div class="screen" id="result-screen">
-  <button class="back-btn" onclick="goToLobby()">←</button>
-  <div class="trophy" id="result-trophy">🏆</div>
-  <div class="result-title" id="result-title">You Won!</div>
-  <div class="result-sub" id="result-sub">Amazing innings!</div>
-  <div class="card">
-    <div class="result-scores">
-      <div class="result-score-box"><div class="name" id="r-p1-name">P1</div><div class="score" id="r-p1-score">0</div></div>
-      <div class="result-vs">VS</div>
-      <div class="result-score-box"><div class="name" id="r-p2-name">P2</div><div class="score" id="r-p2-score">0</div></div>
+  <!-- PICK PLAYER SCREEN -->
+  <div class="screen" id="pick-screen">
+    <button class="back-btn" onclick="goLobby()">←</button>
+    <div class="pick-title" id="pick-title">Pick Batsman</div>
+    <div class="pick-sub" id="pick-sub">Choose who bats next</div>
+    <div class="player-pick-list" id="pick-list"></div>
+    <div class="wait-pick" id="wait-pick" style="display:none;"></div>
+  </div>
+
+  <!-- GAME -->
+  <div class="screen" id="game-screen">
+    <button class="back-btn" onclick="goLobby()" style="background:rgba(0,0,0,.3);">←</button>
+    <div class="game-top">
+      <div class="p-side left">
+        <div class="p-av" id="g-av1">L</div>
+        <div class="p-nm" id="g-nm1">Batting Team</div>
+        <div class="p-role" id="g-role1">batsman</div>
+        <div class="p-sc" id="g-sc1">0</div>
+      </div>
+      <div class="vs-b">VS</div>
+      <div class="p-side right">
+        <div class="p-av" id="g-av2">?</div>
+        <div class="p-nm" id="g-nm2">Bowling Team</div>
+        <div class="p-role" id="g-role2">bowler</div>
+        <div class="p-sc" id="g-sc2">0</div>
+      </div>
     </div>
+    <div class="over-info">
+      <div class="over-txt">Over: <span id="g-over">0.0</span></div>
+      <div class="over-txt">Wickets: <span id="g-wkts">0</span></div>
+      <div class="over-txt">Score: <span id="g-score">0</span></div>
+    </div>
+    <div class="tgt-banner" id="tgt-b">🎯 Target: <span id="tgt-n">0</span> | Need <span id="need-n">0</span> more</div>
+    <div class="status-bar">
+      <div class="st-txt" id="g-status">Loading...</div>
+    </div>
+    <div class="balls-row" id="balls-row"></div>
+    <div class="timer-wrap">
+      <span style="color:#64748b;font-size:.7rem;font-weight:700;">⏱</span>
+      <div class="t-bg">
+        <div class="t-bar" id="t-bar" style="width:100%"></div>
+      </div>
+      <div class="t-lbl" id="t-lbl">5</div>
+    </div>
+    <div class="mv-reveal" id="mv-reveal" style="display:none;">
+      <div class="mv-box" id="mv-me">
+        <div class="lbl">You</div>
+        <div class="val" id="mv-me-v">-</div>
+      </div>
+      <div style="color:#64748b;font-weight:800;font-size:.9rem;">VS</div>
+      <div class="mv-box" id="mv-op">
+        <div class="lbl">Opponent</div>
+        <div class="val" id="mv-op-v">?</div>
+      </div>
+    </div>
+    <div class="num-grid" id="num-grid"></div>
   </div>
-  <button class="big-btn btn-green" style="width:100%;max-width:300px;margin-bottom:10px;" id="btn-play-again" onclick="requestPlayAgain()">🔄 Play Again (Same Room)</button>
-  <div class="play-again-waiting" id="play-again-waiting" style="display:none;"></div>
-  <button class="big-btn btn-blue" style="width:100%;max-width:300px;margin-top:6px;" onclick="goToLobby()">🏠 Back to Lobby</button>
-</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getDatabase, ref, set, get, update, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  <!-- RESULT -->
+  <div class="screen" id="result-screen">
+    <button class="back-btn" onclick="goLobby()">←</button>
+    <div class="trophy" id="res-trophy">🏆</div>
+    <div class="res-title" id="res-title">You Won!</div>
+    <div class="res-sub" id="res-sub">Amazing!</div>
+    <div class="card">
+      <div class="res-scores">
+        <div class="rsb">
+          <div class="name" id="r-n1">P1</div>
+          <div class="score" id="r-s1">0</div>
+        </div>
+        <div class="res-vs">VS</div>
+        <div class="rsb">
+          <div class="name" id="r-n2">P2</div>
+          <div class="score" id="r-s2">0</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-green" style="width:100%;max-width:300px;margin-bottom:8px;" id="btn-pa"
+      onclick="reqPlayAgain()">🔄 Play Again (Same Room)</button>
+    <div class="pa-wait" id="pa-wait"></div>
+    <button class="btn btn-blue" style="width:100%;max-width:300px;margin-top:4px;" onclick="goLobby()">🏠 Back to
+      Lobby</button>
+  </div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDZyRWuXiqUY9-vbP3rf-oggz-wBmqv3dM",
-    authDomain: "hand-cricket-63019.firebaseapp.com",
-    projectId: "hand-cricket-63019",
-    storageBucket: "hand-cricket-63019.firebasestorage.app",
-    messagingSenderId: "664061014157",
-    appId: "1:664061014157:web:f8352fe250702cd87eb2c4"
-  };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getDatabase, ref, set, get, update, onValue, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getDatabase(app);
+    const FC = {
+      apiKey: "AIzaSyDZyRWuXiqUY9-vbP3rf-oggz-wBmqv3dM",
+      authDomain: "hand-cricket-63019.firebaseapp.com",
+      projectId: "hand-cricket-63019",
+      storageBucket: "hand-cricket-63019.firebasestorage.app",
+      messagingSenderId: "664061014157",
+      appId: "1:664061014157:web:f8352fe250702cd87eb2c4"
+    };
+    const app = initializeApp(FC);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
 
-  let currentUser = null, currentRoom = null, myRole = null;
-  let gameListener = null, timerInterval = null;
-  let timeLeft = 5, mySelectedMove = null;
-  let tossProcessed = false, gameStarted = false, scorePaused = false;
-  let isBotGame = false, localGameState = null;
-  let myTeam = null; // 'teamA' or 'teamB' for team mode
-  let playAgainRequested = false;
+    // ── STATE ──
+    let me = null;          // { uid, displayName, photoURL }
+    let room = null;        // room code
+    let myRole = null;      // 'player1'|'player2'|'teammate'
+    let myTeam = null;      // 'teamA'|'teamB'
+    let isBot = false;
+    let botState = null;
+    let gListener = null;
+    let timer = null, tLeft = 5, myMove = null, paused = false;
+    let tossOK = false, started = false;
+    let pendingCode = null;
 
-  // ====== GOOGLE AUTH ======
-  getRedirectResult(auth).then(result => {
-    if (result?.user) handleUser(result.user);
-  }).catch(console.error);
+    // ── AUTH ──
+    getRedirectResult(auth).then(r => { if (r?.user) handleUser(r.user); }).catch(() => { });
+    onAuthStateChanged(auth, u => { if (u) handleUser(u); });
 
-  onAuthStateChanged(auth, user => {
-    if (user) handleUser(user);
-  });
+    function handleUser(u) {
+      me = { uid: u.uid, displayName: u.displayName, photoURL: u.photoURL || null };
+      setupLobby(); SS('lobby-screen');
+    }
 
-  function handleUser(user) {
-    currentUser = { displayName: user.displayName, uid: user.uid, photoURL: user.photoURL };
-    setupLobbyUI();
-    showScreen('lobby-screen');
-  }
+    window.signInGoogle = async () => {
+      try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+      catch (e) { if (['auth/popup-blocked', 'auth/cancelled-popup-request', 'auth/popup-closed-by-user'].includes(e.code)) await signInWithRedirect(auth, new GoogleAuthProvider()); }
+    };
+    window.enterGuest = () => {
+      const n = document.getElementById('guest-name').value.trim();
+      if (!n) return alert('Enter your name!');
+      me = { uid: 'g_' + Math.random().toString(36).slice(2, 10), displayName: n, photoURL: null };
+      setupLobby(); SS('lobby-screen');
+    };
+    document.getElementById('guest-name').addEventListener('keydown', e => { if (e.key === 'Enter') window.enterGuest(); });
 
-  window.signInWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (err) {
-      console.error(err);
-      if (['auth/popup-blocked','auth/cancelled-popup-request','auth/popup-closed-by-user','auth/cross-origin-isolated'].includes(err.code)) {
-        await signInWithRedirect(auth, new GoogleAuthProvider());
-      } else {
-        alert("Google Login Error: " + err.message + " (" + err.code + ")");
+    function setupLobby() {
+      const n = me.displayName?.split(' ')[0] || 'Player';
+      document.getElementById('wname').textContent = n;
+      const av = document.getElementById('av-el');
+      if (me.photoURL) av.innerHTML = `<img src="${me.photoURL}"/>`;
+      else av.textContent = n[0].toUpperCase();
+    }
+
+    function SS(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // ── ROOM ──
+    window.createRoom = async (sz) => {
+      if (!me) return alert('Login first!');
+      const code = Math.random().toString(36).slice(2, 8).toUpperCase();
+      room = code; myRole = 'player1'; myTeam = 'teamA';
+      tossOK = false; started = false; paused = false; myMove = null;
+
+      const isTeam = sz > 1;
+      const base = {
+        player1: { uid: me.uid, name: me.displayName, photo: me.photoURL || '', score: 0 },
+        player2: null, teamSize: sz, isTeam,
+        status: 'waiting',
+        toss: { p1c: null, p2c: null, winner: null, result: null, batting: null },
+        // Match state
+        batting: null, phase: 'batting',
+        currentScore: 0, target: null, wickets: 0,
+        ballsInOver: 0, oversCount: 0,
+        move1: null, move2: null,
+        ballHistory: [], winner: null,
+        playAgain: { player1: false, player2: false }
+      };
+      if (isTeam) {
+        base.teamA = [{ uid: me.uid, name: me.displayName, photo: me.photoURL || '' }];
+        base.teamB = [];
+        base.captainA = me.uid; base.captainB = null;
+        base.readyA = false; base.readyB = false;
+        // Player rosters with stats
+        base.rosterA = [{ uid: me.uid, name: me.displayName, photo: me.photoURL || '', out: false, runs: 0 }];
+        base.rosterB = [];
+        // Current active players (uid)
+        base.currentBatsman = null; base.currentBowler = null;
+        // Who needs to pick
+        base.needPick = null; // 'batsman'|'bowler'|null
+        base.pickBy = null;   // uid of captain who picks
       }
-    }
-  };
+      await set(ref(db, `rooms/${code}`), base);
 
-  window.enterAsGuest = () => {
-    const name = document.getElementById('player-name-input').value.trim();
-    if (!name) return alert('Please enter your name!');
-    currentUser = { displayName: name, uid: 'guest_' + Math.random().toString(36).substring(2,10), photoURL: null };
-    setupLobbyUI();
-    showScreen('lobby-screen');
-  };
-
-  document.getElementById('player-name-input').addEventListener('keydown', e => { if (e.key === 'Enter') window.enterAsGuest(); });
-
-  function setupLobbyUI() {
-    const name = currentUser.displayName?.split(' ')[0] || 'Player';
-    document.getElementById('welcome-name').textContent = name;
-    const avatarEl = document.getElementById('avatar-el');
-    if (currentUser.photoURL) {
-      avatarEl.innerHTML = `<img src="${currentUser.photoURL}" alt="${name}"/>`;
-    } else {
-      avatarEl.textContent = name.charAt(0).toUpperCase();
-    }
-  }
-
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
-
-  // ====== CREATE ROOM ======
-  window.createRoom = async (teamSize) => {
-    if (!currentUser) return alert('Please login first!');
-    const code = Math.random().toString(36).substring(2,8).toUpperCase();
-    currentRoom = code; myRole = 'player1'; myTeam = 'teamA';
-    tossProcessed = false; gameStarted = false; scorePaused = false; playAgainRequested = false;
-
-    const payload = {
-      player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0, photo: currentUser.photoURL || null },
-      player2: null, status: 'waiting',
-      toss: { p1choice: null, p2choice: null, winner: null, batting: null, result: null },
-      phase: 'batting', batting: null,
-      target: null, move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null,
-      playAgain: { player1: false, player2: false },
-      teamSize: teamSize,
-      isTeamMode: teamSize > 1
+      if (isTeam) { document.getElementById('t-code').textContent = code; SS('team-lobby-screen'); }
+      else { document.getElementById('disp-code').textContent = code; SS('waiting-screen'); }
+      listenRoom(code);
     };
 
-    if (teamSize > 1) {
-      payload.teamA = [{ uid: currentUser.uid, name: currentUser.displayName, photo: currentUser.photoURL || null }];
-      payload.teamB = [];
-      payload.captainA = currentUser.uid;
-      payload.captainB = null;
-      payload.readyA = false;
-      payload.readyB = false;
-    }
+    window.joinRoom = async () => {
+      if (!me) return alert('Login first!');
+      const code = document.getElementById('join-code').value.trim().toUpperCase();
+      if (!code) return alert('Enter a code!');
+      const snap = await get(ref(db, `rooms/${code}`));
+      if (!snap.exists()) return alert('Room not found!');
+      const d = snap.val();
+      room = code; tossOK = false; started = false; paused = false; myMove = null;
 
-    await set(ref(db, `rooms/${code}`), payload);
-
-    if (teamSize > 1) {
-      document.getElementById('t-room-code').textContent = code;
-      showScreen('team-lobby-screen');
-    } else {
-      document.getElementById('display-room-code').textContent = code;
-      showScreen('waiting-screen');
-    }
-    listenToRoom(code);
-  };
-
-  // ====== JOIN ROOM ======
-  window.joinRoom = async () => {
-    if (!currentUser) return alert('Please login first!');
-    const code = document.getElementById('join-code').value.trim().toUpperCase();
-    if (!code) return alert('Enter a room code!');
-    const snap = await get(ref(db, `rooms/${code}`));
-    if (!snap.exists()) return alert('Room not found!');
-    const data = snap.val();
-    currentRoom = code; tossProcessed = false; gameStarted = false; scorePaused = false; playAgainRequested = false;
-
-    if (data.isTeamMode) {
-      // Show team choose screen
-      const ta = data.teamA || [], tb = data.teamB || [];
-      document.getElementById('team-join-info').textContent =
-        `Team A: ${ta.length}/${data.teamSize} | Team B: ${tb.length}/${data.teamSize}`;
-      window._pendingJoinCode = code;
-      listenToRoom(code);
-      showScreen('team-join-screen');
-      return;
-    }
-
-    if (data.player2) return alert('Room is full!');
-    myRole = 'player2';
-    await update(ref(db, `rooms/${code}`), {
-      player2: { uid: currentUser.uid, name: currentUser.displayName, score: 0, photo: currentUser.photoURL || null },
-      status: 'toss'
-    });
-    listenToRoom(code);
-    showTossScreen(null);
-  };
-
-  // ====== JOIN TEAM ======
-  window.joinTeam = async (team) => {
-    const code = window._pendingJoinCode;
-    if (!code) return;
-    const snap = await get(ref(db, `rooms/${code}`));
-    const data = snap.val();
-    const arr = [...(data[team] || [])];
-    if (arr.length >= data.teamSize) return alert('That team is full!');
-
-    arr.push({ uid: currentUser.uid, name: currentUser.displayName, photo: currentUser.photoURL || null });
-    myTeam = team;
-
-    const updates = { [team]: arr };
-
-    // First joiner of teamB becomes captain
-    if (team === 'teamB' && !data.captainB) {
-      updates.captainB = currentUser.uid;
-      updates.player2 = { uid: currentUser.uid, name: currentUser.displayName, score: 0, photo: currentUser.photoURL || null };
-      myRole = 'player2';
-    } else {
-      myRole = 'teammate';
-    }
-
-    // Check if room now full → trigger toss
-    const newTA = team === 'teamA' ? arr : (data.teamA || []);
-    const newTB = team === 'teamB' ? arr : (data.teamB || []);
-    if (newTA.length === data.teamSize && newTB.length === data.teamSize) {
-      updates.status = 'toss';
-    }
-
-    await update(ref(db, `rooms/${code}`), updates);
-    document.getElementById('t-room-code').textContent = code;
-    showScreen('team-lobby-screen');
-  };
-
-  // ====== READY (team mode) ======
-  window.markReady = async () => {
-    const snap = await get(ref(db, `rooms/${currentRoom}`));
-    const data = snap.val();
-    const updates = {};
-    if (currentUser.uid === data.captainA) updates.readyA = true;
-    if (currentUser.uid === data.captainB) updates.readyB = true;
-    // If both ready → go to toss
-    if ((updates.readyA || data.readyA) && (updates.readyB || data.readyB)) {
-      updates.status = 'toss';
-    }
-    await update(ref(db, `rooms/${currentRoom}`), updates);
-  };
-
-  // ====== LISTEN ======
-  function listenToRoom(code) {
-    if (gameListener) off(ref(db, `rooms/${currentRoom}`));
-    gameListener = onValue(ref(db, `rooms/${code}`), snap => {
-      if (!snap.exists()) return;
-      const data = snap.val();
-
-      // Team lobby update
-      if (data.isTeamMode && ['waiting','toss'].includes(data.status)) {
-        updateTeamLobbyUI(data);
+      if (d.isTeam) {
+        pendingCode = code;
+        const ta = d.teamA || [], tb = d.teamB || [];
+        document.getElementById('tj-info').textContent = `Team A: ${ta.length}/${d.teamSize} | Team B: ${tb.length}/${d.teamSize}`;
+        listenRoom(code);
+        SS('team-join-screen');
+        return;
       }
+      if (d.player2) return alert('Room is full!');
+      myRole = 'player2'; myTeam = 'teamB';
+      await update(ref(db, `rooms/${code}`), {
+        player2: { uid: me.uid, name: me.displayName, photo: me.photoURL || '', score: 0 },
+        status: 'toss'
+      });
+      listenRoom(code);
+      showToss(null);
+    };
 
-      // Move to toss screen
-      if (data.status === 'toss') {
-        const cur = document.querySelector('.screen.active')?.id;
-        if (['waiting-screen','team-lobby-screen','team-join-screen'].includes(cur)) {
-          showTossScreen(data.toss);
-        }
-        if (document.getElementById('toss-screen').classList.contains('active')) {
-          updateTossUI(data);
-          // Player1 resolves toss
-          if (myRole === 'player1' && !tossProcessed) {
-            const t = data.toss || {};
-            if (t.p1choice && t.p2choice && !t.winner) {
-              tossProcessed = true;
-              resolveToss(data);
+    window.joinTeam = async (team) => {
+      const code = pendingCode;
+      const snap = await get(ref(db, `rooms/${code}`));
+      const d = snap.val();
+      const arr = [...(d[team] || [])];
+      if (arr.length >= d.teamSize) return alert('Team is full!');
+      arr.push({ uid: me.uid, name: me.displayName, photo: me.photoURL || '' });
+      myTeam = team;
+      const roster = team === 'teamA' ? 'rosterA' : 'rosterB';
+      const rArr = [...(d[roster] || [])];
+      rArr.push({ uid: me.uid, name: me.displayName, photo: me.photoURL || '', out: false, runs: 0 });
+      const upd = { [team]: arr, [roster]: rArr };
+      if (team === 'teamB' && !d.captainB) {
+        upd.captainB = me.uid;
+        upd.player2 = { uid: me.uid, name: me.displayName, photo: me.photoURL || '', score: 0 };
+        myRole = 'player2';
+      } else { myRole = 'teammate'; }
+      const newA = team === 'teamA' ? arr : (d.teamA || []);
+      const newB = team === 'teamB' ? arr : (d.teamB || []);
+      if (newA.length === d.teamSize && newB.length === d.teamSize) upd.status = 'toss';
+      await update(ref(db, `rooms/${code}`), upd);
+      document.getElementById('t-code').textContent = code;
+      SS('team-lobby-screen');
+    };
+
+    window.markReady = async () => {
+      const snap = await get(ref(db, `rooms/${room}`));
+      const d = snap.val();
+      const upd = {};
+      if (me.uid === d.captainA) upd.readyA = true;
+      if (me.uid === d.captainB) upd.readyB = true;
+      if ((upd.readyA || d.readyA) && (upd.readyB || d.readyB)) upd.status = 'toss';
+      await update(ref(db, `rooms/${room}`), upd);
+    };
+
+    // ── LISTEN ──
+    function listenRoom(code) {
+      if (gListener) { off(ref(db, `rooms/${room || ''}`)); gListener = null; }
+      gListener = onValue(ref(db, `rooms/${code}`), snap => {
+        if (!snap.exists()) return;
+        const d = snap.val();
+
+        if (d.isTeam && ['waiting', 'toss'].includes(d.status)) updateTeamLobby(d);
+
+        if (d.status === 'toss') {
+          const cur = document.querySelector('.screen.active')?.id;
+          if (['waiting-screen', 'team-lobby-screen', 'team-join-screen'].includes(cur)) showToss(d.toss);
+          if (document.getElementById('toss-screen').classList.contains('active')) {
+            updateTossUI(d);
+            if (myRole === 'player1' && !tossOK) {
+              const t = d.toss || {};
+              if (t.p1c && t.p2c && !t.winner) { tossOK = true; resolveToss(d); }
             }
           }
         }
-      }
 
-      // Start game
-      if (data.status === 'playing' && !gameStarted) {
-        gameStarted = true;
-        startCountdown(() => { showScreen('game-screen'); updateGameUI(data); });
-      }
+        // Pick player screen
+        if (d.status === 'pick' && !['result-screen'].includes(document.querySelector('.screen.active')?.id)) {
+          handlePickScreen(d);
+        }
 
-      if (data.status === 'playing' && gameStarted && document.getElementById('game-screen').classList.contains('active')) {
-        updateGameUI(data);
-        if (myRole === 'player1') checkMoves(data);
-      }
+        if (d.status === 'playing' && !started) {
+          started = true;
+          const battingTeamName = d.batting === 'player1' ? d.player1?.name?.split(' ')[0] : d.player2?.name?.split(' ')[0];
+          countdown(`${battingTeamName}'s team BATTING!`, () => { SS('game-screen'); updateGameUI(d); });
+        }
+        if (d.status === 'playing' && started && document.getElementById('game-screen').classList.contains('active')) {
+          updateGameUI(d);
+          if (myRole === 'player1') checkMoves(d);
+        }
 
-      // Play again logic
-      if (data.status === 'rematch') {
-        // Reset for new game
-        tossProcessed = false; gameStarted = false; scorePaused = false;
-        mySelectedMove = null; playAgainRequested = false;
-        showTossScreen(data.toss);
-      }
-
-      if (data.status === 'finished') {
-        stopTimer();
-        showResult(data);
-        updatePlayAgainUI(data);
-      }
-    });
-  }
-
-  // ====== TEAM LOBBY UI ======
-  function updateTeamLobbyUI(data) {
-    const renderList = (elId, arr, captainId) => {
-      document.getElementById(elId).innerHTML = (arr||[]).map(p =>
-        `<div class="player-row ${p.uid===captainId?'captain':''}">${p.uid===captainId?'👑 ':'👤 '}${p.name}</div>`
-      ).join('') || '<div style="color:#94a3b8;font-size:0.8rem;">Empty</div>';
-    };
-    renderList('team-a-list', data.teamA, data.captainA);
-    renderList('team-b-list', data.teamB, data.captainB);
-
-    const tagA = document.getElementById('tag-a');
-    tagA.textContent = data.readyA ? 'READY' : 'WAITING';
-    tagA.className = 'ready-tag' + (data.readyA ? ' ready' : '');
-    const tagB = document.getElementById('tag-b');
-    tagB.textContent = data.readyB ? 'READY' : 'WAITING';
-    tagB.className = 'ready-tag' + (data.readyB ? ' ready' : '');
-
-    const full = (data.teamA?.length||0) === data.teamSize && (data.teamB?.length||0) === data.teamSize;
-    const amCaptain = currentUser.uid === data.captainA || currentUser.uid === data.captainB;
-    const alreadyReady = (currentUser.uid===data.captainA && data.readyA) || (currentUser.uid===data.captainB && data.readyB);
-    document.getElementById('team-wait-msg').textContent = full ? '' :
-      `Waiting... ${(data.teamA?.length||0)+(data.teamB?.length||0)} / ${data.teamSize*2} joined`;
-    document.getElementById('btn-ready').style.display = (full && amCaptain && !alreadyReady) ? 'block' : 'none';
-  }
-
-  // ====== TOSS ======
-  function showTossScreen(toss) {
-    document.getElementById('toss-btns').style.display = 'flex';
-    document.getElementById('choose-section').style.display = 'none';
-    document.getElementById('waiting-choice-section').style.display = 'none';
-    document.getElementById('spectator-toss-msg').style.display = 'none';
-    document.getElementById('toss-waiting-msg').textContent = '';
-    document.getElementById('btn-heads').disabled = false;
-    document.getElementById('btn-tails').disabled = false;
-    document.getElementById('btn-heads').classList.remove('chosen');
-    document.getElementById('btn-tails').classList.remove('chosen');
-
-    if (myRole === 'teammate') {
-      document.getElementById('toss-btns').style.display = 'none';
-      document.getElementById('spectator-toss-msg').style.display = 'block';
-      document.getElementById('spectator-toss-msg').textContent = '⏳ Captains are doing the toss...';
-    }
-    showScreen('toss-screen');
-  }
-
-  function updateTossUI(data) {
-    const toss = data.toss || {};
-    const myChoice = myRole === 'player1' ? toss.p1choice : toss.p2choice;
-    const oppChoice = myRole === 'player1' ? toss.p2choice : toss.p1choice;
-    const p1name = data.player1?.name?.split(' ')[0] || 'P1';
-    const p2name = data.player2?.name?.split(' ')[0] || 'P2';
-    const oppName = myRole === 'player1' ? p2name : p1name;
-
-    if (myChoice) {
-      document.getElementById('btn-heads').disabled = true;
-      document.getElementById('btn-tails').disabled = true;
-      document.getElementById('btn-' + myChoice).classList.add('chosen');
-      if (!toss.winner) {
-        document.getElementById('toss-waiting-msg').textContent = oppChoice ? 'Flipping coin... 🪙' : `Waiting for ${oppName} to choose...`;
-      }
-    }
-    if (oppChoice && !myChoice) {
-      document.getElementById('btn-' + oppChoice).disabled = true;
-    }
-
-    if (toss.winner && !toss.batting) {
-      const iWon = toss.winner === myRole;
-      document.getElementById('toss-btns').style.display = 'none';
-      document.getElementById('toss-waiting-msg').textContent = '';
-      if (iWon) {
-        document.getElementById('choose-section').style.display = 'block';
-        document.getElementById('toss-result-big').textContent = `🎉 You Won the Toss!`;
-        document.getElementById('toss-result-small').textContent = `It was ${toss.result?.toUpperCase()}! Choose to Bat or Bowl`;
-      } else if (myRole === 'teammate') {
-        document.getElementById('spectator-toss-msg').textContent = '⏳ Toss winner is choosing...';
-      } else {
-        document.getElementById('waiting-choice-section').style.display = 'block';
-        document.getElementById('waiting-choice-big').textContent = `${oppName} Won the Toss!`;
-      }
-    }
-  }
-
-  window.chooseToss = async (choice) => {
-    if (myRole !== 'player1' && myRole !== 'player2') return;
-    if (isBotGame) {
-      localGameState.toss.p1choice = choice;
-      localGameState.toss.p2choice = Math.random() < 0.5 ? 'heads' : 'tails';
-      updateTossUI(localGameState);
-      tossProcessed = true;
-      resolveTossLocal(localGameState);
-      return;
-    }
-    const key = myRole === 'player1' ? 'toss/p1choice' : 'toss/p2choice';
-    await update(ref(db, `rooms/${currentRoom}`), { [key]: choice });
-  };
-
-  async function resolveToss(data) {
-    const t = data.toss;
-    const result = Math.random() < 0.5 ? 'heads' : 'tails';
-    let winner = t.p1choice === result ? 'player1' : t.p2choice === result ? 'player2' : (Math.random() < 0.5 ? 'player1' : 'player2');
-    await update(ref(db, `rooms/${currentRoom}`), { 'toss/result': result, 'toss/winner': winner });
-  }
-
-  window.chooseInnings = async (choice) => {
-    if (myRole !== 'player1' && myRole !== 'player2') return;
-    if (isBotGame) { chooseInningsLocal(choice); return; }
-    const snap = await get(ref(db, `rooms/${currentRoom}`));
-    const tossWinner = snap.val().toss.winner;
-    const battingRole = choice === 'batting' ? tossWinner : (tossWinner === 'player1' ? 'player2' : 'player1');
-    await update(ref(db, `rooms/${currentRoom}`), {
-      'toss/batting': battingRole, status: 'playing', batting: battingRole, phase: 'batting'
-    });
-  };
-
-  // ====== COUNTDOWN ======
-  function startCountdown(callback) {
-    const overlay = document.getElementById('countdown-overlay');
-    const numEl = document.getElementById('countdown-num');
-    overlay.classList.add('show');
-    let count = 3;
-    numEl.textContent = count;
-    numEl.className = 'countdown-num count-anim';
-    const interval = setInterval(() => {
-      count--;
-      if (count <= 0) {
-        clearInterval(interval);
-        numEl.textContent = '🏏';
-        setTimeout(() => { overlay.classList.remove('show'); callback(); }, 700);
-      } else {
-        numEl.style.animation = 'none'; void numEl.offsetWidth;
-        numEl.className = 'countdown-num count-anim';
-        numEl.textContent = count;
-      }
-    }, 800);
-  }
-
-  // ====== SCORE FLASH ======
-  function showScoreFlash(playerName, runs, callback) {
-    const overlay = document.getElementById('score-flash');
-    const numEl = document.getElementById('sf-num');
-    document.getElementById('sf-player').textContent = playerName;
-    numEl.textContent = runs;
-    let label = runs === 1 ? 'RUN' : 'RUNS';
-    let bg = 'rgba(37,99,235,0.93)';
-    if (runs === 6) { label = 'SIX! 🔥'; bg = 'rgba(245,158,11,0.95)'; }
-    else if (runs === 4) { label = 'FOUR! 💥'; bg = 'rgba(16,185,129,0.93)'; }
-    document.getElementById('sf-label').textContent = label;
-    document.getElementById('sf-bg').style.background = bg;
-    overlay.classList.add('show');
-    numEl.className = 'sf-num sf-in';
-    setTimeout(() => {
-      numEl.className = 'sf-num sf-out';
-      setTimeout(() => { overlay.classList.remove('show'); numEl.className = 'sf-num'; if (callback) callback(); }, 350);
-    }, 2200);
-  }
-
-  // ====== GAME UI ======
-  function updateGameUI(data) {
-    if (data.status === 'finished') { stopTimer(); showResult(data); return; }
-    if (data.status !== 'playing') return;
-
-    const p1 = data.player1, p2 = data.player2;
-    document.getElementById('p1-name').textContent = p1?.name?.split(' ')[0] || 'P1';
-    document.getElementById('p2-name').textContent = p2?.name?.split(' ')[0] || 'P2';
-
-    const setAvatar = (elId, player) => {
-      const el = document.getElementById(elId);
-      if (player?.photo) el.innerHTML = `<img src="${player.photo}" alt="${player.name}"/>`;
-      else el.textContent = player?.name?.charAt(0).toUpperCase() || '?';
-    };
-    setAvatar('p1-avatar', p1); setAvatar('p2-avatar', p2);
-
-    const isP1Batting = data.batting === 'player1';
-    document.getElementById('p1-score').textContent = isP1Batting ? (data.currentScore||0) : (p1?.score??0);
-    document.getElementById('p2-score').textContent = !isP1Batting ? (data.currentScore||0) : (p2?.score??0);
-    document.getElementById('r-p1-name').textContent = p1?.name?.split(' ')[0] || 'P1';
-    document.getElementById('r-p2-name').textContent = p2?.name?.split(' ')[0] || 'P2';
-
-    updateBallsRow(data.ballHistory);
-
-    const banner = document.getElementById('target-banner');
-    if (data.phase === 'chasing' && data.target !== null) {
-      banner.classList.add('show');
-      document.getElementById('target-num').textContent = data.target + 1;
-      document.getElementById('need-num').textContent = Math.max(0, data.target + 1 - (data.currentScore||0));
-    } else banner.classList.remove('show');
-
-    if (scorePaused) return;
-
-    // Spectators / teammates
-    if (myRole === 'teammate') {
-      document.getElementById('game-status').textContent = '👀 Spectating — Captains are battling!';
-      document.getElementById('number-buttons').innerHTML = '';
-      document.getElementById('move-reveal').style.display = 'none';
-      return;
-    }
-
-    const isBatting = data.batting === myRole;
-    const myMove = myRole === 'player1' ? data.move1 : data.move2;
-    const oppMove = myRole === 'player1' ? data.move2 : data.move1;
-    const statusEl = document.getElementById('game-status');
-
-    if (myMove !== null && myMove !== undefined && (oppMove === null || oppMove === undefined)) {
-      statusEl.textContent = `You chose ${myMove} — waiting for opponent...`;
-      statusEl.className = 'status-text'; stopTimer();
-    } else if (myMove === null || myMove === undefined) {
-      statusEl.textContent = isBatting ? '🏏 You are BATTING — Pick a number!' : '🎳 You are BOWLING — Pick a number!';
-      statusEl.className = 'status-text ' + (isBatting ? 'batting' : 'bowling');
-      mySelectedMove = null; startTimer();
-    }
-
-    const btns = document.getElementById('number-buttons');
-    btns.innerHTML = '';
-    [0,1,2,3,4,5,6].forEach(n => {
-      const btn = document.createElement('button');
-      btn.className = 'num-btn' + (myMove === n ? ' selected' : '');
-      btn.textContent = n; btn.disabled = (myMove !== null && myMove !== undefined) || scorePaused;
-      btn.onclick = () => makeMove(n);
-      btns.appendChild(btn);
-    });
-
-    const revealDiv = document.getElementById('move-reveal');
-    if ((myMove !== null && myMove !== undefined) && (oppMove !== null && oppMove !== undefined)) {
-      revealDiv.style.display = 'flex';
-      document.getElementById('my-move-val').textContent = myMove;
-      document.getElementById('opp-move-val').textContent = oppMove;
-      const match = myMove === oppMove;
-      document.getElementById('my-move-box').className = 'move-box' + (match ? ' match' : '');
-      document.getElementById('opp-move-box').className = 'move-box' + (match ? ' match' : '');
-    } else revealDiv.style.display = 'none';
-  }
-
-  function updateBallsRow(history) {
-    const last6 = (history||[]).slice(-6);
-    const row = document.getElementById('balls-row');
-    row.innerHTML = '';
-    for (let i = 0; i < 6; i++) {
-      const div = document.createElement('div');
-      div.className = 'ball-circle';
-      if (i < last6.length) {
-        const val = last6[i];
-        div.textContent = val === 'W' ? 'W' : val;
-        div.classList.add(val==='W' ? 'out-ball' : val===6 ? 'six' : 'run');
-      } else div.textContent = '-';
-      row.appendChild(div);
-    }
-  }
-
-  window.makeMove = async (n) => {
-    if (myRole === 'teammate') return;
-    if (scorePaused || mySelectedMove !== null) return;
-    mySelectedMove = n; stopTimer();
-    if (isBotGame) {
-      localGameState.move1 = n;
-      localGameState.move2 = Math.floor(Math.random() * 7);
-      updateGameUI(localGameState);
-      setTimeout(() => checkMovesLocal(), 300);
-      return;
-    }
-    await update(ref(db, `rooms/${currentRoom}`), { [myRole==='player1'?'move1':'move2']: n });
-  };
-
-  // ====== TIMER ======
-  function startTimer() {
-    if (scorePaused) return;
-    clearInterval(timerInterval); timeLeft = 5; updateTimerUI();
-    timerInterval = setInterval(() => {
-      timeLeft -= 0.1; updateTimerUI();
-      if (timeLeft <= 0) { clearInterval(timerInterval); if (mySelectedMove === null) makeMove(Math.floor(Math.random()*7)); }
-    }, 100);
-  }
-  function stopTimer() {
-    clearInterval(timerInterval);
-    document.getElementById('timer-bar').style.width = '0%';
-    document.getElementById('timer-label').textContent = '0';
-  }
-  function updateTimerUI() {
-    const pct = Math.max(0, (timeLeft/5)*100);
-    const bar = document.getElementById('timer-bar');
-    bar.style.width = pct + '%';
-    bar.style.background = timeLeft > 2 ? '#2563eb' : '#dc2626';
-    document.getElementById('timer-label').textContent = Math.ceil(timeLeft);
-  }
-
-  // ====== CHECK MOVES ======
-  async function checkMoves(data) {
-    if (data.move1 === null || data.move1 === undefined || data.move2 === null || data.move2 === undefined) return;
-    if (myRole !== 'player1') return;
-
-    const batting = data.batting;
-    const batterMove = batting === 'player1' ? data.move1 : data.move2;
-    const history = data.ballHistory ? [...data.ballHistory] : [];
-    const batterName = (batting==='player1' ? data.player1?.name : data.player2?.name)?.split(' ')[0] || 'Player';
-
-    if (data.move1 === data.move2) {
-      history.push('W');
-      showOutFlash(batterName, async () => {
-        if (data.phase === 'batting') {
-          const target = data.currentScore;
-          const su = {};
-          su['player1/score'] = batting==='player1' ? target : (data.player1?.score??0);
-          su['player2/score'] = batting==='player2' ? target : (data.player2?.score??0);
-          await update(ref(db,`rooms/${currentRoom}`), {
-            move1:null, move2:null, phase:'chasing',
-            batting: batting==='player1' ? 'player2' : 'player1',
-            target, currentScore:0, ballHistory:[], ...su
+        // Innings break — 2nd innings starting
+        if (d.status === 'innings-break') {
+          const chaser = d.batting === 'player1' ? d.player2?.name?.split(' ')[0] : d.player1?.name?.split(' ')[0];
+          countdown(`${chaser}'s team needs to chase ${d.target + 1}!`, () => {
+            // Trigger pick screen for 2nd innings
+            if (myRole === 'player1') {
+              update(ref(db, `rooms/${room}`), { status: 'pick', needPick: 'batsman', pickBy: d.batting === 'player1' ? d.captainB || d.player2?.uid : d.captainA || d.player1?.uid });
+            }
           });
+        }
+
+        if (d.status === 'rematch') {
+          tossOK = false; started = false; paused = false; myMove = null;
+          showToss(d.toss);
+        }
+
+        if (d.status === 'finished') { stopTimer(); showResult(d); }
+      });
+    }
+
+    // ── TEAM LOBBY UI ──
+    function updateTeamLobby(d) {
+      if (!document.getElementById('team-lobby-screen').classList.contains('active')) return;
+      const rl = (id, arr, cap) => {
+        document.getElementById(id).innerHTML = (arr || []).map(p =>
+          `<div class="pr ${p.uid === cap ? 'cap' : ''}">${p.uid === cap ? '👑 ' : '👤 '}${p.name}</div>`
+        ).join('') || '<div style="color:#94a3b8;font-size:.75rem;">Empty</div>';
+      };
+      rl('list-a', d.teamA, d.captainA); rl('list-b', d.teamB, d.captainB);
+      const ta = document.getElementById('tag-a'); ta.textContent = d.readyA ? 'READY' : 'WAIT'; ta.className = 'rtag' + (d.readyA ? ' ok' : '');
+      const tb = document.getElementById('tag-b'); tb.textContent = d.readyB ? 'READY' : 'WAIT'; tb.className = 'rtag' + (d.readyB ? ' ok' : '');
+      const full = (d.teamA?.length || 0) === d.teamSize && (d.teamB?.length || 0) === d.teamSize;
+      const amCap = me.uid === d.captainA || me.uid === d.captainB;
+      const myReady = (me.uid === d.captainA && d.readyA) || (me.uid === d.captainB && d.readyB);
+      document.getElementById('tw-msg').textContent = full ? 'Both teams full! Captains press Ready!' :
+        `Waiting... ${(d.teamA?.length || 0) + (d.teamB?.length || 0)}/${d.teamSize * 2} joined`;
+      document.getElementById('btn-ready').style.display = (full && amCap && !myReady) ? 'block' : 'none';
+    }
+
+    // ── TOSS ──
+    function showToss(toss) {
+      document.getElementById('toss-btns').style.display = (myRole === 'teammate') ? 'none' : 'flex';
+      document.getElementById('ch-sec').style.display = 'none';
+      document.getElementById('wt-ch-sec').style.display = 'none';
+      document.getElementById('spec-toss').style.display = (myRole === 'teammate') ? 'block' : 'none';
+      if (myRole === 'teammate') document.getElementById('spec-toss').textContent = '⏳ Captains are doing the toss...';
+      document.getElementById('tw').textContent = '';
+      ['btn-H', 'btn-T'].forEach(id => { document.getElementById(id).disabled = false; document.getElementById(id).classList.remove('chosen'); });
+      SS('toss-screen');
+    }
+    function updateTossUI(d) {
+      const t = d.toss || {};
+      const mc = myRole === 'player1' ? t.p1c : t.p2c;
+      const oc = myRole === 'player1' ? t.p2c : t.p1c;
+      const oppN = (myRole === 'player1' ? d.player2?.name : d.player1?.name)?.split(' ')[0] || 'Opponent';
+      if (mc) {
+        document.getElementById('btn-H').disabled = true; document.getElementById('btn-T').disabled = true;
+        document.getElementById('btn-' + mc[0].toUpperCase()).classList.add('chosen');
+        if (!t.winner) document.getElementById('tw').textContent = oc ? 'Flipping coin... 🪙' : `Waiting for ${oppN}...`;
+      }
+      if (oc && !mc) document.getElementById('btn-' + oc[0].toUpperCase()).disabled = true;
+      if (t.winner && !t.batting) {
+        const iWon = t.winner === myRole;
+        document.getElementById('toss-btns').style.display = 'none'; document.getElementById('tw').textContent = '';
+        if (iWon) {
+          document.getElementById('ch-sec').style.display = 'block';
+          document.getElementById('t-res-big').textContent = `🎉 You Won the Toss!`;
+          document.getElementById('t-res-sm').textContent = `It was ${t.result?.toUpperCase()}! Choose Bat or Bowl`;
+        } else if (myRole === 'teammate') {
+          document.getElementById('spec-toss').textContent = '⏳ Toss winner is choosing...';
         } else {
-          const cs = data.currentScore;
-          const winner = cs > data.target ? data.batting : (cs < data.target ? (data.batting==='player1'?'player2':'player1') : 'tie');
-          const su = {};
-          su['player1/score'] = data.batting==='player1' ? cs : (data.player1?.score??0);
-          su['player2/score'] = data.batting==='player2' ? cs : (data.player2?.score??0);
-          await update(ref(db,`rooms/${currentRoom}`), { move1:null, move2:null, status:'finished', ballHistory:history, winner, ...su });
+          document.getElementById('wt-ch-sec').style.display = 'block';
+          document.getElementById('wt-ch-big').textContent = `${oppN} Won the Toss!`;
         }
-      });
-    } else {
-      const oppMove = batting === 'player1' ? data.move2 : data.move1;
-      const runsScored = batterMove === 0 ? oppMove : batterMove;
-      history.push(runsScored);
-      const newScore = (data.currentScore||0) + runsScored;
-      scorePaused = true; stopTimer();
-      showScoreFlash(batterName, runsScored, async () => {
-        scorePaused = false; mySelectedMove = null;
-        if (data.phase === 'chasing' && newScore > data.target) {
-          const su = {};
-          su['player1/score'] = data.batting==='player1' ? newScore : (data.player1?.score??0);
-          su['player2/score'] = data.batting==='player2' ? newScore : (data.player2?.score??0);
-          await update(ref(db,`rooms/${currentRoom}`), { move1:null, move2:null, currentScore:newScore, ballHistory:history, status:'finished', winner:data.batting, ...su });
-          return;
+      }
+    }
+    window.pickToss = async (c) => {
+      if (myRole !== 'player1' && myRole !== 'player2') return;
+      if (isBot) {
+        botState.toss.p1c = c; botState.toss.p2c = Math.random() < .5 ? 'heads' : 'tails';
+        updateTossUI(botState); tossOK = true; resolveTossBot();
+        return;
+      }
+      await update(ref(db, `rooms/${room}`), { [myRole === 'player1' ? 'toss/p1c' : 'toss/p2c']: c });
+    };
+    async function resolveToss(d) {
+      const t = d.toss, res = Math.random() < .5 ? 'heads' : 'tails';
+      const winner = t.p1c === res ? 'player1' : t.p2c === res ? 'player2' : (Math.random() < .5 ? 'player1' : 'player2');
+      await update(ref(db, `rooms/${room}`), { 'toss/result': res, 'toss/winner': winner });
+    }
+    window.pickInnings = async (choice) => {
+      if (myRole !== 'player1' && myRole !== 'player2') return;
+      if (isBot) { startBotInnings(choice); return; }
+      const snap = await get(ref(db, `rooms/${room}`));
+      const tw = snap.val().toss.winner;
+      const batting = choice === 'batting' ? tw : (tw === 'player1' ? 'player2' : 'player1');
+      const d = snap.val();
+      // For team mode — after innings choice, go to pick screen
+      if (d.isTeam) {
+        const battingCap = batting === 'player1' ? d.captainA : d.captainB;
+        const bowlingCap = batting === 'player1' ? d.captainB : d.captainA;
+        await update(ref(db, `rooms/${room}`), {
+          'toss/batting': batting, batting, phase: 'batting',
+          status: 'pick', needPick: 'both',
+          pickBy_bat: battingCap, pickBy_bowl: bowlingCap,
+          pickedBat: null, pickedBowl: null,
+          currentBatsman: null, currentBowler: null
+        });
+      } else {
+        await update(ref(db, `rooms/${room}`), { 'toss/batting': batting, batting, phase: 'batting', status: 'playing' });
+      }
+    };
+
+    // ── PICK PLAYER SCREEN ──
+    function handlePickScreen(d) {
+      SS('pick-screen');
+      const isBatCap = me.uid === (d.batting === 'player1' ? d.captainA : d.captainB);
+      const isBowlCap = me.uid === (d.batting === 'player1' ? d.captainB : d.captainA);
+      const battingRoster = d.batting === 'player1' ? (d.rosterA || []) : (d.rosterB || []);
+      const bowlingRoster = d.batting === 'player1' ? (d.rosterB || []) : (d.rosterA || []);
+
+      if (d.needPick === 'both') {
+        // Need both bat and bowl pick
+        if (isBatCap && !d.pickedBat) {
+          showPickList('Pick your Batsman 🏏', 'Who will open the batting?', battingRoster.filter(p => !p.out), 'bat', d);
+        } else if (isBowlCap && !d.pickedBowl) {
+          showPickList('Pick your Bowler ⚾', 'Who will bowl this over?', bowlingRoster, 'bowl', d);
+        } else if (d.pickedBat && d.pickedBowl) {
+          // Both picked — start/resume playing
+          if (myRole === 'player1') {
+            update(ref(db, `rooms/${room}`), {
+              status: 'playing', needPick: null,
+              currentBatsman: d.pickedBat, currentBowler: d.pickedBowl,
+              pickedBat: null, pickedBowl: null,
+              move1: null, move2: null, ballsInOver: d.ballsInOver || 0
+            });
+          }
+        } else {
+          // Waiting for the other captain
+          const waitMsg = isBatCap && d.pickedBat ? 'Waiting for bowling captain to pick bowler...' :
+            isBowlCap && d.pickedBowl ? 'Waiting for batting captain to pick batsman...' :
+              'Waiting for captains to pick players...';
+          document.getElementById('pick-title').textContent = '⏳ Waiting...';
+          document.getElementById('pick-sub').textContent = waitMsg;
+          document.getElementById('pick-list').innerHTML = '';
+          document.getElementById('wait-pick').style.display = 'block';
+          document.getElementById('wait-pick').textContent = waitMsg;
         }
-        await update(ref(db,`rooms/${currentRoom}`), { move1:null, move2:null, currentScore:newScore, ballHistory:history });
+      } else if (d.needPick === 'batsman') {
+        if (isBatCap) {
+          showPickList('Pick your Batsman 🏏', 'Who bats next?', battingRoster.filter(p => !p.out), 'bat', d);
+        } else if (isBowlCap) {
+          // Bowling captain waits, but also needs to pick bowler after over
+          showPickList('Pick your Bowler ⚾', 'Who will bowl next over?', bowlingRoster, 'bowl', d);
+        } else {
+          waitingPick('Captains are picking players...');
+        }
+      } else if (d.needPick === 'bowler') {
+        if (isBowlCap) {
+          showPickList('Pick your Bowler ⚾', 'Over complete! Pick next bowler', bowlingRoster, 'bowl', d);
+        } else {
+          waitingPick('Bowling captain is picking next bowler...');
+        }
+      } else {
+        waitingPick('Waiting for captains...');
+      }
+    }
+
+    function showPickList(title, sub, roster, type, d) {
+      document.getElementById('pick-title').textContent = title;
+      document.getElementById('pick-sub').textContent = sub;
+      document.getElementById('wait-pick').style.display = 'none';
+      const list = document.getElementById('pick-list');
+      list.innerHTML = '';
+      roster.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'pick-btn';
+        const isCurrentBat = p.uid === d.currentBatsman;
+        const isCurrentBowl = p.uid === d.currentBowler;
+        const alreadyPicked = type === 'bat' ? p.uid === d.pickedBat : p.uid === d.pickedBowl;
+        btn.disabled = alreadyPicked || isCurrentBat || p.out;
+        btn.innerHTML = `
+      <div class="pick-av">${p.photo ? `<img src="${p.photo}"/>` : (p.name?.charAt(0) || '?')}</div>
+      <div class="pick-info">
+        <div class="pick-name">${p.name}</div>
+        <div class="pick-tag">${p.out ? 'OUT ❌' : isCurrentBat ? 'Batting 🏏' : isCurrentBowl ? 'Bowling ⚾' : `Runs: ${p.runs || 0}`}</div>
+      </div>`;
+        btn.onclick = () => pickPlayer(p.uid, type, d);
+        list.appendChild(btn);
       });
     }
-  }
 
-  function showOutFlash(batterName, callback) {
-    const overlay = document.getElementById('out-overlay');
-    document.getElementById('out-sub-text').textContent = batterName + ' is OUT!';
-    overlay.classList.add('show');
-    scorePaused = true; stopTimer();
-    setTimeout(() => {
-      overlay.classList.remove('show');
-      scorePaused = false; mySelectedMove = null;
-      if (callback) callback();
-    }, 1800);
-  }
-
-  // ====== RESULT ======
-  function showResult(data) {
-    if (document.getElementById('result-screen').classList.contains('active')) return;
-    const won = data.winner === myRole, tie = data.winner === 'tie';
-    document.getElementById('result-trophy').textContent = tie ? '🤝' : won ? '🏆' : '😢';
-    document.getElementById('result-title').textContent = tie ? "It's a Tie!" : won ? 'You Won!' : 'You Lost!';
-    document.getElementById('result-sub').textContent = tie ? 'Great match!' : won ? 'Brilliant innings! 🎉' : 'Better luck next time!';
-    document.getElementById('r-p1-score').textContent = data.player1?.score ?? 0;
-    document.getElementById('r-p2-score').textContent = data.player2?.score ?? 0;
-    document.getElementById('play-again-waiting').style.display = 'none';
-    document.getElementById('btn-play-again').style.display = isBotGame ? 'none' : 'block';
-    showScreen('result-screen');
-  }
-
-  function updatePlayAgainUI(data) {
-    if (!data.playAgain) return;
-    const myKey = myRole === 'player1' ? 'player1' : 'player2';
-    const oppKey = myRole === 'player1' ? 'player2' : 'player1';
-    if (data.playAgain[myKey] && !data.playAgain[oppKey]) {
-      document.getElementById('btn-play-again').style.display = 'none';
-      document.getElementById('play-again-waiting').style.display = 'block';
-      document.getElementById('play-again-waiting').textContent = '⏳ Waiting for opponent to accept...';
+    function waitingPick(msg) {
+      document.getElementById('pick-title').textContent = '⏳ Waiting...';
+      document.getElementById('pick-sub').textContent = msg;
+      document.getElementById('pick-list').innerHTML = '';
+      document.getElementById('wait-pick').style.display = 'block';
+      document.getElementById('wait-pick').textContent = msg;
     }
-  }
 
-  // ====== PLAY AGAIN (same room) ======
-  window.requestPlayAgain = async () => {
-    if (!currentRoom || isBotGame) return;
-    const myKey = myRole === 'player1' ? 'player1' : 'player2';
-    const oppKey = myRole === 'player1' ? 'player2' : 'player1';
+    async function pickPlayer(uid, type, d) {
+      const key = type === 'bat' ? 'pickedBat' : 'pickedBowl';
+      await update(ref(db, `rooms/${room}`), { [key]: uid });
+      // Check if both picked now
+      const snap = await get(ref(db, `rooms/${room}`));
+      const nd = snap.val();
+      if (nd.pickedBat && nd.pickedBowl && nd.needPick === 'both') {
+        // Both done — start game
+        if (myRole === 'player1') {
+          await update(ref(db, `rooms/${room}`), {
+            status: 'playing', needPick: null,
+            currentBatsman: nd.pickedBat, currentBowler: nd.pickedBowl,
+            pickedBat: null, pickedBowl: null, move1: null, move2: null
+          });
+        }
+      } else if (nd.pickedBat && nd.needPick === 'batsman' && type === 'bat') {
+        if (myRole === 'player1') {
+          // Also need new bowler? No — keep same bowler, just need new batsman
+          await update(ref(db, `rooms/${room}`), {
+            status: 'playing', needPick: null,
+            currentBatsman: nd.pickedBat,
+            pickedBat: null, move1: null, move2: null
+          });
+        }
+      } else if (nd.pickedBowl && nd.needPick === 'bowler' && type === 'bowl') {
+        if (myRole === 'player1') {
+          await update(ref(db, `rooms/${room}`), {
+            status: 'playing', needPick: null,
+            currentBowler: nd.pickedBowl,
+            pickedBowl: null, move1: null, move2: null
+          });
+        }
+      }
+    }
 
-    await update(ref(db,`rooms/${currentRoom}`), { [`playAgain/${myKey}`]: true });
+    // ── COUNTDOWN ──
+    function countdown(label, cb) {
+      const ov = document.getElementById('cd-ov'), ne = document.getElementById('cd-num'), le = document.getElementById('cd-lbl');
+      le.textContent = label || 'GET READY!';
+      ov.classList.add('show'); let c = 3; ne.textContent = c; ne.className = 'cd-num c-anim';
+      const iv = setInterval(() => {
+        c--;
+        if (c <= 0) { clearInterval(iv); ne.textContent = '🏏'; setTimeout(() => { ov.classList.remove('show'); cb(); }, 700); }
+        else { ne.style.animation = 'none'; void ne.offsetWidth; ne.className = 'cd-num c-anim'; ne.textContent = c; }
+      }, 800);
+    }
 
-    const snap = await get(ref(db,`rooms/${currentRoom}`));
-    const data = snap.val();
+    // ── GAME UI ──
+    function updateGameUI(d) {
+      if (d.status === 'finished') { stopTimer(); showResult(d); return; }
+      if (d.status !== 'playing') return;
 
-    if (data.playAgain?.player1 && data.playAgain?.player2) {
-      // Both want to play again — reset room
-      if (myRole === 'player1') {
-        await update(ref(db,`rooms/${currentRoom}`), {
-          status: 'toss',
-          toss: { p1choice: null, p2choice: null, winner: null, batting: null, result: null },
-          phase: 'batting', batting: null,
-          target: null, move1: null, move2: null, currentScore: 0,
-          ballHistory: [], winner: null,
-          'player1/score': 0, 'player2/score': 0,
-          playAgain: { player1: false, player2: false }
+      // Determine current batsman and bowler
+      const isTeam = d.isTeam;
+      const battingIsP1 = d.batting === 'player1';
+
+      let batName, batPhoto, bowlName, bowlPhoto;
+      if (isTeam) {
+        const batRoster = battingIsP1 ? (d.rosterA || []) : (d.rosterB || []);
+        const bowlRoster = battingIsP1 ? (d.rosterB || []) : (d.rosterA || []);
+        const bat = batRoster.find(p => p.uid === d.currentBatsman) || batRoster[0] || { name: 'Batsman' };
+        const bowl = bowlRoster.find(p => p.uid === d.currentBowler) || bowlRoster[0] || { name: 'Bowler' };
+        batName = bat.name?.split(' ')[0]; batPhoto = bat.photo;
+        bowlName = bowl.name?.split(' ')[0]; bowlPhoto = bowl.photo;
+      } else {
+        batName = battingIsP1 ? d.player1?.name?.split(' ')[0] : d.player2?.name?.split(' ')[0];
+        batPhoto = battingIsP1 ? d.player1?.photo : d.player2?.photo;
+        bowlName = battingIsP1 ? d.player2?.name?.split(' ')[0] : d.player1?.name?.split(' ')[0];
+        bowlPhoto = battingIsP1 ? d.player2?.photo : d.player1?.photo;
+      }
+
+      setAv('g-av1', batPhoto, batName); setAv('g-av2', bowlPhoto, bowlName);
+      document.getElementById('g-nm1').textContent = batName || 'Batsman';
+      document.getElementById('g-nm2').textContent = bowlName || 'Bowler';
+      document.getElementById('g-role1').textContent = '🏏 batting';
+      document.getElementById('g-role2').textContent = '⚾ bowling';
+      document.getElementById('g-sc1').textContent = d.currentScore || 0;
+      document.getElementById('g-sc2').textContent = '';
+
+      // Over info
+      const balls = d.ballsInOver || 0, overs = d.oversCount || 0;
+      document.getElementById('g-over').textContent = `${overs}.${balls}`;
+      document.getElementById('g-wkts').textContent = d.wickets || 0;
+      document.getElementById('g-score').textContent = d.currentScore || 0;
+
+      // Result display names
+      document.getElementById('r-n1').textContent = d.player1?.name?.split(' ')[0] || 'P1';
+      document.getElementById('r-n2').textContent = d.player2?.name?.split(' ')[0] || 'P2';
+
+      const tb = document.getElementById('tgt-b');
+      if (d.phase === 'chasing' && d.target !== null) {
+        tb.classList.add('show');
+        document.getElementById('tgt-n').textContent = d.target + 1;
+        document.getElementById('need-n').textContent = Math.max(0, d.target + 1 - (d.currentScore || 0));
+      } else tb.classList.remove('show');
+
+      updateBalls(d.ballHistory);
+
+      if (paused) return;
+
+      // Am I the active batsman or bowler?
+      const amBatsman = isTeam ? me.uid === d.currentBatsman : (d.batting === myRole);
+      const amBowler = isTeam ? me.uid === d.currentBowler : (d.batting !== myRole && (myRole === 'player1' || myRole === 'player2'));
+      const amActive = amBatsman || amBowler;
+      const amSpectator = !amActive || myRole === 'teammate';
+
+      const mv1 = d.move1, mv2 = d.move2;
+      const myMoveVal = amBatsman ? mv1 : (amBowler ? mv2 : null);
+      const oppMoveVal = amBatsman ? mv2 : (amBowler ? mv1 : null);
+
+      const st = document.getElementById('g-status');
+      if (amSpectator) {
+        st.textContent = '👀 Spectating'; st.className = 'st-txt';
+        document.getElementById('num-grid').innerHTML = '<div class="spec-msg">👀 Spectating this ball...</div>';
+        document.getElementById('mv-reveal').style.display = 'none';
+        stopTimer(); return;
+      }
+
+      if (myMoveVal !== null && myMoveVal !== undefined && (oppMoveVal === null || oppMoveVal === undefined)) {
+        st.textContent = `You chose ${myMoveVal} — waiting...`; st.className = 'st-txt'; stopTimer();
+      } else if (myMoveVal === null || myMoveVal === undefined) {
+        st.textContent = amBatsman ? '🏏 You are BATTING — Pick!' : '🎳 You are BOWLING — Pick!';
+        st.className = 'st-txt ' + (amBatsman ? 'bat' : 'bowl');
+        myMove = null; startTimer();
+      }
+
+      const grid = document.getElementById('num-grid');
+      grid.innerHTML = '';
+      [1, 2, 3, 4, 5, 6].forEach(n => {
+        const b = document.createElement('button');
+        b.className = 'nb' + (myMoveVal === n ? ' sel' : '');
+        b.textContent = n; b.disabled = (myMoveVal !== null && myMoveVal !== undefined) || paused;
+        b.onclick = () => makeMove(n, amBatsman);
+        grid.appendChild(b);
+      });
+
+      const rv = document.getElementById('mv-reveal');
+      if ((mv1 !== null && mv1 !== undefined) && (mv2 !== null && mv2 !== undefined)) {
+        rv.style.display = 'flex';
+        document.getElementById('mv-me-v').textContent = myMoveVal;
+        document.getElementById('mv-op-v').textContent = oppMoveVal;
+        const m = mv1 === mv2;
+        document.getElementById('mv-me').className = 'mv-box' + (m ? ' match' : '');
+        document.getElementById('mv-op').className = 'mv-box' + (m ? ' match' : '');
+      } else rv.style.display = 'none';
+    }
+
+    function setAv(id, photo, name) {
+      const el = document.getElementById(id);
+      if (photo) el.innerHTML = `<img src="${photo}"/>`;
+      else el.textContent = (name?.charAt(0) || '?').toUpperCase();
+    }
+
+    function updateBalls(h) {
+      const last6 = (h || []).slice(-6), row = document.getElementById('balls-row');
+      row.innerHTML = '';
+      for (let i = 0; i < 6; i++) {
+        const div = document.createElement('div'); div.className = 'bc';
+        if (i < last6.length) {
+          const v = last6[i]; div.textContent = v === 'W' ? 'W' : v;
+          div.classList.add(v === 'W' ? 'out-b' : v === 6 ? 'six' : 'run');
+        } else div.textContent = '-';
+        row.appendChild(div);
+      }
+    }
+
+    // ── MAKE MOVE ──
+    window.makeMove = async (n, amBat) => {
+      if (paused || myMove !== null) return;
+      myMove = n; stopTimer();
+      if (isBot) { botState.move1 = n; botState.move2 = Math.floor(Math.random() * 6) + 1; updateGameUI(botState); setTimeout(checkMovesBot, 300); return; }
+      await update(ref(db, `rooms/${room}`), { [amBat ? 'move1' : 'move2']: n });
+    };
+
+    // ── TIMER ──
+    function startTimer() {
+      if (paused) return;
+      clearInterval(timer); tLeft = 5; updateTimerUI();
+      timer = setInterval(() => {
+        tLeft -= .1; updateTimerUI();
+        if (tLeft <= 0) { clearInterval(timer); if (myMove === null) { const grid = document.getElementById('num-grid'); const btns = grid.querySelectorAll('.nb:not(:disabled)'); if (btns.length) btns[Math.floor(Math.random() * btns.length)].click(); } }
+      }, 100);
+    }
+    function stopTimer() { clearInterval(timer); document.getElementById('t-bar').style.width = '0%'; document.getElementById('t-lbl').textContent = '0'; }
+    function updateTimerUI() { const p = Math.max(0, (tLeft / 5) * 100); const b = document.getElementById('t-bar'); b.style.width = p + '%'; b.style.background = tLeft > 2 ? '#2563eb' : '#dc2626'; document.getElementById('t-lbl').textContent = Math.ceil(tLeft); }
+
+    // ── CHECK MOVES ──
+    async function checkMoves(d) {
+      if (d.move1 === null || d.move1 === undefined || d.move2 === null || d.move2 === undefined) return;
+      if (myRole !== 'player1') return;
+
+      const batting = d.batting;
+      const batterMove = d.move1; // move1 = batsman always
+      const bowlerMove = d.move2; // move2 = bowler always
+      const isTeam = d.isTeam;
+      const h = [...(d.ballHistory || [])];
+
+      // Get batsman name
+      let batName;
+      if (isTeam) { const r = batting === 'player1' ? (d.rosterA || []) : (d.rosterB || []); batName = r.find(p => p.uid === d.currentBatsman)?.name?.split(' ')[0] || 'Batsman'; }
+      else { batName = (batting === 'player1' ? d.player1?.name : d.player2?.name)?.split(' ')[0]; }
+
+      const ballsInOver = (d.ballsInOver || 0) + 1;
+      const oversCount = d.oversCount || 0;
+
+      if (batterMove === bowlerMove) {
+        // OUT!
+        h.push('W');
+        const newWkts = (d.wickets || 0) + 1;
+        const maxWkts = isTeam ? d.teamSize : (1);
+
+        showOutFlash(batName, async () => {
+          // Update roster — mark player out
+          const rosterKey = batting === 'player1' ? 'rosterA' : 'rosterB';
+          const roster = [...(d[rosterKey] || [])];
+          const pi = roster.findIndex(p => p.uid === d.currentBatsman);
+          if (pi >= 0) roster[pi] = { ...roster[pi], out: true };
+
+          const allOut = (newWkts >= maxWkts);
+
+          if (d.phase === 'batting') {
+            if (allOut) {
+              // Innings over — start 2nd innings
+              const target = d.currentScore;
+              const su = {};
+              su[batting === 'player1' ? 'player1/score' : 'player2/score'] = target;
+              const newBatting = batting === 'player1' ? 'player2' : 'player1';
+              const batCap = newBatting === 'player1' ? d.captainA : d.captainB;
+              const bowlCap = newBatting === 'player1' ? d.captainB : d.captainA;
+              await update(ref(db, `rooms/${room}`), {
+                move1: null, move2: null, phase: 'chasing', batting: newBatting,
+                target, currentScore: 0, wickets: 0, ballHistory: [],
+                ballsInOver: 0, oversCount: 0,
+                [rosterKey]: roster,
+                status: isTeam ? 'pick' : 'playing',
+                needPick: isTeam ? 'both' : null,
+                pickBy_bat: isTeam ? batCap : null,
+                pickBy_bowl: isTeam ? bowlCap : null,
+                pickedBat: null, pickedBowl: null,
+                currentBatsman: isTeam ? null : undefined,
+                currentBowler: isTeam ? null : undefined,
+                ...su
+              });
+            } else {
+              // Next batsman needed
+              const batCap = batting === 'player1' ? d.captainA : d.captainB;
+              await update(ref(db, `rooms/${room}`), {
+                move1: null, move2: null, wickets: newWkts,
+                ballHistory: h, currentBatsman: null,
+                ballsInOver: ballsInOver >= 6 ? 0 : ballsInOver,
+                oversCount: ballsInOver >= 6 ? oversCount + 1 : oversCount,
+                [rosterKey]: roster,
+                status: isTeam ? 'pick' : 'playing',
+                needPick: isTeam ? 'batsman' : null,
+                pickBy_bat: isTeam ? batCap : null,
+                pickedBat: null
+              });
+            }
+          } else {
+            // Chasing — out
+            if (allOut) {
+              const cs = d.currentScore;
+              const winner = cs > d.target ? batting : (cs < d.target ? (batting === 'player1' ? 'player2' : 'player1') : 'tie');
+              const su = {};
+              su[batting === 'player1' ? 'player1/score' : 'player2/score'] = cs;
+              await update(ref(db, `rooms/${room}`), { move1: null, move2: null, status: 'finished', ballHistory: h, winner, [rosterKey]: roster, ...su });
+            } else {
+              const batCap = batting === 'player1' ? d.captainA : d.captainB;
+              await update(ref(db, `rooms/${room}`), {
+                move1: null, move2: null, wickets: newWkts, ballHistory: h, currentBatsman: null,
+                ballsInOver: ballsInOver >= 6 ? 0 : ballsInOver,
+                oversCount: ballsInOver >= 6 ? oversCount + 1 : oversCount,
+                [rosterKey]: roster,
+                status: isTeam ? 'pick' : 'playing',
+                needPick: isTeam ? 'batsman' : null,
+                pickBy_bat: isTeam ? batCap : null,
+                pickedBat: null
+              });
+            }
+          }
+        });
+      } else {
+        // Runs scored
+        h.push(batterMove);
+        const newScore = (d.currentScore || 0) + batterMove;
+        // Update batsman runs in roster
+        const rKey = batting === 'player1' ? 'rosterA' : 'rosterB';
+        const roster = [...(d[rKey] || [])];
+        const pi = roster.findIndex(p => p.uid === d.currentBatsman);
+        if (pi >= 0) roster[pi] = { ...roster[pi], runs: (roster[pi].runs || 0) + batterMove };
+
+        paused = true; stopTimer();
+        showScoreFlash(batName, batterMove, async () => {
+          paused = false; myMove = null;
+
+          const overDone = ballsInOver >= 6;
+          const newBalls = overDone ? 0 : ballsInOver;
+          const newOvers = overDone ? oversCount + 1 : oversCount;
+          const bowlCap = batting === 'player1' ? d.captainB : d.captainA;
+
+          if (d.phase === 'chasing' && newScore > d.target) {
+            const su = {};
+            su[batting === 'player1' ? 'player1/score' : 'player2/score'] = newScore;
+            await update(ref(db, `rooms/${room}`), { move1: null, move2: null, currentScore: newScore, ballHistory: h, status: 'finished', winner: batting, [rKey]: roster, ...su });
+            return;
+          }
+          // Over change?
+          if (overDone && isTeam) {
+            await update(ref(db, `rooms/${room}`), {
+              move1: null, move2: null, currentScore: newScore, ballHistory: h,
+              ballsInOver: newBalls, oversCount: newOvers, [rKey]: roster,
+              status: 'pick', needPick: 'bowler',
+              pickBy_bowl: bowlCap, pickedBowl: null
+            });
+          } else {
+            await update(ref(db, `rooms/${room}`), { move1: null, move2: null, currentScore: newScore, ballHistory: h, ballsInOver: newBalls, oversCount: newOvers, [rKey]: roster });
+          }
         });
       }
-    } else {
-      document.getElementById('btn-play-again').style.display = 'none';
-      document.getElementById('play-again-waiting').style.display = 'block';
-      document.getElementById('play-again-waiting').textContent = '⏳ Waiting for opponent to accept...';
     }
-  };
 
-  // ====== LOBBY ======
-  window.goToLobby = () => {
-    currentRoom = null; myRole = null; mySelectedMove = null; myTeam = null;
-    tossProcessed = false; gameStarted = false; scorePaused = false;
-    isBotGame = false; localGameState = null; playAgainRequested = false;
-    if (gameListener) { off(ref(db, `rooms/${currentRoom || ''}`)); gameListener = null; }
-    stopTimer();
-    showScreen('lobby-screen');
-  };
+    function showOutFlash(name, cb) {
+      const ov = document.getElementById('out-ov');
+      document.getElementById('out-sub').textContent = name + ' is OUT!';
+      ov.classList.add('show'); paused = true; stopTimer();
+      setTimeout(() => { ov.classList.remove('show'); paused = false; myMove = null; if (cb) cb(); }, 1800);
+    }
 
-  // ====== BOT GAME ======
-  window.startBotGame = () => {
-    if (!currentUser) return alert('Please login first!');
-    isBotGame = true; currentRoom = 'BOT'; myRole = 'player1';
-    tossProcessed = false; gameStarted = false; scorePaused = false;
-    localGameState = {
-      player1: { uid: currentUser.uid, name: currentUser.displayName, score: 0, photo: currentUser.photoURL||null },
-      player2: { uid: 'bot', name: '🤖 Bot', score: 0, photo: null },
-      status: 'toss',
-      toss: { p1choice: null, p2choice: null, winner: null, batting: null, result: null },
-      phase: 'batting', batting: null, target: null,
-      move1: null, move2: null, currentScore: 0, ballHistory: [], winner: null
+    function showScoreFlash(name, runs, cb) {
+      const ov = document.getElementById('sf'), ne = document.getElementById('sf-n');
+      document.getElementById('sf-pl').textContent = name;
+      ne.textContent = runs;
+      let lbl = runs === 1 ? 'RUN' : 'RUNS', bg = 'rgba(37,99,235,.93)';
+      if (runs === 6) { lbl = 'SIX! 🔥'; bg = 'rgba(245,158,11,.95)'; }
+      else if (runs === 4) { lbl = 'FOUR! 💥'; bg = 'rgba(16,185,129,.93)'; }
+      document.getElementById('sf-lbl').textContent = lbl;
+      document.getElementById('sf-bg').style.background = bg;
+      ov.classList.add('show'); ne.className = 'sf-n f-in';
+      setTimeout(() => { ne.className = 'sf-n f-out'; setTimeout(() => { ov.classList.remove('show'); ne.className = 'sf-n'; if (cb) cb(); }, 350); }, 2200);
+    }
+
+    // ── RESULT ──
+    function showResult(d) {
+      if (document.getElementById('result-screen').classList.contains('active')) return;
+      const won = d.winner === myRole, tie = d.winner === 'tie';
+      document.getElementById('res-trophy').textContent = tie ? '🤝' : won ? '🏆' : '😢';
+      document.getElementById('res-title').textContent = tie ? "It's a Tie!" : won ? 'You Won!' : 'You Lost!';
+      document.getElementById('res-sub').textContent = tie ? 'Great match!' : won ? 'Brilliant! 🎉' : 'Better luck next time!';
+      document.getElementById('r-s1').textContent = d.player1?.score ?? 0;
+      document.getElementById('r-s2').textContent = d.player2?.score ?? 0;
+      document.getElementById('pa-wait').style.display = 'none';
+      document.getElementById('btn-pa').style.display = isBot ? 'none' : 'block';
+      SS('result-screen');
+    }
+
+    window.reqPlayAgain = async () => {
+      if (!room || isBot) return;
+      const key = myRole === 'player1' ? 'player1' : 'player2';
+      await update(ref(db, `rooms/${room}`), { [`playAgain/${key}`]: true });
+      const snap = await get(ref(db, `rooms/${room}`));
+      const d = snap.val();
+      if (d.playAgain?.player1 && d.playAgain?.player2) {
+        if (myRole === 'player1') {
+          const d2 = snap.val();
+          await update(ref(db, `rooms/${room}`), {
+            status: 'toss',
+            toss: { p1c: null, p2c: null, winner: null, result: null, batting: null },
+            phase: 'batting', batting: null, target: null,
+            move1: null, move2: null, currentScore: 0, wickets: 0,
+            ballHistory: [], winner: null, ballsInOver: 0, oversCount: 0,
+            'player1/score': 0, 'player2/score': 0,
+            playAgain: { player1: false, player2: false },
+            rosterA: d2.isTeam ? (d2.rosterA || []).map(p => ({ ...p, out: false, runs: 0 })) : null,
+            rosterB: d2.isTeam ? (d2.rosterB || []).map(p => ({ ...p, out: false, runs: 0 })) : null,
+            currentBatsman: null, currentBowler: null, needPick: null
+          });
+        }
+      } else {
+        document.getElementById('btn-pa').style.display = 'none';
+        document.getElementById('pa-wait').style.display = 'block';
+        document.getElementById('pa-wait').textContent = '⏳ Waiting for opponent...';
+      }
     };
-    showTossScreen(localGameState.toss);
-  };
 
-  function resolveTossLocal(data) {
-    const t = data.toss;
-    const result = Math.random() < 0.5 ? 'heads' : 'tails';
-    t.result = result;
-    t.winner = t.p1choice === result ? 'player1' : t.p2choice === result ? 'player2' : (Math.random()<0.5?'player1':'player2');
-    updateTossUI(data);
-    if (t.winner === 'player2') {
-      document.getElementById('waiting-choice-section').style.display = 'block';
-      document.getElementById('waiting-choice-big').textContent = '🤖 Bot Won the Toss!';
-      setTimeout(() => chooseInningsLocal(Math.random()<0.5?'batting':'bowling'), 1500);
+    window.goLobby = () => {
+      room = null; myRole = null; myTeam = null; myMove = null; pendingCode = null;
+      tossOK = false; started = false; paused = false; isBot = false; botState = null;
+      if (gListener) { off(ref(db, 'rooms/x')); gListener = null; }
+      stopTimer(); SS('lobby-screen');
+    };
+
+    // ── BOT ──
+    window.startBot = () => {
+      if (!me) return alert('Login first!');
+      isBot = true; room = 'BOT'; myRole = 'player1'; myTeam = 'teamA';
+      tossOK = false; started = false; paused = false; myMove = null;
+      botState = {
+        player1: { uid: me.uid, name: me.displayName, photo: me.photoURL || '', score: 0 },
+        player2: { uid: 'bot', name: '🤖 Bot', photo: '', score: 0 },
+        isTeam: false, teamSize: 1,
+        status: 'toss', toss: { p1c: null, p2c: null, winner: null, result: null, batting: null },
+        phase: 'batting', batting: null, target: null, move1: null, move2: null,
+        currentScore: 0, wickets: 0, ballHistory: [], winner: null, ballsInOver: 0, oversCount: 0
+      };
+      showToss(botState.toss);
+    };
+    function resolveTossBot() {
+      const t = botState.toss, res = Math.random() < .5 ? 'heads' : 'tails';
+      t.result = res; t.winner = t.p1c === res ? 'player1' : t.p2c === res ? 'player2' : (Math.random() < .5 ? 'player1' : 'player2');
+      updateTossUI(botState);
+      if (t.winner === 'player2') {
+        document.getElementById('wt-ch-sec').style.display = 'block';
+        document.getElementById('wt-ch-big').textContent = '🤖 Bot Won the Toss!';
+        setTimeout(() => startBotInnings(Math.random() < .5 ? 'batting' : 'bowling'), 1200);
+      }
     }
-  }
-
-  function chooseInningsLocal(choice) {
-    const tossWinner = localGameState.toss.winner;
-    const battingRole = choice==='batting' ? tossWinner : (tossWinner==='player1'?'player2':'player1');
-    localGameState.toss.batting = battingRole;
-    localGameState.status = 'playing';
-    localGameState.batting = battingRole;
-    localGameState.phase = 'batting';
-    gameStarted = true;
-    startCountdown(() => { showScreen('game-screen'); updateGameUI(localGameState); });
-  }
-
-  function checkMovesLocal() {
-    const data = localGameState;
-    const batting = data.batting;
-    const batterMove = batting==='player1' ? data.move1 : data.move2;
-    const history = [...(data.ballHistory||[])];
-    const batterName = (batting==='player1' ? data.player1.name : data.player2.name).split(' ')[0];
-
-    if (data.move1 === data.move2) {
-      history.push('W');
-      showOutFlash(batterName, () => {
-        if (data.phase === 'batting') {
-          const target = data.currentScore;
-          if (batting==='player1') data.player1.score=target; else data.player2.score=target;
-          data.move1=null; data.move2=null; data.phase='chasing';
-          data.batting = batting==='player1'?'player2':'player1';
-          data.target=target; data.currentScore=0; data.ballHistory=[];
-          updateGameUI(data);
-        } else {
-          const cs = data.currentScore;
-          if (batting==='player1') data.player1.score=cs; else data.player2.score=cs;
-          data.winner = cs>data.target ? data.batting : (cs<data.target?(data.batting==='player1'?'player2':'player1'):'tie');
-          data.move1=null; data.move2=null; data.status='finished';
-          showResult(data);
-        }
-      });
-    } else {
-      const oppMove = batting === 'player1' ? data.move2 : data.move1;
-      const runsScored = batterMove === 0 ? oppMove : batterMove;
-      history.push(runsScored);
-      data.currentScore += runsScored;
-      scorePaused = true; stopTimer();
-      showScoreFlash(batterName, runsScored, () => {
-        scorePaused = false; mySelectedMove = null;
-        if (data.phase==='chasing' && data.currentScore > data.target) {
-          if (batting==='player1') data.player1.score=data.currentScore; else data.player2.score=data.currentScore;
-          data.move1=null; data.move2=null; data.status='finished'; data.winner=data.batting;
-          showResult(data);
-        } else {
-          data.move1=null; data.move2=null; data.ballHistory=history;
-          updateGameUI(data);
-        }
-      });
+    function startBotInnings(choice) {
+      const tw = isBot ? botState.toss.winner : (null);
+      const batting = choice === 'batting' ? tw : (tw === 'player1' ? 'player2' : 'player1');
+      if (isBot) { botState.toss.batting = batting; botState.status = 'playing'; botState.batting = batting; botState.phase = 'batting'; started = true; countdown('Match starting!', () => { SS('game-screen'); updateGameUI(botState); }); }
+      else {
+        get(ref(db, `rooms/${room}`)).then(snap => {
+          const tw2 = snap.val().toss.winner;
+          const bat2 = choice === 'batting' ? tw2 : (tw2 === 'player1' ? 'player2' : 'player1');
+          update(ref(db, `rooms/${room}`), { 'toss/batting': bat2, batting: bat2, phase: 'batting', status: 'playing' });
+        });
+      }
     }
-  }
-</script>
+    function checkMovesBot() {
+      const d = botState;
+      const bm = d.move1, bwm = d.move2;
+      const batN = d.batting === 'player1' ? d.player1.name.split(' ')[0] : d.player2.name.split(' ')[0];
+      const h = [...(d.ballHistory || [])];
+      const ballsInOver = (d.ballsInOver || 0) + 1;
+      if (bm === bwm) {
+        h.push('W');
+        showOutFlash(batN, () => {
+          if (d.phase === 'batting') {
+            const tgt = d.currentScore;
+            if (d.batting === 'player1') d.player1.score = tgt; else d.player2.score = tgt;
+            d.move1 = null; d.move2 = null; d.phase = 'chasing';
+            d.batting = d.batting === 'player1' ? 'player2' : 'player1';
+            d.target = tgt; d.currentScore = 0; d.wickets = 0; d.ballHistory = []; d.ballsInOver = 0; d.oversCount = 0;
+            updateGameUI(d);
+          } else {
+            const cs = d.currentScore;
+            if (d.batting === 'player1') d.player1.score = cs; else d.player2.score = cs;
+            d.winner = cs > d.target ? d.batting : (cs < d.target ? (d.batting === 'player1' ? 'player2' : 'player1') : 'tie');
+            d.status = 'finished'; showResult(d);
+          }
+        });
+      } else {
+        h.push(bm); d.currentScore += bm;
+        paused = true; stopTimer();
+        showScoreFlash(batN, bm, () => {
+          paused = false; myMove = null;
+          const ob = ballsInOver >= 6;
+          d.ballsInOver = ob ? 0 : ballsInOver; d.oversCount = ob ? (d.oversCount || 0) + 1 : (d.oversCount || 0);
+          if (d.phase === 'chasing' && d.currentScore > d.target) {
+            if (d.batting === 'player1') d.player1.score = d.currentScore; else d.player2.score = d.currentScore;
+            d.winner = d.batting; d.status = 'finished'; showResult(d);
+          } else { d.move1 = null; d.move2 = null; d.ballHistory = h; updateGameUI(d); }
+        });
+      }
+    }
+  </script>
 </body>
+
 </html>
