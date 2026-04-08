@@ -429,8 +429,11 @@
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (err) {
-      if (['auth/popup-blocked','auth/cancelled-popup-request','auth/popup-closed-by-user'].includes(err.code)) {
+      console.error(err);
+      if (['auth/popup-blocked','auth/cancelled-popup-request','auth/popup-closed-by-user','auth/cross-origin-isolated'].includes(err.code)) {
         await signInWithRedirect(auth, new GoogleAuthProvider());
+      } else {
+        alert("Google Login Error: " + err.message + " (" + err.code + ")");
       }
     }
   };
